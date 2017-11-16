@@ -1,4 +1,4 @@
-package lsbdp.model;
+package lsbdp.agile.model;
 
 public class Main {
 

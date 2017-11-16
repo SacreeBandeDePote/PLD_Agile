@@ -1,4 +1,4 @@
-package lsbdp.model;
+package lsbdp.agile.model;
 
 import java.util.ArrayList;
 
