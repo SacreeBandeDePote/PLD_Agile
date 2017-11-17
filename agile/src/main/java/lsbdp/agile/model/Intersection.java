@@ -1,17 +1,29 @@
 package lsbdp.agile.model;
 
-public class Noeud {
+import java.util.ArrayList;
+
+public class Intersection {
 
 	private int id;
 	private int x;
 	private int y;
+	private ArrayList<Street> neighboors = new ArrayList<Street>();
 	
-	public Noeud(int id, int x, int y) {
+	public Intersection(int id, int x, int y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
+		
 	}
 	
+	public ArrayList<Street> getNeighboors() {
+		return neighboors;
+	}
+
+	public void addStreet(Street street) {
+		this.neighboors.add(street);
+	}
+
 	@Override
 	public String toString() {
 		return "Noeud [id=" + id + ", x=" + x + ", y=" + y + "]";
