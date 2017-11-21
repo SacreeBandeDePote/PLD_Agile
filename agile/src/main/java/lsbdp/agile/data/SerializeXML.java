@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,7 +20,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class SerializeXML {
-	   public static void main(String[] args) {
+		
+	   public static void main(String[] args) throws ParseException {
 		      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 		      try {
@@ -26,21 +31,26 @@ public class SerializeXML {
 		         Element root = xml.getDocumentElement();
 		         
 		         final NodeList racineNoeuds = root.getChildNodes();
+		         String racine = root.getNodeName();
 		         final int nbRacineNoeuds = racineNoeuds.getLength();
-		         for (int i = 0; i<nbRacineNoeuds; i++) {
-		        	    if(racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {		        	
-		        	        final Element element = (Element) racineNoeuds.item(i);
-		        	        if(element.getNodeName() == "entrepot"){
-		        	        	System.out.println(element.getAttribute("adresse"));
-		        	        	System.out.println(element.getAttribute("heureDepart"));
-		        	        }
-		        	        if(element.getNodeName() == "livraison"){
-				        		System.out.print(element.getNodeName());
-				        		System.out.println(element.getAttribute("adresse"));		        	    
-				        		System.out.println(element.getAttribute("duree"));		        	    
-			        		}				
-		        	    }
-		        	}
+
+		         if(racine=="demandeDeLivraisons")
+		         {
+//		        	 List <Delivery> livraisons = new List<Delivery>;
+			         for (int i = 0; i<nbRacineNoeuds; i++) {
+			        	    if(racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {			        
+			        	        final Element element = (Element) racineNoeuds.item(i);
+			        	        if(element.getNodeName() == "entrepot"){
+//			        	        	Intersection adresse = new Intersection (Integer.parseInt(element.getAttribute("adresse")));
+			        	        	String startingTime = element.getAttribute("heureDepart");
+//			        	        	DeliveryRequest demandeDeLivraisons = new DeliveryRequest(startingTime, adresse);			        	    
+			        	        }       	 			        	     
+			        	        if(element.getNodeName() == "livraison"){
+//			        	        	livraisons.add(new Delivery(element.getAttribute("duree")), new Intersection(element.getAttribute("adresse") );	
+				        		}				
+			        	    }
+			        	}
+		         }
 		      } catch (ParserConfigurationException e) {
 		    	  e.printStackTrace();
 		      } catch (SAXException e) {
@@ -49,4 +59,9 @@ public class SerializeXML {
 		          e.printStackTrace();
 		      }
 	   }
+
+	private static Time Time(long time) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
