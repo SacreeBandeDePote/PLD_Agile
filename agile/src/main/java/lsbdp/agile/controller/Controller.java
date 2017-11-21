@@ -1,14 +1,18 @@
 package lsbdp.agile.controller;
 
+import java.io.File;
+
+import lsbdp.agile.model.DeliverySchedule;
+import lsbdp.agile.model.StreetMap;
+
 public class Controller {
-	private CmdList cmdList;
+	private CommandList cmdList;
 	public Controller() {
 	}
-	public void addMap(String m) {
+	public void addMap(File XML, StreetMap map) {
+		
 	}
-	public void loadDeliveryRequest(String dr) {
-	}
-	public void calculateTour() {
+	public void loadDeliveryRequest(String filename, DeliverySchedule schedule) {
 	}
 	public void undo() {
 	}
