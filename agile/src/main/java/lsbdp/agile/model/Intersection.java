@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Intersection {
 
-	private int id;
+	private Float id;
 	private int x;
 	private int y;
 	private List<Street> streets = new ArrayList<Street>();
 
-	public Intersection(int id, int x, int y) {
+	public Intersection(Float id, int x, int y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -30,11 +30,11 @@ public class Intersection {
 		return "Noeud [id=" + id + ", x=" + x + ", y=" + y + "]";
 	}
 
-	public int getId() {
+	public Float getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Float id) {
 		this.id = id;
 	}
 
