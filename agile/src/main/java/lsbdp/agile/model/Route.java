@@ -23,7 +23,4 @@ public class Route {
 		this.streets = streets;
 		this.startingPoint = startingPoint;
 	}
-	
-	
-	
 }
