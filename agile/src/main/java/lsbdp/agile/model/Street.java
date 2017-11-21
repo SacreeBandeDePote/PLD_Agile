@@ -6,6 +6,13 @@ public class Street {
 	private String name;
 	private Intersection end;
 	
+	public Street(float length, String name, Intersection end) {
+		super();
+		this.length = length;
+		this.name = name;
+		this.end = end;
+	}
+	
 	public float getLength() {
 		return length;
 	}
