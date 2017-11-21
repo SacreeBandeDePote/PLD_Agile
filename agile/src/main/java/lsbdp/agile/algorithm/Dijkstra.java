@@ -1,17 +1,14 @@
 package lsbdp.agile.algorithm;
 
-import javafx.util.Pair;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Route;
 import lsbdp.agile.model.StreetMap;
 
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Dijkstra {
-    StreetMap map;
+    private StreetMap map;
 
     public Dijkstra(StreetMap map) {
         super();
@@ -21,7 +18,7 @@ public class Dijkstra {
     public Route performDijkstra(Intersection start, Intersection end) {
         Route route = new Route(start);
 
-        //Map<IdIntersection, Distance from start>
+
         float[] distances = new float[map.size()];
         int[] previous = new int[map.size()];
         Comparator<Intersection> comparator = new RouteComparator(distances);
@@ -63,9 +60,9 @@ public class Dijkstra {
 
 class RouteComparator implements Comparator<Intersection> {
 
-    float[] distances;
+    private float[] distances;
 
-    public RouteComparator(float[] distances) {
+    RouteComparator(float[] distances) {
         this.distances = distances;
     }
 
