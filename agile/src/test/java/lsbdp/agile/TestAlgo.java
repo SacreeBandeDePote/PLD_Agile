@@ -25,8 +25,8 @@ public class TestAlgo {
 
 	@Test
 	public void testGetNeighboors() {
-		assertEquals(1, start.getNeighboors().size());
-		assertEquals(0, end.getNeighboors().size());
+		assertEquals(1, start.getNeighbors().size());
+		assertEquals(0, end.getNeighbors().size());
 	}
 
 }

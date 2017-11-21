@@ -30,6 +30,10 @@ public class Intersection {
 		return "Noeud [id=" + id + ", x=" + x + ", y=" + y + "]";
 	}
 
+	public boolean equals(Intersection other) {
+		return this.getId() == other.getId();
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -54,14 +58,30 @@ public class Intersection {
 		this.y = y;
 	}
 	
-	public List<Intersection> getNeighboors() {
-		List<Intersection> neighboors = new ArrayList<Intersection>();
+	public List<Intersection> getNeighbors() {
+		List<Intersection> neighbors = new ArrayList<Intersection>();
 		
 		for(Street street : this.streets) {
-			neighboors.add(street.getEnd());
+			neighbors.add(street.getEnd());
 		}
 		
-		return neighboors;
+		return neighbors;
+	}
+
+	public float distTo(Intersection neighbor) {
+		for(Street street : this.streets) {
+			if(neighbor.equals(street.getEnd()))
+				return street.getLength();
+		}
+		return -1;
+	}
+
+	public Street getStreetTo(Intersection neighbor) {
+		for(Street street : this.streets) {
+			if(neighbor.equals(street.getEnd()))
+				return street;
+		}
+		return null;
 	}
 
 }
