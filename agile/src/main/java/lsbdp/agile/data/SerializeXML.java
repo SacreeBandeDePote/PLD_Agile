@@ -21,7 +21,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import lsbdp.agile.model.Delivery;
-import lsbdp.agile.model.DeliveryRequest;
+import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Intersection;
 
 public class SerializeXML {
@@ -64,7 +64,7 @@ public class SerializeXML {
 			        		}				
 		        	    }
 		        	}
-			         DeliveryRequest demandeDeLivraisons = new DeliveryRequest(startingTime, warehouse, deliveryList);	
+			         DeliveriesRequest demandeDeLivraisons = new DeliveriesRequest(startingTime, warehouse, deliveryList);	
 		         }     
 		         if(racine=="reseau")
 		         {

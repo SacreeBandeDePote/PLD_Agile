@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 
 public class DeliveriesRequest {
-	private Time startingTime;
+	private Date startingTime;
 	private Intersection warehouse;
 	private ArrayList<Delivery> deliveryList = new ArrayList<Delivery>();
 	
 	
 
-	public DeliveriesRequest(Time startingTime, Intersection warehouse, ArrayList<Delivery> deliveryList) {
+	public DeliveriesRequest(Date startingTime, Intersection warehouse, ArrayList<Delivery> deliveryList) {
 		this.startingTime = startingTime;
 		this.warehouse = warehouse;
 		this.deliveryList = deliveryList;
