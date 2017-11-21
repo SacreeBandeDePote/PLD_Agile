@@ -1,25 +1,25 @@
 package lsbdp.agile.model;
 
-import java.sql.Time;
+import java.util.Date;
 import java.util.ArrayList;
 
 public class DeliveryRequest {
-	private Time startingTime;
+	private Date startingTime;
 	private Intersection warehouse;
 	private ArrayList<Delivery> deliveryList = new ArrayList<Delivery>();
 	
 	
-	public DeliveryRequest(Time startingTime, Intersection warehouse, ArrayList<Delivery> deliveryList) {
+	public DeliveryRequest(Date startingTime, Intersection warehouse, ArrayList<Delivery> deliveryList) {
 		this.startingTime = startingTime;
 		this.warehouse = warehouse;
 		this.deliveryList = deliveryList;
 	}
 	
-	public Time getStartingTime() {
+	public Date getStartingTime() {
 		return startingTime;
 	}
 
-	public void setStartingTime(Time startingTime) {
+	public void setStartingTime(Date startingTime) {
 		this.startingTime = startingTime;
 	}
 
