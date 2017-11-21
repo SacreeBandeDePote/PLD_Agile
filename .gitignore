@@ -21,5 +21,9 @@ agile/.DS_Store
 .DS_Store
 agile/.DS_Store
 
+# Pour les macs
+.DS_Store
+agile/.DS_Store
+
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
