@@ -3,13 +3,13 @@ package lsbdp.agile.model;
 import java.sql.Time;
 import java.util.ArrayList;
 
-public class DeliveryRequest {
+public class DeliveriesRequest {
 	private Time startingTime;
 	private Intersection warehouse;
 	private ArrayList<Delivery> deliveryList = new ArrayList<Delivery>();
 	
 	
-	public DeliveryRequest(Time startingTime, Intersection warehouse, ArrayList<Delivery> deliveryList) {
+	public DeliveriesRequest(Time startingTime, Intersection warehouse, ArrayList<Delivery> deliveryList) {
 		this.startingTime = startingTime;
 		this.warehouse = warehouse;
 		this.deliveryList = deliveryList;

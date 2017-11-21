@@ -1,21 +1,21 @@
 package lsbdp.agile.model;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.util.Pair;
 
 public class DeliverySchedule {
-	private ArrayList<Pair<Intersection, Time>> schedule = new ArrayList<Pair<Intersection,Time>>();
+	private List<Pair<Route, Delivery>> schedule = new ArrayList<Pair<Route,Delivery>>();
 
-	public ArrayList<Pair<Intersection, Time>> getSchedule() {
+	public List<Pair<Route, Delivery>> getSchedule() {
 		return schedule;
 	}
 
-	public void setSchedule(ArrayList<Pair<Intersection, Time>> schedule) {
+	public void setSchedule(List<Pair<Route, Delivery>> schedule) {
 		this.schedule = schedule;
 	}
 
-	public DeliverySchedule(ArrayList<Pair<Intersection, Time>> schedule) {
+	public DeliverySchedule(List<Pair<Route, Delivery>> schedule) {
 		this.schedule = schedule;
 	} 
 }
