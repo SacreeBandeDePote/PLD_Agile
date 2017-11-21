@@ -2,10 +2,8 @@ package lsbdp.agile.model;
 
 import java.util.HashMap;
 
-public class StreetMap extends HashMap<Integer, Intersection> {
+public class StreetMap extends HashMap<Float, Intersection> {
 
-<<<<<<< 5de5a20fcef22cd55c13aff000ef47f25a606560
-=======
 	private Map<Float, Intersection> intersections = new HashMap<Float, Intersection>();
 
 	public Map<Float, Intersection> getMapIntersections() {
@@ -19,5 +17,4 @@ public class StreetMap extends HashMap<Integer, Intersection> {
 	public void addIntersection(Intersection intersection) {
 		this.intersections.put(intersection.getId(), intersection);
 	}
->>>>>>> Update Serialize + modify id int to Float
 }

@@ -48,7 +48,7 @@ public class SerializeXML {
 	        	        	Float id = Float.parseFloat(element.getAttribute("id"));
 	        	        	int x = Integer.parseInt(element.getAttribute("x"));
 	        	        	int y = Integer.parseInt(element.getAttribute("y"));
-	        	        	streetMap.addIntersection(new Intersection(id,x,y));
+	        	        	streetMap.put(id,new Intersection(id,x,y));
 	        	        }     	      	        
 	        	        if(element.getNodeName() == "troncon")
 	        	        {
