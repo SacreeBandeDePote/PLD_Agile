@@ -24,8 +24,8 @@ public class Controller {
 	public StreetMap addMap(File XML) throws ParseException {
 		return serializer.serializeMapXML(XML);
 	}
-	public DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
-		return serializer.serializeDeliveryXML(XML);
+	public DeliveriesRequest addDeliveriesRequest(File XML, StreetMap map) throws ParseException {
+		return serializer.serializeDeliveryXML(XML, map);
 	}
 	public Route calculateRoute(Delivery start, Delivery end, StreetMap map) {
 		// Mettre en static et modifier la méthode

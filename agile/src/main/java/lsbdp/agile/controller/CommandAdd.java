@@ -17,10 +17,12 @@ public class CommandAdd extends Command {
 	}
 	
 	@Override
-	public void doCommand() {
+	public boolean doCommand() {
+		return true;
 	}
 	
 	@Override
-	public void undoCommand() {
+	public boolean undoCommand() {
+		return true;
 	}
 }
