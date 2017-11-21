@@ -15,8 +15,8 @@ public class CmdAdd extends Command {
 		this.tf = tf;
 		this.i = i;
 	}
-	public void doCmd() {
+	public void doCommand() {
 	}
-	public void undoCmd() {
+	public void undoCommand() {
 	}
 }
