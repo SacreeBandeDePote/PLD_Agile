@@ -10,7 +10,6 @@ buildNumber.properties
 .settings/
 .idea/
 .classpath
-.project
 
 # Pour les macs
 .DS_Store
