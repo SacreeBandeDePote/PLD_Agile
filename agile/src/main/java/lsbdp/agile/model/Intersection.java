@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Intersection {
 
-	private Float id;
+	private int id;
 	private int x;
 	private int y;
 	private List<Street> streets = new ArrayList<Street>();
 
-	public Intersection(Float id, int x, int y) {
+	public Intersection(int id, int x, int y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -30,11 +30,15 @@ public class Intersection {
 		return "Noeud [id=" + id + ", x=" + x + ", y=" + y + "]";
 	}
 
-	public Float getId() {
+	public boolean equals(Intersection other) {
+		return this.getId() == other.getId();
+	}
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Float id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -54,14 +58,30 @@ public class Intersection {
 		this.y = y;
 	}
 	
-	public List<Intersection> getNeighboors() {
-		List<Intersection> neighboors = new ArrayList<Intersection>();
+	public List<Intersection> getNeighbors() {
+		List<Intersection> neighbors = new ArrayList<Intersection>();
 		
 		for(Street street : this.streets) {
-			neighboors.add(street.getEnd());
+			neighbors.add(street.getEnd());
 		}
 		
-		return neighboors;
+		return neighbors;
+	}
+
+	public float distTo(Intersection neighbor) {
+		for(Street street : this.streets) {
+			if(neighbor.equals(street.getEnd()))
+				return street.getLength();
+		}
+		return -1;
+	}
+
+	public Street getStreetTo(Intersection neighbor) {
+		for(Street street : this.streets) {
+			if(neighbor.equals(street.getEnd()))
+				return street;
+		}
+		return null;
 	}
 
 }
