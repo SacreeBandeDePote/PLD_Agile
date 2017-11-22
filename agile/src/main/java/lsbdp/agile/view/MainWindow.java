@@ -1,24 +1,75 @@
 package lsbdp.agile.view;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javafx.util.Pair;
+import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.model.StreetMap;
 
 public class MainWindow extends Application {
 
+	private static Stage stage;
+	private static Scene mainScene;
+	/**
+	 * 
+	 * @author Matthieu
+	 * @param Stage primaryStage
+	 * 
+	 */
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws IOException {
+				
+		Parent mainNode = FXMLLoader.load(MainWindow.class.getResource("MainWindow.fxml"));
 		
-		//Scene scene = FXMLLoader.load("MainWindow.fxml");
+		File f = new File("MainWindow.fxml");
+		mainScene = new Scene(mainNode);
+		primaryStage.setScene(mainScene);
 		
-		Scene scene = new Scene(new Label("Main Window"));
-		primaryStage.setScene(scene);
 		
+		
+		stage = primaryStage;
+		primaryStage.setMaximized(true);
+		primaryStage.setTitle("Delivery Biatch");
+		primaryStage.setOnShown(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent event) {
+				MainWindowController.initializer(mainScene);
+			}
+		});
 		primaryStage.show();
+		
 	}
-
+	
+	public static File openFileChooser(FileChooser fileChooser) {
+		System.out.println("OKOKOKOK");
+		File file = fileChooser.showOpenDialog(stage);
+		System.out.println(file.getName());
+		
+		SerializeXML serializer = new SerializeXML();
+		StreetMap m = null;
+		System.out.println("Start Serialize");
+		try {
+			m = serializer.serializeMapXML(file);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("End Serialize");
+		MainWindowController.loadMap(m);
+		return file;
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
