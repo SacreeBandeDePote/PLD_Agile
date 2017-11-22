@@ -66,7 +66,6 @@ class RouteComparator implements Comparator<Intersection> {
         this.distances = distances;
     }
 
-    @Override
     public int compare(Intersection o1, Intersection o2) {
         return (int) (distances[o1.getId()] - distances[o2.getId()]); //increasing order
     }
