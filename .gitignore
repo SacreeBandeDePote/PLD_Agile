@@ -9,7 +9,6 @@ buildNumber.properties
 .mvn/timing.properties
 .settings/
 .idea/
-.classpath
 
 # Pour les macs
 .DS_Store
