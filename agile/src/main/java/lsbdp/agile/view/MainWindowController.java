@@ -51,6 +51,19 @@ public class MainWindowController{
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
 	
+	private static Double getMaxX(StreetMap map) {
+		Double maxX = (double) 0;
+		Map<Float, Intersection> intersections = map;
+		Set keys = intersections.keySet();
+		Iterator iterator = keys.iterator();
+		while(iterator.hasNext()) {
+			Float key = (Float) iterator.next();
+			Intersection intersection = intersections.get(key);
+			
+		}
+		return maxX;
+	}
+	
 	@FXML
 	private static SplitPane mainSplitPane;
 
@@ -141,7 +154,7 @@ public class MainWindowController{
 		
 
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
-		Canvas cv = new Canvas(750,750);
+		Canvas cv = new Canvas(850,850);
 		
 		Double canvasWidth = cv.getWidth();
 		GraphicsContext gc = cv.getGraphicsContext2D();
@@ -152,13 +165,13 @@ public class MainWindowController{
 		while(iterator.hasNext()) {
 			Float key = (Float) iterator.next();
 			Intersection intersection = intersections.get(key);
-			
+			if(intersection.getNeighboors().size() != 0) {
 			Double startX = normalizeX((double) intersection.getX(), canvasWidth);
 			Double startY = normalizeY((double) intersection.getY(), canvasWidth);
 			List<Intersection> neighbors = intersection.getNeighboors();
 
-			gc.setFill(Color.LIGHTGRAY);
-			gc.setStroke(Color.LIGHTGRAY);
+			gc.setFill(Color.BLUE);
+			gc.setStroke(Color.BLUE);
 			gc.setLineWidth(1);
 			gc.fillOval(startX, startY, 8, 8);
 			gc.strokeOval(startX, startY, 8, 8);
@@ -167,6 +180,7 @@ public class MainWindowController{
 				Double endY = normalizeY((double) inter.getY(), canvasWidth);
 				gc.setLineWidth(3);
 				gc.strokeLine(startX+4, startY+4, endX+4, endY+4);
+			}
 			}
 		}
 		ap.getChildren().add(cv);
