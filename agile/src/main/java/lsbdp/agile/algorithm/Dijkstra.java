@@ -4,14 +4,11 @@ import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Route;
 import lsbdp.agile.model.StreetMap;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Dijkstra {
     private StreetMap map;
-    private static final long UNDEFFINED = -1l;
+    private static final long UNDEFINED = -1l;
 
     public Dijkstra(StreetMap map) {
         super();
@@ -22,10 +19,10 @@ public class Dijkstra {
         Route route = new Route(start);
 
 
-        Map<Long, Float> distances = new HashMap<Long, Float>();
-        Map<Long, Long> previous = new HashMap<Long, Long>();
+        Map<Long, Float> distances = new HashMap<>();
+        Map<Long, Long> previous = new HashMap<>();
         Comparator<Intersection> comparator = new RouteComparator(distances);
-        PriorityQueue<Intersection> nonView = new PriorityQueue<Intersection>(10, comparator);
+        List<Intersection> nonView = new ArrayList<>();
 
         //init the non view list
         for (Intersection node : map.values()) {
@@ -34,14 +31,16 @@ public class Dijkstra {
             else
                 distances.put(node.getId(), Float.MAX_VALUE); //infinity
 
-            previous.put(node.getId(), UNDEFFINED); //undefine
+            previous.put(node.getId(), UNDEFINED); //undefine
             nonView.add(node);
         }
 
         //We know that a treated node has its shortest route
         //then we stop as soon as we go to the end node
-        while (!nonView.peek().equals(end)) {
-            Intersection current = nonView.poll();
+        while (!nonView.get(0).equals(end)) {
+            Intersection current =  nonView.get(0);
+            if (current.equals(end))
+                break;
             for (Intersection neighbor : current.getNeighbors()) {
                 float dist = distances.get(current.getId()) + current.distTo(neighbor);
                 if (dist < distances.get(neighbor.getId())) {
@@ -49,10 +48,12 @@ public class Dijkstra {
                     previous.put(neighbor.getId(), current.getId());
                 }
             }
+            nonView.remove(0);
+            nonView.sort(comparator);
         }
 
         long routeId = end.getId();
-        while (routeId != UNDEFFINED) {
+        while (routeId != start.getId()) {
             route.addStreetToTop(map.get(previous.get(routeId)).getStreetTo(map.get(routeId)));
             routeId = previous.get(routeId);
         }
