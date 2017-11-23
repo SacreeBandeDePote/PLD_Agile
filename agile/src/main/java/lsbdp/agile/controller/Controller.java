@@ -14,6 +14,8 @@ import lsbdp.agile.model.StreetMap;
 
 public class Controller {
 	private CommandList cmdList;
+	
+	// Mettre ses méthodes en static
 	private SerializeXML serializer;
 	public Controller() {
 		this.cmdList = new CommandList();
@@ -26,6 +28,7 @@ public class Controller {
 		dr = serializer.serializeDeliveryXML(XML);
 	}
 	public void calculateRoute(Delivery start, Delivery end, StreetMap map, Route route) {
+		// Mettre en static
 		Dijkstra dj = new Dijkstra(map);
 		route = dj.performDijkstra(start.getLocation(), end.getLocation());
 	}
