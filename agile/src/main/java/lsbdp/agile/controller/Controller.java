@@ -21,16 +21,16 @@ public class Controller {
 		this.cmdList = new CommandList();
 		this.serializer = new SerializeXML();
 	}
-	public void addMap(File XML, StreetMap map) throws ParseException {
-		map = serializer.serializeMapXML(XML);
+	public StreetMap addMap(File XML) throws ParseException {
+		return serializer.serializeMapXML(XML);
 	}
-	public void addDeliveriesRequest(File XML, DeliveriesRequest dr) throws ParseException {
-		dr = serializer.serializeDeliveryXML(XML);
+	public DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
+		return serializer.serializeDeliveryXML(XML);
 	}
-	public void calculateRoute(Delivery start, Delivery end, StreetMap map, Route route) {
-		// Mettre en static
+	public Route calculateRoute(Delivery start, Delivery end, StreetMap map) {
+		// Mettre en static et modifier la méthode
 		Dijkstra dj = new Dijkstra(map);
-		route = dj.performDijkstra(start.getLocation(), end.getLocation());
+		return dj.performDijkstra(start.getLocation(), end.getLocation());
 	}
 	/* On verra ça plus tard
 	 * public void loadDeliveryRequest(File XML, DeliverySchedule schedule) throws ParseException {
