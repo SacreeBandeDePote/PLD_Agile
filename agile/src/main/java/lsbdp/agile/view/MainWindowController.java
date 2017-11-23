@@ -36,6 +36,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
@@ -61,7 +62,10 @@ public class MainWindowController{
 		fileChooser.getExtensionFilters().addAll(
 			new FileChooser.ExtensionFilter("XML File", "*.xml")
 		);
-		MainWindow.openFileChooserMap(fileChooser);
+		File f = MainWindow.openFileChooser(fileChooser);
+		StreetMap m = new StreetMap();
+		//Controller.addMap(f,m);
+		loadMap(m);
 	}
 
 	@FXML
@@ -71,32 +75,13 @@ public class MainWindowController{
 		fileChooser.getExtensionFilters().addAll(
 			new FileChooser.ExtensionFilter("XML File", "*.xml")
 		);
-		MainWindow.openFileChooserDeliveries(fileChooser);
-	}
-	
-	@FXML
-	private void LoadListView(MouseEvent event) {
-		Label label1 = new Label("Livraisons chez la mère de Djag");
-		Label label2 = new Label("Livraisons chez la mère de Piet");
-		Label label3 = new Label("Livraisons chez la mère de Turpin");
-		Label label4 = new Label("Livraisons chez la mère de Ros");
-		Label label5 = new Label("Livraisons chez la mère de BD");
-		Label label6 = new Label("Livraisons chez la mère de Coco");
-		
-		ListView listView = (ListView) event.getSource();
-		
-		ObservableList<Label> list = FXCollections.observableArrayList();
-		list.add(label1);
-		list.add(label2);
-		list.add(label3);
-		list.add(label4);
-		list.add(label5);
-		list.add(label6);
-		listView.setItems(list);
+		File f = MainWindow.openFileChooser(fileChooser);
+		DeliveriesRequest d = new DeliveriesRequest(null, null, null);
+		//Controller.addDeliveryRequest(f, d);
+		//loadDeliveryRequest(d);
 	}
 
 	public static void initializer(Scene sc) {
-
 		scene = sc;
 		//AnchorPane sp = (AnchorPane) sc.lookup("#canvasAnchorPane");
 		//sp.setDividerPosition(0, 0.8);

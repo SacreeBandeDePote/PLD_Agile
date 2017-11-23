@@ -37,8 +37,6 @@ public class MainWindow extends Application {
 		mainScene = new Scene(mainNode);
 		primaryStage.setScene(mainScene);
 		
-		
-		
 		stage = primaryStage;
 		primaryStage.setMaximized(true);
 		primaryStage.setTitle("AGILE Project - Sprint 1");
@@ -50,17 +48,8 @@ public class MainWindow extends Application {
 		primaryStage.show();
 	}
 	
-	public static File openFileChooserMap(FileChooser fileChooser) {
+	public static File openFileChooser(FileChooser fileChooser) {
 		File file = fileChooser.showOpenDialog(stage);
-		
-		SerializeXML serializer = new SerializeXML();
-		StreetMap m;
-		try {
-			m = serializer.serializeMapXML(file);
-			MainWindowController.loadMap(m);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		return file;
 	}
 	
