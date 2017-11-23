@@ -41,32 +41,26 @@ public class MainWindow extends Application {
 		
 		stage = primaryStage;
 		primaryStage.setMaximized(true);
-		primaryStage.setTitle("Delivery Biatch");
+		primaryStage.setTitle("AGILE Project - Sprint 1");
 		primaryStage.setOnShown(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent event) {
 				MainWindowController.initializer(mainScene);
 			}
 		});
 		primaryStage.show();
-		
 	}
 	
-	public static File openFileChooser(FileChooser fileChooser) {
-		System.out.println("OKOKOKOK");
+	public static File openFileChooserMap(FileChooser fileChooser) {
 		File file = fileChooser.showOpenDialog(stage);
-		System.out.println(file.getName());
 		
 		SerializeXML serializer = new SerializeXML();
-		StreetMap m = null;
-		System.out.println("Start Serialize");
+		StreetMap m;
 		try {
 			m = serializer.serializeMapXML(file);
+			MainWindowController.loadMap(m);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("End Serialize");
-		MainWindowController.loadMap(m);
 		return file;
 	}
 	
