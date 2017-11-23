@@ -51,7 +51,7 @@ public class MainWindow extends Application {
 		
 	}
 	
-	public static File openFileChooser(FileChooser fileChooser) {
+	public static File openFileChooser(FileChooser fileChooser) throws InterruptedException {
 		System.out.println("OKOKOKOK");
 		File file = fileChooser.showOpenDialog(stage);
 		System.out.println(file.getName());
