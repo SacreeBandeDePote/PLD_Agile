@@ -54,6 +54,7 @@
                               <AnchorPane>
                                  <children>
                                     <ListView fx:id="listView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <Button layoutX="61.0" layoutY="377.0" mnemonicParsing="false" onAction="#computeAlgo" text="Compute" AnchorPane.bottomAnchor="38.0" />
                                  </children>
                               </AnchorPane>
                            </content>
