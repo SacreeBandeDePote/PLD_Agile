@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.sun.deploy.Environment;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,8 +37,10 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import lsbdp.agile.controller.Controller;
 import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
+import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
@@ -51,12 +55,13 @@ public class MainWindowController{
 	
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
+	private static Controller c;
 	
 	@FXML
 	private static SplitPane mainSplitPane;
 
 	@FXML
-	private void LoadMapActionHandler(ActionEvent event) {
+	private void LoadMapActionHandler(ActionEvent event) throws ParseException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose your map file");
 		fileChooser.getExtensionFilters().addAll(
@@ -64,12 +69,13 @@ public class MainWindowController{
 		);
 		File f = MainWindow.openFileChooser(fileChooser);
 		StreetMap m = new StreetMap();
-		//Controller.addMap(f,m);
+		c.addMap(f,m);
+		System.out.println(m.size());
 		loadMap(m);
 	}
 
 	@FXML
-	private void LoadDeliveriesActionHandler(ActionEvent event) {
+	private void LoadDeliveriesActionHandler(ActionEvent event) throws ParseException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose your deliverires file");
 		fileChooser.getExtensionFilters().addAll(
@@ -77,12 +83,13 @@ public class MainWindowController{
 		);
 		File f = MainWindow.openFileChooser(fileChooser);
 		DeliveriesRequest d = new DeliveriesRequest(null, null, null);
-		//Controller.addDeliveryRequest(f, d);
-		//loadDeliveryRequest(d);
+		//c.addDeliveriesRequest(f, d);
+		loadDeliveryRequest(d);
 	}
 
 	public static void initializer(Scene sc) {
 		scene = sc;
+		c = new Controller();
 		//AnchorPane sp = (AnchorPane) sc.lookup("#canvasAnchorPane");
 		//sp.setDividerPosition(0, 0.8);
 		
@@ -147,6 +154,13 @@ public class MainWindowController{
 			}
 		}
 		ap.getChildren().add(cv);
+	}
+	
+	public static void loadDeliveryRequest(DeliveriesRequest dr) {
+//		ListView list = (ListView)
+//		for(Delivery d: dr.getDeliveryList()){
+//			Label 
+//		}
 	}
 	
 	public static Double normalizeX(Double x, Double width) {
