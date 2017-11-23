@@ -51,19 +51,6 @@ public class MainWindowController{
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
 	
-	private static Double getMaxX(StreetMap map) {
-		Double maxX = (double) 0;
-		Map<Float, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			Float key = (Float) iterator.next();
-			Intersection intersection = intersections.get(key);
-			
-		}
-		return maxX;
-	}
-	
 	@FXML
 	private static SplitPane mainSplitPane;
 
@@ -158,17 +145,12 @@ public class MainWindowController{
 		
 		Double canvasWidth = cv.getWidth();
 		GraphicsContext gc = cv.getGraphicsContext2D();
-		
-		Map<Float, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			Float key = (Float) iterator.next();
-			Intersection intersection = intersections.get(key);
-			if(intersection.getNeighboors().size() != 0) {
+
+		for(Intersection intersection : map.values()) {
+			if(intersection.getNeighbors().size() != 0) {
 			Double startX = normalizeX((double) intersection.getX(), canvasWidth);
 			Double startY = normalizeY((double) intersection.getY(), canvasWidth);
-			List<Intersection> neighbors = intersection.getNeighboors();
+			List<Intersection> neighbors = intersection.getNeighbors();
 
 			gc.setFill(Color.BLUE);
 			gc.setStroke(Color.BLUE);
