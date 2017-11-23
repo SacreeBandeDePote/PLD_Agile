@@ -68,9 +68,7 @@ public class MainWindowController{
 			new FileChooser.ExtensionFilter("XML File", "*.xml")
 		);
 		File f = MainWindow.openFileChooser(fileChooser);
-		StreetMap m = new StreetMap();
-		c.addMap(f,m);
-		System.out.println(m.size());
+		StreetMap m = c.addMap(f);
 		loadMap(m);
 	}
 
@@ -82,8 +80,7 @@ public class MainWindowController{
 			new FileChooser.ExtensionFilter("XML File", "*.xml")
 		);
 		File f = MainWindow.openFileChooser(fileChooser);
-		DeliveriesRequest d = new DeliveriesRequest(null, null, null);
-		//c.addDeliveriesRequest(f, d);
+		DeliveriesRequest d = c.addDeliveriesRequest(f);
 		loadDeliveryRequest(d);
 	}
 
@@ -95,8 +92,6 @@ public class MainWindowController{
 		
 		//sp.getItems().add(cv);
 	}
-	
-	
 	
 	@FXML
 	private void loadCanvas(MouseEvent event) {
@@ -157,10 +152,14 @@ public class MainWindowController{
 	}
 	
 	public static void loadDeliveryRequest(DeliveriesRequest dr) {
-//		ListView list = (ListView)
-//		for(Delivery d: dr.getDeliveryList()){
-//			Label 
-//		}
+		ListView listView = (ListView)scene.lookup("#listView");
+		ObservableList<Label> list = FXCollections.observableArrayList();
+		int deliveriesNumber = 1;
+		for(Delivery d: dr.getDeliveryList()){
+			list.add(new Label("Livraison "+deliveriesNumber));
+			deliveriesNumber++;
+		}
+		listView.setItems(list);
 	}
 	
 	public static Double normalizeX(Double x, Double width) {
