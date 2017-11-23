@@ -5,10 +5,13 @@ import lsbdp.agile.model.Route;
 import lsbdp.agile.model.StreetMap;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Dijkstra {
     private StreetMap map;
+    private static final long UNDEFFINED = -1l;
 
     public Dijkstra(StreetMap map) {
         super();
@@ -19,19 +22,19 @@ public class Dijkstra {
         Route route = new Route(start);
 
 
-        float[] distances = new float[map.size()];
-        int[] previous = new int[map.size()];
+        Map<Long, Float> distances = new HashMap<Long, Float>();
+        Map<Long, Long> previous = new HashMap<Long, Long>();
         Comparator<Intersection> comparator = new RouteComparator(distances);
         PriorityQueue<Intersection> nonView = new PriorityQueue<Intersection>(10, comparator);
 
         //init the non view list
         for (Intersection node : map.values()) {
             if (node.getId() == start.getId())
-                distances[node.getId()] = 0;
+                distances.put(node.getId(), 0.f);
             else
-                distances[node.getId()] = Integer.MAX_VALUE; //infinity
+                distances.put(node.getId(), Float.MAX_VALUE); //infinity
 
-            previous[node.getId()] = -1; //undefine
+            previous.put(node.getId(), UNDEFFINED); //undefine
             nonView.add(node);
         }
 
@@ -40,18 +43,18 @@ public class Dijkstra {
         while (!nonView.peek().equals(end)) {
             Intersection current = nonView.poll();
             for (Intersection neighbor : current.getNeighbors()) {
-                float dist = distances[current.getId()] + current.distTo(neighbor);
-                if (dist < distances[neighbor.getId()]) {
-                    distances[neighbor.getId()] = dist;
-                    previous[neighbor.getId()] = current.getId();
+                float dist = distances.get(current.getId()) + current.distTo(neighbor);
+                if (dist < distances.get(neighbor.getId())) {
+                    distances.put(neighbor.getId(), dist);
+                    previous.put(neighbor.getId(), current.getId());
                 }
             }
         }
 
-        int routeId = end.getId();
-        while (routeId != -1) {
-            route.addStreetToTop(map.get(previous[routeId]).getStreetTo(map.get(routeId)));
-            routeId = previous[routeId];
+        long routeId = end.getId();
+        while (routeId != UNDEFFINED) {
+            route.addStreetToTop(map.get(previous.get(routeId)).getStreetTo(map.get(routeId)));
+            routeId = previous.get(routeId);
         }
         return route;
     }
@@ -60,13 +63,13 @@ public class Dijkstra {
 
 class RouteComparator implements Comparator<Intersection> {
 
-    private float[] distances;
+    private Map<Long, Float> distances;
 
-    RouteComparator(float[] distances) {
+    RouteComparator(Map<Long, Float> distances) {
         this.distances = distances;
     }
 
     public int compare(Intersection o1, Intersection o2) {
-        return (int) (distances[o1.getId()] - distances[o2.getId()]); //increasing order
+        return (int) (distances.get(o1.getId()) - distances.get(o2.getId())); //increasing order
     }
 }

@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Intersection {
 
-	private int id;
+	private long id;
 	private int x;
 	private int y;
 	private List<Street> streets = new ArrayList<Street>();
 
-	public Intersection(int id, int x, int y) {
+	public Intersection(long id, int x, int y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -34,11 +34,11 @@ public class Intersection {
 		return this.getId() == other.getId();
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -57,7 +57,8 @@ public class Intersection {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
+	//TODO : Beware, two intersections may have multiple links
 	public List<Intersection> getNeighbors() {
 		List<Intersection> neighbors = new ArrayList<Intersection>();
 		
@@ -68,6 +69,7 @@ public class Intersection {
 		return neighbors;
 	}
 
+	//TODO : Beware, two intersections may have multiple links (get the shotest)
 	public float distTo(Intersection neighbor) {
 		for(Street street : this.streets) {
 			if(neighbor.equals(street.getEnd()))
@@ -76,6 +78,7 @@ public class Intersection {
 		return -1;
 	}
 
+	//TODO : Beware, two intersections may have multiple links (get the shotest)
 	public Street getStreetTo(Intersection neighbor) {
 		for(Street street : this.streets) {
 			if(neighbor.equals(street.getEnd()))
