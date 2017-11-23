@@ -59,9 +59,9 @@ public class MainWindowController{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose your map file");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("XML File", "*.xml")
+			new FileChooser.ExtensionFilter("XML File", "*.xml")
 		);
-		MainWindow.openFileChooser(fileChooser);
+		MainWindow.openFileChooserMap(fileChooser);
 	}
 
 	@FXML
@@ -69,10 +69,9 @@ public class MainWindowController{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose your deliverires file");
 		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("XML File", "*.xml")
+			new FileChooser.ExtensionFilter("XML File", "*.xml")
 		);
-		File f = MainWindow.openFileChooser(fileChooser);
-		
+		MainWindow.openFileChooserDeliveries(fileChooser);
 	}
 	
 	@FXML
@@ -137,9 +136,6 @@ public class MainWindowController{
 	
 
 	public static void loadMap(StreetMap map) {
-				
-		
-
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		Canvas cv = new Canvas(850,850);
 		
@@ -148,21 +144,21 @@ public class MainWindowController{
 
 		for(Intersection intersection : map.values()) {
 			if(intersection.getNeighbors().size() != 0) {
-			Double startX = normalizeX((double) intersection.getX(), canvasWidth);
-			Double startY = normalizeY((double) intersection.getY(), canvasWidth);
-			List<Intersection> neighbors = intersection.getNeighbors();
-
-			gc.setFill(Color.BLUE);
-			gc.setStroke(Color.BLUE);
-			gc.setLineWidth(1);
-			gc.fillOval(startX, startY, 8, 8);
-			gc.strokeOval(startX, startY, 8, 8);
-			for(Intersection inter : neighbors) {
-				Double endX = normalizeX((double) inter.getX(), canvasWidth);
-				Double endY = normalizeY((double) inter.getY(), canvasWidth);
-				gc.setLineWidth(3);
-				gc.strokeLine(startX+4, startY+4, endX+4, endY+4);
-			}
+				Double startX = normalizeX((double) intersection.getX(), canvasWidth);
+				Double startY = normalizeY((double) intersection.getY(), canvasWidth);
+				List<Intersection> neighbors = intersection.getNeighbors();
+	
+				gc.setFill(Color.BLUE);
+				gc.setStroke(Color.BLUE);
+				gc.setLineWidth(1);
+				gc.fillOval(startX, startY, 8, 8);
+				gc.strokeOval(startX, startY, 8, 8);
+				for(Intersection inter : neighbors) {
+					Double endX = normalizeX((double) inter.getX(), canvasWidth);
+					Double endY = normalizeY((double) inter.getY(), canvasWidth);
+					gc.setLineWidth(3);
+					gc.strokeLine(startX+4, startY+4, endX+4, endY+4);
+				}
 			}
 		}
 		ap.getChildren().add(cv);
