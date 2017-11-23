@@ -18,7 +18,6 @@ public class Dijkstra {
     public Route performDijkstra(Intersection start, Intersection end) {
         Route route = new Route(start);
 
-
         Map<Long, Float> distances = new HashMap<>();
         Map<Long, Long> previous = new HashMap<>();
         Comparator<Intersection> comparator = new RouteComparator(distances);
