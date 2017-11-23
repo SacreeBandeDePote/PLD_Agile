@@ -14,8 +14,12 @@ public class CommandModify extends Command {
 		this.td = td;
 		this.tf = tf;
 	}
+	
+	@Override
 	public void doCommand() {
 	}
+	
+	@Override
 	public void undoCommand() {
 	}
 
