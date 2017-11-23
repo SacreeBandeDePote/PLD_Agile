@@ -28,7 +28,7 @@ public class Controller {
 		dr = serializer.serializeDeliveryXML(XML);
 	}
 	public void calculateRoute(Delivery start, Delivery end, StreetMap map, Route route) {
-		// Mettre en static
+		// Mettre en static et modifier la méthode
 		Dijkstra dj = new Dijkstra(map);
 		route = dj.performDijkstra(start.getLocation(), end.getLocation());
 	}
