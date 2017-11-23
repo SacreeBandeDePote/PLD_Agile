@@ -40,14 +40,14 @@ public class SerializeXML {
 				if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					final Element element = (Element) racineNoeuds.item(i);
 					if (element.getNodeName() == "noeud") {
-						Float id = Float.parseFloat(element.getAttribute("id"));
+						Long id = Long.parseLong(element.getAttribute("id"));
 						int x = Integer.parseInt(element.getAttribute("x"));
 						int y = Integer.parseInt(element.getAttribute("y"));
 						streetMap.put(id, new Intersection(id, x, y));
 					}
 					if (element.getNodeName() == "troncon") {
-						Float end = Float.parseFloat(element.getAttribute("destination"));
-						Float origin = Float.parseFloat(element.getAttribute("origine"));
+						long end = Long.parseLong(element.getAttribute("destination"));
+						long origin = Long.parseLong(element.getAttribute("origine"));
 						float length = Float.parseFloat(element.getAttribute("longueur"));
 						String name = element.getAttribute("nomRue");
 						Intersection originIntersection = streetMap.get(origin);
@@ -86,7 +86,7 @@ public class SerializeXML {
 					final Element element = (Element) racineNoeuds.item(i);
 					if (element.getNodeName() == "entrepot") {
 						startingTime = (Date) sdf.parse((element.getAttribute("heureDepart")));
-						warehouse = new Intersection(Float.parseFloat(element.getAttribute("adresse")), 0, 0);
+						warehouse = new Intersection(Integer.parseInt(element.getAttribute("adresse")), 0, 0);
 					}
 					if (element.getNodeName() == "livraison") {
 						Date timespanStart = new Date(0);
@@ -96,7 +96,7 @@ public class SerializeXML {
 						if (element.getAttribute("finPlage").length() != 0)
 							timespanEnd = (Date) sdf.parse(element.getAttribute("finPlage"));
 						int duration = Integer.parseInt(element.getAttribute("duree"));
-						Intersection location = new Intersection(Float.parseFloat(element.getAttribute("adresse")), 0,
+						Intersection location = new Intersection(Long.parseLong(element.getAttribute("adresse")), 0,
 								0);
 						deliveryList.add(new Delivery(duration, timespanStart, timespanEnd, location));
 					}
