@@ -61,9 +61,11 @@ public class MainWindowController{
 	private static Controller c;
 	private static StreetMap streetMap;
 
+	private static MenuBar menuBar;
+	
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
-	private static MenuBar menuBar;
+	
 	
 	private static int getMaxY(StreetMap map) {
 		int maxX = 0;
@@ -221,6 +223,8 @@ public class MainWindowController{
 	}
 
 	public static void colorIntersection(DeliveriesRequest r) {
+		menuBar = (MenuBar) scene.lookup("#MenuBar");
+
 		loadListView(r);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		
