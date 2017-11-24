@@ -21,8 +21,8 @@ public class CommandList {
 	}
 	public void undo() {
 		if(index > -1) {
-			commandList.get(index).undoCommand();
-			index --;
+			if (commandList.get(index).undoCommand());
+				index --;
 		}
 	}
 	public void redo() {
