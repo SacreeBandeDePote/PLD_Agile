@@ -1,7 +1,5 @@
 package lsbdp.agile.view;
 
-import java.awt.GraphicsConfiguration;
-import java.awt.font.GraphicAttribute;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -9,38 +7,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.data.SerializeXML;
@@ -57,13 +39,9 @@ public class MainWindowController{
 	private static int MAX_X;
 	private static int MAX_Y;
 
-	private static Controller c;
-	
 	private static ArrayList<Delivery> selectedDeliveries;
 	
 	private static Scene scene;
-	private static AnchorPane canvasAnchorPane;
-
 	private static int getMaxY(StreetMap map) {
 		int maxX = 0;
 		Map<Long, Intersection> intersections = map;
@@ -172,7 +150,7 @@ public class MainWindowController{
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("XML File", "*.xml")
 				);
-		File f = MainWindow.openFileChooserDeliveries(fileChooser);
+		MainWindow.openFileChooserDeliveries(fileChooser);
 
 	}
 
@@ -222,13 +200,7 @@ public class MainWindowController{
 	@FXML
 	private void loadCanvas(MouseEvent event) {
 
-		ObservableList<Intersection> l = FXCollections.observableArrayList();
-		//l.addAll(new Intersection(0,0,0),new Intersection(0,15,52),new Intersection(0,7,69),new Intersection(0,74,4));
-		/*
-		Canvas cv = new Canvas(750,750);
-		StreetMap map = new StreetMap();
-		loadMap(map, cv);
-		ap.getChildren().add(cv);*/
+		FXCollections.observableArrayList();
 	}
 
 	public static void loadMap(StreetMap map) throws InterruptedException {
@@ -243,7 +215,6 @@ public class MainWindowController{
 
 		Double canvasWidth = cv.getWidth();
 		GraphicsContext gc = cv.getGraphicsContext2D();
-		int count = 0;
 		Map<Long, Intersection> intersections = map;
 		Set keys = intersections.keySet();
 		Iterator iterator = keys.iterator();
@@ -263,14 +234,12 @@ public class MainWindowController{
 			gc.fillOval(startX, startY, 1, 1);
 			gc.strokeOval(startX, startY, 1, 1);
 			for(Street inter : neighbors) {
-				Intersection end = inter.getEnd();
+				inter.getEnd();
 				Double endX = normalizeX((double) inter.getEnd().getX(), canvasWidth);
 				Double endY = normalizeY((double) inter.getEnd().getY(), cv.getHeight()); //pute
 				gc.setLineWidth(1);
 				gc.strokeLine(startX, startY, endX, endY);
 			}
-
-			count++;
 		}
 		gc.strokeLine(0, 0, canvasWidth, 0);
 		gc.strokeLine(0, 0, 0, canvasWidth);
