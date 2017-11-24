@@ -39,5 +39,11 @@ public class DeliveriesRequest {
 		this.deliveryList = deliveryList;
 	}
 
+	public Delivery getDeliveryByIntersectionId(long id){
+		for(Delivery d: deliveryList) {
+			if(d.getLocation().getId() == id) return d;
+		}
+		return null;
+	}
 
 }
