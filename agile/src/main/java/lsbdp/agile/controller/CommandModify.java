@@ -4,19 +4,23 @@ import java.sql.Time;
 
 import lsbdp.agile.model.Delivery;
 
-public class CmdModify extends Command {
+public class CommandModify extends Command {
 	private Delivery delivery;
 	private Time td;
 	private Time tf;
 	
-	public CmdModify(Delivery d, Time td, Time tf) {
+	public CommandModify(Delivery d, Time td, Time tf) {
 		this.delivery = d;
 		this.td = td;
 		this.tf = tf;
 	}
-	public void doCmd() {
+	
+	@Override
+	public void doCommand() {
 	}
-	public void undoCmd() {
+	
+	@Override
+	public void undoCommand() {
 	}
 
 }
