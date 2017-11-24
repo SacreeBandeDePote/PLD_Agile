@@ -1,8 +1,10 @@
 package lsbdp.agile.controller;
 
 public abstract class Command {
-	public void doCommand() {
+	public boolean doCommand() {
+		return false;
 	}
-	public void undoCommand() {
+	public boolean undoCommand() {
+		return false;
 	}
 }
