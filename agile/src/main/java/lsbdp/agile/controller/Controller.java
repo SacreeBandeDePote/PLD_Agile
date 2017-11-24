@@ -16,16 +16,14 @@ public class Controller {
 	private CommandList cmdList;
 	
 	// Mettre ses méthodes en static
-	private SerializeXML serializer;
 	public Controller() {
 		this.cmdList = new CommandList();
-		this.serializer = new SerializeXML();
 	}
 	public StreetMap addMap(File XML) throws ParseException {
-		return serializer.serializeMapXML(XML);
+		return SerializeXML.serializeMapXML(XML);
 	}
 	public DeliveriesRequest addDeliveriesRequest(File XML, StreetMap map) throws ParseException {
-		return serializer.serializeDeliveryXML(XML, map);
+		return SerializeXML.serializeDeliveryXML(XML, map);
 	}
 	public Route calculateRoute(Delivery start, Delivery end, StreetMap map) {
 		// Mettre en static et modifier la méthode
@@ -33,7 +31,7 @@ public class Controller {
 		return dj.performDijkstra(start.getLocation(), end.getLocation());
 	}
 	public DeliverySchedule loadDeliveryRequest(File XML, StreetMap map) throws ParseException {
-		DeliveriesRequest dr = serializer.serializeDeliveryXML(XML, map);
+		DeliveriesRequest dr = SerializeXML.serializeDeliveryXML(XML, map);
 		//schedule = algo.createDeliverySchedule(dr);
 		return null;
 	}
