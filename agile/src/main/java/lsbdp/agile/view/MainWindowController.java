@@ -27,12 +27,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
@@ -56,6 +58,8 @@ public class MainWindowController{
 	private static int MAX_Y;
 
 	private static Controller c;
+	
+	private static ArrayList<Delivery> selectedDeliveries;
 	
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
@@ -173,25 +177,35 @@ public class MainWindowController{
 	}
 
 
-	public static void LoadListView(DeliveriesRequest r) {
-		HBox ap = (HBox) scene.lookup("#canvasHBox");
-		Canvas cv = (Canvas) ap.getChildren().get(0);
-		GraphicsContext gc = cv.getGraphicsContext2D();
-		ArrayList<Delivery> list = new ArrayList<Delivery>();
-		list = r.getDeliveryList();
-		for(Delivery d : list) {
-			Intersection inter = d.getLocation();
+	public static void LoadListView(DeliveriesRequest dr) {
+		ListView<Label> listview = (ListView<Label>) scene.lookup("#listView");
+		ObservableList<Label> ol = FXCollections.observableArrayList();
+		selectedDeliveries = new ArrayList<Delivery>();
+		
+		Label warehouse = new Label("Warehouse");
+		warehouse.setId(String.valueOf(dr.getWarehouse().getId()));
+		ol.add(warehouse);
 
-			Double x = normalizeX((double) inter.getX(), cv.getWidth());
-			Double y = normalizeY((double) inter.getY(), cv.getHeight());
-			System.out.println(d.getLocation().getX());
-			gc.setFill(Color.RED);
-			gc.strokeOval(x, y, 5, 5);
-			gc.fillOval(x, y, 5, 5);
-
+		int cpt = 1;
+		for(Delivery d : dr.getDeliveryList()) {
+			Label l = new Label("Livraison n°"+cpt);
+			l.setId(String.valueOf(d.getLocation().getId()));
+			cpt++;
+			ol.add(l);
 		}
+		listview.getItems().clear();
+		listview.setItems(ol);
+		listview.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		
+		listview.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv) -> {
+			selectedDeliveries.clear();
+			for (Label l : listview.getSelectionModel().getSelectedItems()) {
+				selectedDeliveries.add(dr.getDeliveryByIntersectionId(Long.parseLong(l.getId())));
+			}
+			System.out.println(selectedDeliveries.size());
+		}
+		);
 	}
-	
 	
 
 	public static void initializer(Scene sc) {
