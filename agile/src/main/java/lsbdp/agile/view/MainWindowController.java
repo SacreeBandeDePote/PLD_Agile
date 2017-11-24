@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import com.sun.deploy.Environment;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,14 +27,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
@@ -49,7 +45,6 @@ import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
@@ -60,17 +55,18 @@ public class MainWindowController{
 	private static int MAX_X;
 	private static int MAX_Y;
 
-
+	private static Controller c;
+	
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
 
 	private static int getMaxY(StreetMap map) {
 		int maxX = 0;
-		Map<Double, Intersection> intersections = map;
+		Map<Long, Intersection> intersections = map;
 		Set keys = intersections.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-			Double key = (Double) iterator.next();
+			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
 			if(maxX < intersection.getY()) {
 				maxX = intersection.getY();
@@ -81,11 +77,11 @@ public class MainWindowController{
 
 	private static int getMinY(StreetMap map) {
 		int minX = 100000000;
-		Map<Double, Intersection> intersections = map;
+		Map<Long, Intersection> intersections = map;
 		Set keys = intersections.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-			Double key = (Double) iterator.next();
+			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
 			if(minX > intersection.getY()) {
 				minX = intersection.getY();
@@ -96,11 +92,11 @@ public class MainWindowController{
 
 	private static int getMaxX(StreetMap map) {
 		int maxX = 0;
-		Map<Double, Intersection> intersections = map;
+		Map<Long, Intersection> intersections = map;
 		Set keys = intersections.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-			Double key = (Double) iterator.next();
+			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
 			if(maxX < intersection.getX()) {
 				maxX = intersection.getX();
@@ -111,11 +107,11 @@ public class MainWindowController{
 
 	private static int getMinX(StreetMap map) {
 		int minX = 100000000;
-		Map<Double, Intersection> intersections = map;
+		Map<Long, Intersection> intersections = map;
 		Set keys = intersections.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext()) {
-			Double key = (Double) iterator.next();
+			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
 			if(minX > intersection.getX()) {
 				minX = intersection.getX();
@@ -126,7 +122,7 @@ public class MainWindowController{
 
 	@FXML
 	private MenuItem calculateButton;
-	
+
 	@FXML
 	private static SplitPane mainSplitPane;
 
@@ -134,7 +130,7 @@ public class MainWindowController{
 	private void calculateSchedule(ActionEvent event) {
 		System.out.println("fdffsd");
 	}
-	
+
 	@FXML
 	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException {
 		FileChooser fileChooser = new FileChooser();
@@ -171,18 +167,23 @@ public class MainWindowController{
 			gc.setFill(Color.RED);
 			gc.strokeOval(x, y, 5, 5);
 			gc.fillOval(x, y, 5, 5);
+
 		}
 	}
+	
+	
 
 	public static void initializer(Scene sc) {
+
 		scene = sc;
-		c = new Controller();
 		//AnchorPane sp = (AnchorPane) sc.lookup("#canvasAnchorPane");
 		//sp.setDividerPosition(0, 0.8);
 
 		//sp.getItems().add(cv);
 	}
-  
+
+
+
 	@FXML
 	private void loadCanvas(MouseEvent event) {
 
@@ -202,19 +203,18 @@ public class MainWindowController{
 		MAX_Y = getMaxY(map);
 		MIN_Y = getMinY(map);
 		System.out.println(MAX_X + "+" + MIN_X);
-
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		Canvas cv = new Canvas(750,750);
 
 		Double canvasWidth = cv.getWidth();
 		GraphicsContext gc = cv.getGraphicsContext2D();
 		int count = 0;
-		Map<Double, Intersection> intersections = map;
+		Map<Long, Intersection> intersections = map;
 		Set keys = intersections.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext() ) {
 			//TimeUnit.SECONDS.sleep(1);
-			Double key = (Double) iterator.next();
+			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
 			//if(intersection.getNeighboors().size() != 0) {
 			Double startX = normalizeX((double) intersection.getX(), canvasWidth);
@@ -233,24 +233,6 @@ public class MainWindowController{
 				Double endY = normalizeY((double) inter.getEnd().getY(), cv.getHeight()); //pute
 				gc.setLineWidth(1);
 				gc.strokeLine(startX, startY, endX, endY);
-
-		for(Intersection intersection : map.values()) {
-			if(intersection.getNeighbors().size() != 0) {
-				Double startX = normalizeX((double) intersection.getX(), canvasWidth);
-				Double startY = normalizeY((double) intersection.getY(), canvasWidth);
-				List<Intersection> neighbors = intersection.getNeighbors();
-	
-				gc.setFill(Color.BLUE);
-				gc.setStroke(Color.BLUE);
-				gc.setLineWidth(1);
-				gc.fillOval(startX, startY, 8, 8);
-				gc.strokeOval(startX, startY, 8, 8);
-				for(Intersection inter : neighbors) {
-					Double endX = normalizeX((double) inter.getX(), canvasWidth);
-					Double endY = normalizeY((double) inter.getY(), canvasWidth);
-					gc.setLineWidth(3);
-					gc.strokeLine(startX+4, startY+4, endX+4, endY+4);
-				}
 			}
 
 			count++;
@@ -262,24 +244,7 @@ public class MainWindowController{
 		//colorRoads(cv, map);
 		ap.getChildren().add(cv);
 	}
-	
-	public static void loadDeliveryRequest(DeliveriesRequest dr) {
-		ListView<Delivery> listView = (ListView)scene.lookup("#listView");
-		ObservableList<Delivery> list = FXCollections.observableArrayList();
-		for(Delivery d: dr.getDeliveryList()){
-			list.add(d);
-		}
-		listView.setItems(list);
-		listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		selectedDeliveries = new ArrayList();
-		listView.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv)->{
-			selectedDeliveries.removeAll(selectedDeliveries);
-			for(Delivery d: listView.getSelectionModel().getSelectedItems()){
-				selectedDeliveries.add(d);
-			}
-        });
-	}
-	
+
 	public static Double normalizeX(Double x, Double width) {
 		Double newX = (x-MIN_X)/(MAX_X-MIN_X);
 		newX *= width;
@@ -290,4 +255,6 @@ public class MainWindowController{
 		newY *= height;
 		return newY;
 	}
+
+
 }

@@ -85,7 +85,7 @@ public class SerializeXML {
 					final Element element = (Element) racineNoeuds.item(i);
 					if (element.getNodeName() == "entrepot") {
 						startingTime = (Date) sdf.parse((element.getAttribute("heureDepart")));
-						warehouse = new Intersection(long.parseLong(element.getAttribute("adresse")), 0, 0);
+						warehouse = new Intersection(Long.parseLong(element.getAttribute("adresse")), 0, 0);
 					}
 					if (element.getNodeName() == "livraison") {
 						Date timespanStart = new Date(0);
