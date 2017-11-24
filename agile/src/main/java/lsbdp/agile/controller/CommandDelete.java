@@ -20,6 +20,7 @@ public class CommandDelete extends Command {
 	
 	@Override
 	public boolean undoCommand() {
+		//
 		return true;
 	}
 
