@@ -180,7 +180,7 @@ public class MainWindowController{
 	ListView<Delivery> listView = (ListView)scene.lookup("#listView");
 	ObservableList<Delivery> list = FXCollections.observableArrayList();
 	for(Delivery d: dr.getDeliveryList()){
-		Intersection inter = d.getLocation();
+		Intersection inter = d.getLocation();	
 	}
 	listView.setItems(list);
 	listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
