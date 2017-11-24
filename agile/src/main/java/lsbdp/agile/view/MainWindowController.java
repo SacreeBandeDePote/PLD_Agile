@@ -27,6 +27,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
@@ -56,6 +57,7 @@ public class MainWindowController{
 	private static int MAX_Y;
 
 	private static Controller c;
+	private static StreetMap streetMap;
 	
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
@@ -132,15 +134,15 @@ public class MainWindowController{
 	}
 
 	@FXML
-    private void computeAlgo (ActionEvent event){
-        /*if(selectedDeliveries.size() == 2) {
+	private void computeAlgo (ActionEvent event){
+		/*if(selectedDeliveries.size() == 2) {
             computedRoute = c.calculateRoute(selectedDeliveries.get(0), selectedDeliveries.get(1), m);
             for(Street s : computedRoute.getStreets()) {
                 System.out.println(s.getName());
             }
         }*/
-    }
-	
+	}
+
 	@FXML
 	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException {
 		FileChooser fileChooser = new FileChooser();
@@ -151,10 +153,10 @@ public class MainWindowController{
 		File f = MainWindow.openFileChooser(fileChooser);
 		try {
 			SerializeXML s = new  SerializeXML();
-			
-			StreetMap map = s.serializeMapXML(f);
-			System.out.println(map.toString());
-			loadMap(map);
+
+			streetMap = s.serializeMapXML(f);
+			System.out.println(streetMap.toString());
+			loadMap(streetMap);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -168,12 +170,31 @@ public class MainWindowController{
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("XML File", "*.xml")
 				);
-		File f = MainWindow.openFileChooserDeliveries(fileChooser);
+		File f = MainWindow.openFileChooserDeliveries(fileChooser, streetMap);
 
 	}
 
+	private static void loadListView(DeliveriesRequest dr) {
+		
 
-	public static void LoadListView(DeliveriesRequest r) {
+	ListView<Delivery> listView = (ListView)scene.lookup("#listView");
+	ObservableList<Delivery> list = FXCollections.observableArrayList();
+	for(Delivery d: dr.getDeliveryList()){
+		Intersection inter = d.getLocation();
+	}
+	listView.setItems(list);
+	listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	/*selectedDeliveries = new ArrayList();
+	listView.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv)->{
+		selectedDeliveries.removeAll(selectedDeliveries);
+		for(Delivery d: listView.getSelectionModel().getSelectedItems()){
+			selectedDeliveries.add(d);
+		}*/
+	}
+
+
+	public static void colorIntersection(DeliveriesRequest r) {
+		loadListView(r);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		Canvas cv = (Canvas) ap.getChildren().get(0);
 		GraphicsContext gc = cv.getGraphicsContext2D();
@@ -184,15 +205,14 @@ public class MainWindowController{
 
 			Double x = normalizeX((double) inter.getX(), cv.getWidth());
 			Double y = normalizeY((double) inter.getY(), cv.getHeight());
-			System.out.println(d.getLocation().getX());
 			gc.setFill(Color.RED);
-			gc.strokeOval(x, y, 5, 5);
-			gc.fillOval(x, y, 5, 5);
+			gc.strokeOval(x, y, 2, 2);
+			gc.fillOval(x, y, 2, 2	);
 
 		}
 	}
-	
-	
+
+
 
 	public static void initializer(Scene sc) {
 
@@ -218,7 +238,7 @@ public class MainWindowController{
 	}
 
 	public static void loadMap(StreetMap map) throws InterruptedException {
-		
+
 		MAX_X = getMaxX(map);
 		MIN_X = getMinX(map);
 		MAX_Y = getMaxY(map);
