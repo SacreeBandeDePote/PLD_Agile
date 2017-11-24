@@ -26,4 +26,8 @@ public class Route {
 	public void addStreetToTop(Street street) {
 		streets.add(0, street);
 	}
+
+	public Intersection getEnd() {
+		return streets.get(streets.size()-1).getEnd();
+	}
 }
