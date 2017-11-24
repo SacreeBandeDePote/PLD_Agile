@@ -132,13 +132,33 @@ public class MainWindowController{
 	}
 
 	@FXML
+    private void computeAlgo (ActionEvent event){
+        /*if(selectedDeliveries.size() == 2) {
+            computedRoute = c.calculateRoute(selectedDeliveries.get(0), selectedDeliveries.get(1), m);
+            for(Street s : computedRoute.getStreets()) {
+                System.out.println(s.getName());
+            }
+        }*/
+    }
+	
+	@FXML
 	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose your map file");
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("XML File", "*.xml")
 				);
-		MainWindow.openFileChooser(fileChooser);
+		File f = MainWindow.openFileChooser(fileChooser);
+		try {
+			SerializeXML s = new  SerializeXML();
+			
+			StreetMap map = s.serializeMapXML(f);
+			System.out.println(map.toString());
+			loadMap(map);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -164,6 +184,7 @@ public class MainWindowController{
 
 			Double x = normalizeX((double) inter.getX(), cv.getWidth());
 			Double y = normalizeY((double) inter.getY(), cv.getHeight());
+			System.out.println(d.getLocation().getX());
 			gc.setFill(Color.RED);
 			gc.strokeOval(x, y, 5, 5);
 			gc.fillOval(x, y, 5, 5);
@@ -197,7 +218,7 @@ public class MainWindowController{
 	}
 
 	public static void loadMap(StreetMap map) throws InterruptedException {
-
+		
 		MAX_X = getMaxX(map);
 		MIN_X = getMinX(map);
 		MAX_Y = getMaxY(map);

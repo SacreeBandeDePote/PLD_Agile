@@ -51,6 +51,7 @@ public class MainWindow extends Application {
 	
 	public static File openFileChooser(FileChooser fileChooser) throws InterruptedException {
 		File file = fileChooser.showOpenDialog(stage);
+		
 		return file;
 	}
 	
@@ -59,7 +60,6 @@ public class MainWindow extends Application {
 		
 		SerializeXML serializer = new SerializeXML();
 		DeliveriesRequest r = serializer.serializeDeliveryXML(file);
-		System.out.println("End Serialize");
 		MainWindowController.LoadListView(r);
 		return file;
 	}
