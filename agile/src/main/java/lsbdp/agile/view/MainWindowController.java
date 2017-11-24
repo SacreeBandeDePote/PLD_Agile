@@ -16,7 +16,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
@@ -24,11 +27,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
+import lsbdp.agile.algorithm.Scheduler;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
+import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
+import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
@@ -39,9 +46,18 @@ public class MainWindowController{
 	private static int MAX_X;
 	private static int MAX_Y;
 
-	private static ArrayList<Delivery> selectedDeliveries;
+	private static Controller c;
+	private static StreetMap streetMap;
+	private static DeliveriesRequest deliveriesRequest;
+
+	private static MenuBar menuBar;
 	
 	private static Scene scene;
+	private static AnchorPane canvasAnchorPane;
+	
+	
+	private static ArrayList<Delivery> selectedDeliveries;
+	
 	private static int getMaxY(StreetMap map) {
 		int maxX = 0;
 		Map<Long, Intersection> intersections = map;
@@ -110,19 +126,19 @@ public class MainWindowController{
 
 	@FXML
 	private void calculateSchedule(ActionEvent event) {
-		System.out.println("fdffsd");
+
 	}
 
 	@FXML
-    private void computeAlgo (ActionEvent event){
-        /*if(selectedDeliveries.size() == 2) {
-            computedRoute = c.calculateRoute(selectedDeliveries.get(0), selectedDeliveries.get(1), m);
-            for(Street s : computedRoute.getStreets()) {
-                System.out.println(s.getName());
-            }
-        }*/
-    }
-	
+	private void computeAlgo (ActionEvent event){
+		Scheduler sc = new Scheduler(streetMap, deliveriesRequest.getWarehouse(), deliveriesRequest.getDeliveryList(), "");
+		DeliverySchedule ds =  sc.findSchedule();
+		System.out.println(ds.size());
+		for( Pair<Route,Delivery> p : ds) {
+			colorRoute(p.getKey());
+		}
+	}
+
 	@FXML
 	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException {
 		FileChooser fileChooser = new FileChooser();
@@ -133,10 +149,9 @@ public class MainWindowController{
 		File f = MainWindow.openFileChooser(fileChooser);
 		try {
 			SerializeXML s = new  SerializeXML();
-			
-			StreetMap map = s.serializeMapXML(f);
-			System.out.println(map.toString());
-			loadMap(map);
+
+			streetMap = s.serializeMapXML(f);
+			loadMap(streetMap);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,7 +165,82 @@ public class MainWindowController{
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("XML File", "*.xml")
 				);
-		MainWindow.openFileChooserDeliveries(fileChooser);
+		File f = MainWindow.openFileChooserDeliveries(fileChooser, streetMap);
+
+	}
+
+	private static void loadListView(DeliveriesRequest dr) {
+
+		ListView<Delivery> listView = (ListView)scene.lookup("#listView");
+		ObservableList<Delivery> list = FXCollections.observableArrayList();
+		for(Delivery d: dr.getDeliveryList()){
+			Intersection inter = d.getLocation();	
+		}
+		listView.setItems(list);
+		
+		listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		/*selectedDeliveries = new ArrayList();
+	listView.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv)->{
+		selectedDeliveries.removeAll(selectedDeliveries);
+		for(Delivery d: listView.getSelectionModel().getSelectedItems()){
+			selectedDeliveries.add(d);
+		}*/
+	}
+
+	public static void colorRoute(Route route) {
+		System.out.println("COLORING");
+		HBox ap = (HBox) scene.lookup("#canvasHBox");
+		Canvas cv = (Canvas) ap.getChildren().get(0);
+		GraphicsContext gc = cv.getGraphicsContext2D();
+		Intersection startingPoint = route.getStartingPoint();
+		List<Street> streets =  route.getStreets();
+
+		System.out.println(streets.size());
+		for( Street street : streets) {
+			System.out.println("Coloring "+ street.getName());
+			Double startX = normalizeX((double) startingPoint.getX(), cv.getWidth());
+			Double startY = normalizeY((double) startingPoint.getY(), cv.getHeight());
+			Intersection end = street.getEnd();
+
+			Double endX = normalizeX((double) end.getX(), cv.getWidth());
+			Double endY = normalizeY((double) end.getY(), cv.getHeight());
+
+			gc.setStroke(Color.ORANGE);
+			gc.setLineWidth(2);
+			gc.strokeLine(startX, startY, endX, endY);
+
+			startingPoint = end;
+
+		}
+
+	}
+
+	public static void colorIntersection(DeliveriesRequest r) {
+		deliveriesRequest = r;
+		loadListView(r);
+		HBox ap = (HBox) scene.lookup("#canvasHBox");
+		
+		Canvas cv = (Canvas) ap.getChildren().get(0);
+		GraphicsContext gc = cv.getGraphicsContext2D();
+		ArrayList<Delivery> list = new ArrayList<Delivery>();
+		list = r.getDeliveryList();
+		for(Delivery d : list) {
+			Intersection inter = d.getLocation();
+			Double x = normalizeX((double) inter.getX(), cv.getWidth());
+			Double y = normalizeY((double) inter.getY(), cv.getHeight());
+			gc.strokeOval(x-3, y-3, 6, 6);
+			gc.setStroke(Color.RED);
+			gc.setFill(Color.RED);
+			gc.fillOval(x-3, y-3, 6, 6);
+
+		}
+		Intersection wh = r.getWarehouse();
+		Double x = normalizeX((double) wh.getX(), cv.getWidth());
+		Double y = normalizeY((double) wh.getY(), cv.getHeight());
+		gc.setStroke(Color.LIMEGREEN);
+		gc.setFill(Color.LIMEGREEN);
+		gc.strokeOval(x-5, y-5, 10, 10);
+		gc.fillOval(x-5, y-5, 10, 10);
 
 	}
 
@@ -204,7 +294,7 @@ public class MainWindowController{
 	}
 
 	public static void loadMap(StreetMap map) throws InterruptedException {
-		
+
 		MAX_X = getMaxX(map);
 		MIN_X = getMinX(map);
 		MAX_Y = getMaxY(map);

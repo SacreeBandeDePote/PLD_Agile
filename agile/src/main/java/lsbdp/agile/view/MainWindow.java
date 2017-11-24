@@ -55,12 +55,12 @@ public class MainWindow extends Application {
 		return file;
 	}
 	
-	public static File openFileChooserDeliveries(FileChooser fileChooser) throws InterruptedException, ParseException {
+	public static File openFileChooserDeliveries(FileChooser fileChooser, StreetMap streetMap) throws InterruptedException, ParseException {
 		File file = fileChooser.showOpenDialog(stage);
 		
 		SerializeXML serializer = new SerializeXML();
-		DeliveriesRequest r = serializer.serializeDeliveryXML(file);
-		MainWindowController.LoadListView(r);
+		DeliveriesRequest r = serializer.serializeDeliveryXML(file, streetMap);
+		MainWindowController.colorIntersection(r);
 		return file;
 	}
 	
