@@ -29,7 +29,7 @@ public class CommandDelete extends Command {
 		endDelivery = schedule.get(index+1).getRight();
 		newRoute = algo.compute ( startDelivery , endDelivery );
 		
-		schedule.get(index+1).set(Pair<newRoute, endDelivery>);
+		schedule.set(index+1,Pair<newRoute, endDelivery>);
 		schedule.remove(index);
 		*/
 		return true;
