@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.StreetMap;
 
 public class MainWindow extends Application {
@@ -48,8 +49,18 @@ public class MainWindow extends Application {
 		primaryStage.show();
 	}
 	
-	public static File openFileChooser(FileChooser fileChooser) {
+	public static File openFileChooser(FileChooser fileChooser) throws InterruptedException {
 		File file = fileChooser.showOpenDialog(stage);
+		
+		return file;
+	}
+	
+	public static File openFileChooserDeliveries(FileChooser fileChooser) throws InterruptedException, ParseException {
+		File file = fileChooser.showOpenDialog(stage);
+		
+		SerializeXML serializer = new SerializeXML();
+		DeliveriesRequest r = serializer.serializeDeliveryXML(file);
+		MainWindowController.LoadListView(r);
 		return file;
 	}
 	

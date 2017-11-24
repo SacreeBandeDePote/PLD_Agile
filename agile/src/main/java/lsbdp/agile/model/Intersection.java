@@ -9,7 +9,7 @@ public class Intersection {
 	private int x;
 	private int y;
 	private List<Street> streets = new ArrayList<Street>();
-
+  
 	public Intersection(long id, int x, int y) {
 		this.id = id;
 		this.x = x;

@@ -52,8 +52,7 @@ public class SerializeXML {
 						String name = element.getAttribute("nomRue");
 						Intersection originIntersection = streetMap.get(origin);
 						Intersection endIntersection = streetMap.get(end);
-						originIntersection.addStreet(new Street(length, name, endIntersection));
-
+						originIntersection.addStreet(new Street(length, name, endIntersection));						
 					}
 				}
 			}
@@ -86,7 +85,7 @@ public class SerializeXML {
 					final Element element = (Element) racineNoeuds.item(i);
 					if (element.getNodeName() == "entrepot") {
 						startingTime = (Date) sdf.parse((element.getAttribute("heureDepart")));
-						warehouse = new Intersection(Integer.parseInt(element.getAttribute("adresse")), 0, 0);
+						warehouse = new Intersection(Long.parseLong(element.getAttribute("adresse")), 0, 0);
 					}
 					if (element.getNodeName() == "livraison") {
 						Date timespanStart = new Date(0);
@@ -96,8 +95,7 @@ public class SerializeXML {
 						if (element.getAttribute("finPlage").length() != 0)
 							timespanEnd = (Date) sdf.parse(element.getAttribute("finPlage"));
 						int duration = Integer.parseInt(element.getAttribute("duree"));
-						Intersection location = new Intersection(Long.parseLong(element.getAttribute("adresse")), 0,
-								0);
+						Intersection location = new Intersection(Long.parseLong(element.getAttribute("adresse")), 0,0);
 						deliveryList.add(new Delivery(duration, timespanStart, timespanEnd, location));
 					}
 				}
