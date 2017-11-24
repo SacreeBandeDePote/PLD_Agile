@@ -42,10 +42,13 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
+import lsbdp.agile.algorithm.Scheduler;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
+import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
@@ -60,6 +63,7 @@ public class MainWindowController{
 
 	private static Controller c;
 	private static StreetMap streetMap;
+	private static DeliveriesRequest deliveriesRequest;
 
 	private static MenuBar menuBar;
 	
@@ -135,17 +139,17 @@ public class MainWindowController{
 
 	@FXML
 	private void calculateSchedule(ActionEvent event) {
-		System.out.println("fdffsd");
+
 	}
 
 	@FXML
 	private void computeAlgo (ActionEvent event){
-		/*if(selectedDeliveries.size() == 2) {
-            computedRoute = c.calculateRoute(selectedDeliveries.get(0), selectedDeliveries.get(1), m);
-            for(Street s : computedRoute.getStreets()) {
-                System.out.println(s.getName());
-            }
-        }*/
+		Scheduler sc = new Scheduler(streetMap, deliveriesRequest.getWarehouse(), deliveriesRequest.getDeliveryList(), "");
+		DeliverySchedule ds =  sc.findSchedule();
+		System.out.println(ds.size());
+		for( Pair<Route,Delivery> p : ds) {
+			colorRoute(p.getKey());
+		}
 	}
 
 	@FXML
@@ -197,14 +201,16 @@ public class MainWindowController{
 	}
 
 	public static void colorRoute(Route route) {
-		
+		System.out.println("COLORING");
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		Canvas cv = (Canvas) ap.getChildren().get(0);
 		GraphicsContext gc = cv.getGraphicsContext2D();
 		Intersection startingPoint = route.getStartingPoint();
-
 		List<Street> streets =  route.getStreets();
+
+		System.out.println(streets.size());
 		for( Street street : streets) {
+			System.out.println("Coloring "+ street.getName());
 			Double startX = normalizeX((double) startingPoint.getX(), cv.getWidth());
 			Double startY = normalizeY((double) startingPoint.getY(), cv.getHeight());
 			Intersection end = street.getEnd();
@@ -212,8 +218,8 @@ public class MainWindowController{
 			Double endX = normalizeX((double) end.getX(), cv.getWidth());
 			Double endY = normalizeY((double) end.getY(), cv.getHeight());
 
-			gc.setStroke(Color.LIGHTPINK);
-			gc.setLineWidth(1);
+			gc.setStroke(Color.ORANGE);
+			gc.setLineWidth(2);
 			gc.strokeLine(startX, startY, endX, endY);
 
 			startingPoint = end;
@@ -223,8 +229,7 @@ public class MainWindowController{
 	}
 
 	public static void colorIntersection(DeliveriesRequest r) {
-		menuBar = (MenuBar) scene.lookup("#MenuBar");
-
+		deliveriesRequest = r;
 		loadListView(r);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		
@@ -234,7 +239,6 @@ public class MainWindowController{
 		list = r.getDeliveryList();
 		for(Delivery d : list) {
 			Intersection inter = d.getLocation();
-			System.out.println(inter.getX() + ", " + inter.getY());
 			Double x = normalizeX((double) inter.getX(), cv.getWidth());
 			Double y = normalizeY((double) inter.getY(), cv.getHeight());
 			gc.strokeOval(x-3, y-3, 6, 6);
