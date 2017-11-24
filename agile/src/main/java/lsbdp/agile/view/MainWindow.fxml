@@ -24,9 +24,9 @@
                               <MenuItem mnemonicParsing="false" onAction="#LoadDeliveriesActionHandler" text="Load Deliveries" />
                         </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" text="Edit">
+                      <Menu mnemonicParsing="false" text="Deliveries">
                         <items>
-                          <MenuItem mnemonicParsing="false" text="Delete" />
+                          <MenuItem disable="true" mnemonicParsing="false" onAction="#calculateSchedule" text="Calculate" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">
@@ -50,7 +50,7 @@
                            <content>
                               <AnchorPane>
                                  <children>
-                                    <ListView onMouseClicked="#LoadListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>

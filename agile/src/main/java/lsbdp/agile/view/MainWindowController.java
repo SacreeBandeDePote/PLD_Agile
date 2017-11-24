@@ -4,6 +4,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.font.GraphicAttribute;
 import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tooltip;
@@ -38,6 +41,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.model.DeliveriesRequest;
+import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
@@ -114,8 +119,16 @@ public class MainWindowController{
 	}
 
 	@FXML
+	private MenuItem calculateButton;
+	
+	@FXML
 	private static SplitPane mainSplitPane;
 
+	@FXML
+	private void calculateSchedule(ActionEvent event) {
+		System.out.println("fdffsd");
+	}
+	
 	@FXML
 	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException {
 		FileChooser fileChooser = new FileChooser();
@@ -127,35 +140,33 @@ public class MainWindowController{
 	}
 
 	@FXML
-	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException {
+	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose your deliverires file");
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("XML File", "*.xml")
 				);
-		File f = MainWindow.openFileChooser(fileChooser);
+		File f = MainWindow.openFileChooserDeliveries(fileChooser);
 
 	}
 
-	@FXML
-	private void LoadListView(MouseEvent event) {
-		Label label1 = new Label("Livraisons chez la mère de Djag");
-		Label label2 = new Label("Livraisons chez la mère de Piet");
-		Label label3 = new Label("Livraisons chez la mère de Turpin");
-		Label label4 = new Label("Livraisons chez la mère de Ros");
-		Label label5 = new Label("Livraisons chez la mère de BD");
-		Label label6 = new Label("Livraisons chez la mère de Coco");
 
-		ListView listView = (ListView) event.getSource();
+	public static void LoadListView(DeliveriesRequest r) {
+		HBox ap = (HBox) scene.lookup("#canvasHBox");
+		Canvas cv = (Canvas) ap.getChildren().get(0);
+		GraphicsContext gc = cv.getGraphicsContext2D();
+		ArrayList<Delivery> list = new ArrayList<Delivery>();
+		list = r.getDeliveryList();
+		for(Delivery d : list) {
+			Intersection inter = d.getLocation();
 
-		ObservableList<Label> list = FXCollections.observableArrayList();
-		list.add(label1);
-		list.add(label2);
-		list.add(label3);
-		list.add(label4);
-		list.add(label5);
-		list.add(label6);
-		listView.setItems(list);
+			Double x = normalizeX((double) inter.getX(), cv.getWidth());
+			Double y = normalizeY((double) inter.getY(), cv.getHeight());
+			gc.setFill(Color.RED);
+			gc.strokeOval(x, y, 5, 5);
+			gc.fillOval(x, y, 5, 5);
+			
+		}
 	}
 
 	public static void initializer(Scene sc) {
@@ -180,23 +191,6 @@ public class MainWindowController{
 		loadMap(map, cv);
 		ap.getChildren().add(cv);*/
 	}
-
-
-	public Circle createCircle() {
-		Circle c = new Circle();
-		c.setRadius(40);
-		c.setFill(Color.BLUE);
-
-		Circle c2 = new Circle();
-		c2.setRadius(20);
-		c2.setFill(Color.RED);
-
-		Tooltip tt = new Tooltip();
-		tt.setGraphic(c2);
-		tt.install(c, tt);
-		return c;
-	}
-
 
 	public static void loadMap(StreetMap map) throws InterruptedException {
 
@@ -258,40 +252,5 @@ public class MainWindowController{
 		return newY;
 	}
 
-	public static void colorRoads(Canvas cv, StreetMap intersections) {
-		Double canvasWidth = cv.getWidth();
-		GraphicsContext gc = cv.getGraphicsContext2D();
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			//TimeUnit.SECONDS.sleep(1);
-			Float key = (Float) iterator.next();
-			Intersection intersection = intersections.get(key);
-			if(intersection.getNeighboors().size() != 0) {
-				Double startX = normalizeX((double) intersection.getX(), canvasWidth);
-				Double startY = normalizeY((double) intersection.getY(), canvasWidth);
 
-				List<Street> neighbors = intersection.getStreets();
-
-				gc.setFill(Color.RED);
-				gc.setStroke(Color.RED);
-				//gc.setLineWidth(1);
-				//gc.fillOval(startX, startY, 8, 8);
-				//gc.strokeOval(startX, startY, 8, 8);
-				for(Street inter : neighbors) {
-					if(inter.getLength() < 100) {
-						Double endX = normalizeX((double) inter.getEnd().getX(), canvasWidth);
-						Double endY = normalizeY((double) inter.getEnd().getY(), canvasWidth);
-						/*System.out.println("Rue entre les noeuds");
-					System.out.println("    " + intersection.getX() + ", " + intersection.getY());
-					System.out.println("    " + inter.getX() + ", " + inter.getY());*/
-						gc.setLineWidth(3);
-						gc.strokeLine(startX, startY, endX, endY);
-					}
-				}
-
-			}
-
-
-		}
-	}}
+}

@@ -40,7 +40,6 @@ public class SerializeXML {
 				if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					final Element element = (Element) racineNoeuds.item(i);
 					if (element.getNodeName() == "noeud") {
-						System.out.println("Node parsing");
 						Double id = Double.parseDouble(element.getAttribute("id"));
 						int x = Integer.parseInt(element.getAttribute("x"));
 						int y = Integer.parseInt(element.getAttribute("y"));
