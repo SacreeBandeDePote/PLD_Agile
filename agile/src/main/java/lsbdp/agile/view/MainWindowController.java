@@ -29,9 +29,11 @@ public class MainWindowController{
 	private static int MAX_X;
 	private static int MAX_Y;
 
+	public static CanvasDrawer canvasDrawer;
+	
 	private static StreetMap streetMap;
 	private static DeliveriesRequest deliveriesRequest;
-
+	private static Canvas cv;
 	private static Button computeButton;
 	
 	private static Scene scene;
@@ -150,24 +152,12 @@ public class MainWindowController{
 	}
 
 	public static void colorRoute(Route route) {
-		HBox ap = (HBox) scene.lookup("#canvasHBox");
-		Canvas cv = (Canvas) ap.getChildren().get(0);
-		GraphicsContext gc = cv.getGraphicsContext2D();
 		Intersection startingPoint = route.getStartingPoint();
 		List<Street> streets =  route.getStreets();
 
 		for( Street street : streets) {
-			Double startX = normalizeX((double) startingPoint.getX(), cv.getWidth());
-			Double startY = normalizeY((double) startingPoint.getY(), cv.getHeight());
 			Intersection end = street.getEnd();
-
-			Double endX = normalizeX((double) end.getX(), cv.getWidth());
-			Double endY = normalizeY((double) end.getY(), cv.getHeight());
-
-			gc.setStroke(Color.ORANGE);
-			gc.setLineWidth(2);
-			gc.strokeLine(startX, startY, endX, endY);
-
+			canvasDrawer.drawStreet(startingPoint, end, Color.RED);
 			startingPoint = end;
 
 		}
@@ -178,28 +168,16 @@ public class MainWindowController{
 		deliveriesRequest = r;
 		loadListView(r);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
-		
-		Canvas cv = (Canvas) ap.getChildren().get(0);
-		GraphicsContext gc = cv.getGraphicsContext2D();
+		cv = (Canvas) ap.getChildren().get(0);
 		ArrayList<Delivery> list = new ArrayList<Delivery>();
 		list = r.getDeliveryList();
 		for(Delivery d : list) {
 			Intersection inter = d.getLocation();
-			Double x = normalizeX((double) inter.getX(), cv.getWidth());
-			Double y = normalizeY((double) inter.getY(), cv.getHeight());
-			gc.strokeOval(x-3, y-3, 6, 6);
-			gc.setStroke(Color.RED);
-			gc.setFill(Color.RED);
-			gc.fillOval(x-3, y-3, 6, 6);
+			canvasDrawer.drawIntersection(inter, Color.RED, (double)10);
 
 		}
 		Intersection wh = r.getWarehouse();
-		Double x = normalizeX((double) wh.getX(), cv.getWidth());
-		Double y = normalizeY((double) wh.getY(), cv.getHeight());
-		gc.setStroke(Color.LIMEGREEN);
-		gc.setFill(Color.LIMEGREEN);
-		gc.strokeOval(x-5, y-5, 10, 10);
-		gc.fillOval(x-5, y-5, 10, 10);
+		canvasDrawer.drawIntersection(wh, Color.LIMEGREEN, (double)10);
 	}
 
 
@@ -216,8 +194,7 @@ public class MainWindowController{
 
 		int cpt = 1;
 		for(Delivery d : dr.getDeliveryList()) {
-			Label l = new Label("Livraison n°"+cpt);
-			l.setId(String.valueOf(d.getLocation().getId()));
+			Label l = WidgetBuilder.createDeliveryLabel(d, cpt, cv);
 			cpt++;
 			ol.add(l);
 		}
@@ -264,8 +241,10 @@ public class MainWindowController{
 		MAX_Y = getMaxY(map);
 		MIN_Y = getMinY(map);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
-		Canvas cv = new Canvas(750,750);
+		cv = new Canvas(750,750);
 
+		canvasDrawer = new CanvasDrawer(MAX_X, MIN_X, MAX_Y, MIN_Y, cv);
+		
 		Double canvasWidth = cv.getWidth();
 		GraphicsContext gc = cv.getGraphicsContext2D();
 		Map<Long, Intersection> intersections = map;
@@ -274,22 +253,11 @@ public class MainWindowController{
 		while(iterator.hasNext() ) {
 			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
-			Double startX = normalizeX((double) intersection.getX(), canvasWidth);
-			Double startY = normalizeY((double) intersection.getY(), cv.getHeight());
-
+			canvasDrawer.drawIntersection(intersection, Color.GREY,(double)1);
+			
 			List<Street> neighbors = intersection.getStreets();
-
-			gc.setFill(Color.BLUE);
-			gc.setStroke(Color.BLUE);
-			gc.setLineWidth(1);
-			gc.fillOval(startX, startY, 1, 1);
-			gc.strokeOval(startX, startY, 1, 1);
 			for(Street inter : neighbors) {
-				inter.getEnd();
-				Double endX = normalizeX((double) inter.getEnd().getX(), canvasWidth);
-				Double endY = normalizeY((double) inter.getEnd().getY(), cv.getHeight()); //pute
-				gc.setLineWidth(1);
-				gc.strokeLine(startX, startY, endX, endY);
+				canvasDrawer.drawStreet(intersection, inter.getEnd(), Color.GREY);
 			}
 		}
 		gc.strokeLine(0, 0, canvasWidth, 0);
