@@ -25,12 +25,14 @@ public class Controller {
 		return serializer.serializeMapXML(XML);
 	}
 	public DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
-		return serializer.serializeDeliveryXML(XML);
+		//return serializer.serializeDeliveryXML(XML);
+		return null;
 	}
 	public Route calculateRoute(Delivery start, Delivery end, StreetMap map) {
 		// Mettre en static et modifier la méthode
-		Dijkstra dj = new Dijkstra(map);
-		return dj.performDijkstra(start.getLocation(), end.getLocation());
+		//Dijkstra dj = new Dijkstra(map);
+		//return dj.performDijkstra(start.getLocation(), end.getLocation());
+		return null;
 	}
 	/* On verra ça plus tard
 	 * public void loadDeliveryRequest(File XML, DeliverySchedule schedule) throws ParseException {
