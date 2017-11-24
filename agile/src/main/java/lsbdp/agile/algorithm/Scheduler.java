@@ -27,12 +27,13 @@ public class Scheduler {
         }
     }
 
-//    public DeliverySchedule findSchedule() {
-//        DeliverySchedule schedule = new DeliverySchedule();
-//        createTSPGraph();
-//
-//        return schedule;
-//    }
+    public DeliverySchedule findSchedule() {
+        DeliverySchedule schedule = new DeliverySchedule();
+        createTSPGraph();
+
+        tsp.findSolution(schedule, graphTSP, deliveries);
+        return schedule;
+    }
 
     private void createTSPGraph() {
         for(int i=0 ; i<graphTSP.length-1 ; i++) {
