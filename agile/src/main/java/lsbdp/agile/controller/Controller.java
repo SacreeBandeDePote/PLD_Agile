@@ -32,11 +32,11 @@ public class Controller {
 		Dijkstra dj = new Dijkstra(map);
 		return dj.performDijkstra(start.getLocation(), end.getLocation());
 	}
-	/* On verra ça plus tard
-	 * public void loadDeliveryRequest(File XML, DeliverySchedule schedule) throws ParseException {
-		DeliveriesRequest dr = serializer.serializeDeliveryXML(XML);
+	public DeliverySchedule loadDeliveryRequest(File XML, StreetMap map) throws ParseException {
+		DeliveriesRequest dr = serializer.serializeDeliveryXML(XML, map);
 		//schedule = algo.createDeliverySchedule(dr);
-	}*/
+		return null;
+	}
 	public void undo() {
 		cmdList.undo();
 	}
