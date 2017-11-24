@@ -25,6 +25,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
@@ -46,6 +47,7 @@ import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
+import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
@@ -58,10 +60,11 @@ public class MainWindowController{
 
 	private static Controller c;
 	private static StreetMap streetMap;
-	
+
 	private static Scene scene;
 	private static AnchorPane canvasAnchorPane;
-
+	private static MenuBar menuBar;
+	
 	private static int getMaxY(StreetMap map) {
 		int maxX = 0;
 		Map<Long, Intersection> intersections = map;
@@ -155,7 +158,6 @@ public class MainWindowController{
 			SerializeXML s = new  SerializeXML();
 
 			streetMap = s.serializeMapXML(f);
-			System.out.println(streetMap.toString());
 			loadMap(streetMap);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -175,16 +177,16 @@ public class MainWindowController{
 	}
 
 	private static void loadListView(DeliveriesRequest dr) {
-		
 
-	ListView<Delivery> listView = (ListView)scene.lookup("#listView");
-	ObservableList<Delivery> list = FXCollections.observableArrayList();
-	for(Delivery d: dr.getDeliveryList()){
-		Intersection inter = d.getLocation();	
-	}
-	listView.setItems(list);
-	listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-	/*selectedDeliveries = new ArrayList();
+		ListView<Delivery> listView = (ListView)scene.lookup("#listView");
+		ObservableList<Delivery> list = FXCollections.observableArrayList();
+		for(Delivery d: dr.getDeliveryList()){
+			Intersection inter = d.getLocation();	
+		}
+		listView.setItems(list);
+		
+		listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		/*selectedDeliveries = new ArrayList();
 	listView.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv)->{
 		selectedDeliveries.removeAll(selectedDeliveries);
 		for(Delivery d: listView.getSelectionModel().getSelectedItems()){
@@ -192,24 +194,59 @@ public class MainWindowController{
 		}*/
 	}
 
+	public static void colorRoute(Route route) {
+		
+		HBox ap = (HBox) scene.lookup("#canvasHBox");
+		Canvas cv = (Canvas) ap.getChildren().get(0);
+		GraphicsContext gc = cv.getGraphicsContext2D();
+		Intersection startingPoint = route.getStartingPoint();
+
+		List<Street> streets =  route.getStreets();
+		for( Street street : streets) {
+			Double startX = normalizeX((double) startingPoint.getX(), cv.getWidth());
+			Double startY = normalizeY((double) startingPoint.getY(), cv.getHeight());
+			Intersection end = street.getEnd();
+
+			Double endX = normalizeX((double) end.getX(), cv.getWidth());
+			Double endY = normalizeY((double) end.getY(), cv.getHeight());
+
+			gc.setStroke(Color.LIGHTPINK);
+			gc.setLineWidth(1);
+			gc.strokeLine(startX, startY, endX, endY);
+
+			startingPoint = end;
+
+		}
+
+	}
 
 	public static void colorIntersection(DeliveriesRequest r) {
 		loadListView(r);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
+		
 		Canvas cv = (Canvas) ap.getChildren().get(0);
 		GraphicsContext gc = cv.getGraphicsContext2D();
 		ArrayList<Delivery> list = new ArrayList<Delivery>();
 		list = r.getDeliveryList();
 		for(Delivery d : list) {
 			Intersection inter = d.getLocation();
-
+			System.out.println(inter.getX() + ", " + inter.getY());
 			Double x = normalizeX((double) inter.getX(), cv.getWidth());
 			Double y = normalizeY((double) inter.getY(), cv.getHeight());
+			gc.strokeOval(x-3, y-3, 6, 6);
+			gc.setStroke(Color.RED);
 			gc.setFill(Color.RED);
-			gc.strokeOval(x, y, 2, 2);
-			gc.fillOval(x, y, 2, 2	);
+			gc.fillOval(x-3, y-3, 6, 6);
 
 		}
+		Intersection wh = r.getWarehouse();
+		Double x = normalizeX((double) wh.getX(), cv.getWidth());
+		Double y = normalizeY((double) wh.getY(), cv.getHeight());
+		gc.setStroke(Color.LIMEGREEN);
+		gc.setFill(Color.LIMEGREEN);
+		gc.strokeOval(x-5, y-5, 10, 10);
+		gc.fillOval(x-5, y-5, 10, 10);
+
 	}
 
 
