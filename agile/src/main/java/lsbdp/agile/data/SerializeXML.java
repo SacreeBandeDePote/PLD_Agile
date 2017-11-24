@@ -25,8 +25,14 @@ import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
 public class SerializeXML {
+	
+	public static void main(String[] args) throws ParseException {
+        File fileMap = new File("Data/fichiersXML/planLyonMoyen.xml");
+        File fileDL = new File("Data/fichiersXML/DLmoyen5.xml");
+        serializeDeliveryXML(fileDL, serializeMapXML(fileMap));
+	}
 
-	public StreetMap serializeMapXML(File fileXML) throws ParseException {
+	public static StreetMap serializeMapXML(File fileXML) throws ParseException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		StreetMap streetMap = new StreetMap();
 		try {
@@ -35,7 +41,6 @@ public class SerializeXML {
 			Element root = xml.getDocumentElement();
 			final NodeList racineNoeuds = root.getChildNodes();
 			final int nbRacineNoeuds = racineNoeuds.getLength();
-
 			for (int i = 0; i < nbRacineNoeuds; i++) {
 				if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					final Element element = (Element) racineNoeuds.item(i);
@@ -66,7 +71,7 @@ public class SerializeXML {
 		return streetMap;
 	}
 
-	public DeliveriesRequest serializeDeliveryXML(File fileXML) throws ParseException {
+	public static DeliveriesRequest serializeDeliveryXML(File fileXML, StreetMap streetMap) throws ParseException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DeliveriesRequest deliveriesRequest = null;
 		try {
@@ -83,9 +88,11 @@ public class SerializeXML {
 			for (int i = 0; i < nbRacineNoeuds; i++) {
 				if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					final Element element = (Element) racineNoeuds.item(i);
+					
 					if (element.getNodeName() == "entrepot") {
 						startingTime = (Date) sdf.parse((element.getAttribute("heureDepart")));
-						warehouse = new Intersection(Long.parseLong(element.getAttribute("adresse")), 0, 0);
+						long idWarehouse= Long.parseLong(element.getAttribute("adresse"));
+						warehouse = streetMap.get(idWarehouse);
 					}
 					if (element.getNodeName() == "livraison") {
 						Date timespanStart = new Date(0);
@@ -95,13 +102,13 @@ public class SerializeXML {
 						if (element.getAttribute("finPlage").length() != 0)
 							timespanEnd = (Date) sdf.parse(element.getAttribute("finPlage"));
 						int duration = Integer.parseInt(element.getAttribute("duree"));
-						Intersection location = new Intersection(Long.parseLong(element.getAttribute("adresse")), 0,0);
+						long idIntersection= Long.parseLong(element.getAttribute("adresse"));
+						Intersection location = streetMap.get(idIntersection); 
 						deliveryList.add(new Delivery(duration, timespanStart, timespanEnd, location));
 					}
 				}
 			}
 			deliveriesRequest = new DeliveriesRequest(startingTime, warehouse, deliveryList);
-
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
