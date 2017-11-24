@@ -22,8 +22,12 @@ public class Scheduler {
         graphTSP = new Route[deliveries.size()+1][deliveries.size()+1];
 
         switch (tspType) {
-            default:
-                tsp = new stupidTSP();
+        case "stupid" :
+            tsp = new StupidTSP();
+            break;
+        case "glouton" :
+        	tsp = new GloutonTSP();
+        	break;
         }
     }
 

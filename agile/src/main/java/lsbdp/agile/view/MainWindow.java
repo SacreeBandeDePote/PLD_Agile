@@ -7,14 +7,11 @@ import java.text.ParseException;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Pair;
 import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.StreetMap;
@@ -34,7 +31,6 @@ public class MainWindow extends Application {
 				
 		Parent mainNode = FXMLLoader.load(MainWindow.class.getResource("MainWindow.fxml"));
 		
-		File f = new File("MainWindow.fxml");
 		mainScene = new Scene(mainNode);
 		primaryStage.setScene(mainScene);
 		

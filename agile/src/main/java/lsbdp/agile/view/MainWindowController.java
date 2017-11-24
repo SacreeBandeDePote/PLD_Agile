@@ -14,12 +14,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
@@ -28,8 +27,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
-import lsbdp.agile.controller.Controller;
 import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
@@ -46,23 +45,19 @@ public class MainWindowController{
 	private static int MAX_X;
 	private static int MAX_Y;
 
-	private static Controller c;
 	private static StreetMap streetMap;
 	private static DeliveriesRequest deliveriesRequest;
 
-	private static MenuBar menuBar;
+	private static Button computeButton;
 	
 	private static Scene scene;
-	private static AnchorPane canvasAnchorPane;
-	
-	
 	private static ArrayList<Delivery> selectedDeliveries;
 	
 	private static int getMaxY(StreetMap map) {
 		int maxX = 0;
 		Map<Long, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
+		Set<Long> keys = intersections.keySet();
+		Iterator<Long> iterator = keys.iterator();
 		while(iterator.hasNext()) {
 			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
@@ -76,8 +71,8 @@ public class MainWindowController{
 	private static int getMinY(StreetMap map) {
 		int minX = 100000000;
 		Map<Long, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
+		Set<Long> keys = intersections.keySet();
+		Iterator<Long> iterator = keys.iterator();
 		while(iterator.hasNext()) {
 			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
@@ -91,8 +86,8 @@ public class MainWindowController{
 	private static int getMaxX(StreetMap map) {
 		int maxX = 0;
 		Map<Long, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
+		Set<Long> keys = intersections.keySet();
+		Iterator<Long> iterator = keys.iterator();
 		while(iterator.hasNext()) {
 			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
@@ -106,8 +101,8 @@ public class MainWindowController{
 	private static int getMinX(StreetMap map) {
 		int minX = 100000000;
 		Map<Long, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
+		Set<Long> keys = intersections.keySet();
+		Iterator<Long> iterator = keys.iterator();
 		while(iterator.hasNext()) {
 			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
@@ -126,17 +121,19 @@ public class MainWindowController{
 
 	@FXML
 	private void calculateSchedule(ActionEvent event) {
+		Scheduler sc = new Scheduler(streetMap, deliveriesRequest.getWarehouse(), deliveriesRequest.getDeliveryList(), "stupid");
+		DeliverySchedule ds =  sc.findSchedule();
+		for( Pair<Route,Delivery> p : ds) {
+			colorRoute(p.getKey());
+		}
 
 	}
 
 	@FXML
 	private void computeAlgo (ActionEvent event){
-		Scheduler sc = new Scheduler(streetMap, deliveriesRequest.getWarehouse(), deliveriesRequest.getDeliveryList(), "");
-		DeliverySchedule ds =  sc.findSchedule();
-		System.out.println(ds.size());
-		for( Pair<Route,Delivery> p : ds) {
-			colorRoute(p.getKey());
-		}
+		Dijkstra dj = new Dijkstra(streetMap);
+		Route r = dj.performDijkstra(selectedDeliveries.get(0).getLocation(), selectedDeliveries.get(1).getLocation());
+		colorRoute(r);
 	}
 
 	@FXML
@@ -149,7 +146,6 @@ public class MainWindowController{
 		File f = MainWindow.openFileChooser(fileChooser);
 		try {
 			SerializeXML s = new  SerializeXML();
-
 			streetMap = s.serializeMapXML(f);
 			loadMap(streetMap);
 		} catch (ParseException e) {
@@ -169,35 +165,14 @@ public class MainWindowController{
 
 	}
 
-	private static void loadListView(DeliveriesRequest dr) {
-
-		ListView<Delivery> listView = (ListView)scene.lookup("#listView");
-		ObservableList<Delivery> list = FXCollections.observableArrayList();
-		for(Delivery d: dr.getDeliveryList()){
-			Intersection inter = d.getLocation();	
-		}
-		listView.setItems(list);
-		
-		listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		/*selectedDeliveries = new ArrayList();
-	listView.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv)->{
-		selectedDeliveries.removeAll(selectedDeliveries);
-		for(Delivery d: listView.getSelectionModel().getSelectedItems()){
-			selectedDeliveries.add(d);
-		}*/
-	}
-
 	public static void colorRoute(Route route) {
-		System.out.println("COLORING");
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		Canvas cv = (Canvas) ap.getChildren().get(0);
 		GraphicsContext gc = cv.getGraphicsContext2D();
 		Intersection startingPoint = route.getStartingPoint();
 		List<Street> streets =  route.getStreets();
 
-		System.out.println(streets.size());
 		for( Street street : streets) {
-			System.out.println("Coloring "+ street.getName());
 			Double startX = normalizeX((double) startingPoint.getX(), cv.getWidth());
 			Double startY = normalizeY((double) startingPoint.getY(), cv.getHeight());
 			Intersection end = street.getEnd();
@@ -241,12 +216,13 @@ public class MainWindowController{
 		gc.setFill(Color.LIMEGREEN);
 		gc.strokeOval(x-5, y-5, 10, 10);
 		gc.fillOval(x-5, y-5, 10, 10);
-
 	}
 
 
-	public static void LoadListView(DeliveriesRequest dr) {
+	public static void loadListView(DeliveriesRequest dr) {
 		ListView<Label> listview = (ListView<Label>) scene.lookup("#listView");
+		computeButton = (Button)scene.lookup("#computeButton");
+		
 		ObservableList<Label> ol = FXCollections.observableArrayList();
 		selectedDeliveries = new ArrayList<Delivery>();
 		
@@ -270,7 +246,11 @@ public class MainWindowController{
 			for (Label l : listview.getSelectionModel().getSelectedItems()) {
 				selectedDeliveries.add(dr.getDeliveryByIntersectionId(Long.parseLong(l.getId())));
 			}
-			System.out.println(selectedDeliveries.size());
+			if(selectedDeliveries.size() == 2) {
+				computeButton.setDisable(false);
+			} else {
+				computeButton.setDisable(true);
+			}
 		}
 		);
 	}
@@ -299,7 +279,6 @@ public class MainWindowController{
 		MIN_X = getMinX(map);
 		MAX_Y = getMaxY(map);
 		MIN_Y = getMinY(map);
-		System.out.println(MAX_X + "+" + MIN_X);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		Canvas cv = new Canvas(750,750);
 
@@ -309,10 +288,8 @@ public class MainWindowController{
 		Set keys = intersections.keySet();
 		Iterator iterator = keys.iterator();
 		while(iterator.hasNext() ) {
-			//TimeUnit.SECONDS.sleep(1);
 			Long key = (Long) iterator.next();
 			Intersection intersection = intersections.get(key);
-			//if(intersection.getNeighboors().size() != 0) {
 			Double startX = normalizeX((double) intersection.getX(), canvasWidth);
 			Double startY = normalizeY((double) intersection.getY(), cv.getHeight());
 
@@ -335,7 +312,7 @@ public class MainWindowController{
 		gc.strokeLine(0, 0, 0, canvasWidth);
 		gc.strokeLine(canvasWidth, canvasWidth, canvasWidth, 0);
 		gc.strokeLine(canvasWidth, canvasWidth, 0, canvasWidth);
-		//colorRoads(cv, map);
+		ap.getChildren().clear();
 		ap.getChildren().add(cv);
 	}
 

@@ -30,4 +30,13 @@ public class Route {
 	public Intersection getEnd() {
 		return streets.get(streets.size()-1).getEnd();
 	}
+	
+	public float getTotalLength() {
+		float sum = 0f;
+		
+		for(Street street : streets) {
+			sum += street.getLength();
+		}
+		return sum;
+	}
 }
