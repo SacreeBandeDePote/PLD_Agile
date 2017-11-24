@@ -1,14 +1,14 @@
 package lsbdp.agile.model;
 
-import java.sql.Time;
+import java.util.Date;
 
 public class Delivery {
 	private int duration;
-	private Time timespanStart;
-	private Time timespanEnd;
+	private Date timespanStart;
+	private Date timespanEnd;
 	private Intersection location;
 	
-	public Delivery(int duration, Time timespanStart, Time timespanEnd, Intersection location) {
+	public Delivery(int duration, Date timespanStart, Date timespanEnd, Intersection location) {
 		this.duration = duration;
 		this.timespanStart = timespanStart;
 		this.timespanEnd = timespanEnd;
@@ -31,19 +31,18 @@ public class Delivery {
 		this.duration = duration;
 	}
 
-	public Time getTimespanStart() {
+	public Date getTimespanStart() {
 		return timespanStart;
 	}
 
-	public void setTimespanStart(Time timespanStart) {
-		this.timespanStart = timespanStart;
+	public void setTimespanStart(Date timespanStart) {
 	}
 
-	public Time getTimespanEnd() {
+	public Date getTimespanEnd() {
 		return timespanEnd;
 	}
 
-	public void setTimespanEnd(Time timespanEnd) {
+	public void setTimespanEnd(Date timespanEnd) {
 		this.timespanEnd = timespanEnd;
 	}
 }

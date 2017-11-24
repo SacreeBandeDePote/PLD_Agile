@@ -19,11 +19,11 @@ public class Route {
 		this.startingPoint = startingPoint;
 	}
 
-	public Route(List<Street> streets, Intersection startingPoint) {
-		this.streets = streets;
-		this.startingPoint = startingPoint;
+	public List<Street> getStreets() {
+		return streets;
 	}
-	
-	
-	
+
+	public void addStreetToTop(Street street) {
+		streets.add(0, street);
+	}
 }

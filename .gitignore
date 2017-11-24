@@ -7,6 +7,19 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+.settings/
+.idea/
+
+# Pour les macs
+.DS_Store
+agile/.DS_Store
+
+# pour IntelliJ IDEA
+*.iml
+
+# Pour les macs
+.DS_Store
+agile/.DS_Store
 
 # Pour les macs
 .DS_Store

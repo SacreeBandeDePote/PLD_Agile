@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Intersection {
 
-	private int id;
+	private long id;
 	private int x;
 	private int y;
 	private List<Street> streets = new ArrayList<Street>();
-
-	public Intersection(int id, int x, int y) {
+  
+	public Intersection(long id, int x, int y) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -30,11 +30,15 @@ public class Intersection {
 		return "Noeud [id=" + id + ", x=" + x + ", y=" + y + "]";
 	}
 
-	public int getId() {
+	public boolean equals(Intersection other) {
+		return this.getId() == other.getId();
+	}
+
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -53,15 +57,34 @@ public class Intersection {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	public List<Intersection> getNeighboors() {
-		List<Intersection> neighboors = new ArrayList<Intersection>();
+
+	//TODO : Beware, two intersections may have multiple links
+	public List<Intersection> getNeighbors() {
+		List<Intersection> neighbors = new ArrayList<Intersection>();
 		
 		for(Street street : this.streets) {
-			neighboors.add(street.getEnd());
+			neighbors.add(street.getEnd());
 		}
 		
-		return neighboors;
+		return neighbors;
+	}
+
+	//TODO : Beware, two intersections may have multiple links (get the shotest)
+	public float distTo(Intersection neighbor) {
+		for(Street street : this.streets) {
+			if(neighbor.equals(street.getEnd()))
+				return street.getLength();
+		}
+		return -1;
+	}
+
+	//TODO : Beware, two intersections may have multiple links (get the shotest)
+	public Street getStreetTo(Intersection neighbor) {
+		for(Street street : this.streets) {
+			if(neighbor.equals(street.getEnd()))
+				return street;
+		}
+		return null;
 	}
 
 }
