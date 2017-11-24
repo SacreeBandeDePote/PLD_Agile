@@ -1,12 +1,5 @@
 package lsbdp.agile.view;
 
-import java.io.File;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,15 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -30,13 +16,11 @@ import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
 import lsbdp.agile.data.SerializeXML;
-import lsbdp.agile.model.DeliveriesRequest;
-import lsbdp.agile.model.Delivery;
-import lsbdp.agile.model.DeliverySchedule;
-import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
-import lsbdp.agile.model.Street;
-import lsbdp.agile.model.StreetMap;
+import lsbdp.agile.model.*;
+
+import java.io.File;
+import java.text.ParseException;
+import java.util.*;
 
 public class MainWindowController{
 
@@ -121,7 +105,7 @@ public class MainWindowController{
 
 	@FXML
 	private void calculateSchedule(ActionEvent event) {
-		Scheduler sc = new Scheduler(streetMap, deliveriesRequest.getWarehouse(), deliveriesRequest.getDeliveryList(), "stupid");
+		Scheduler sc = new Scheduler(streetMap, deliveriesRequest.getWarehouse(), deliveriesRequest.getDeliveryList(), "glouton");
 		DeliverySchedule ds =  sc.findSchedule();
 		for( Pair<Route,Delivery> p : ds) {
 			colorRoute(p.getKey());
