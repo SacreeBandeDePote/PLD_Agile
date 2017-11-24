@@ -1,7 +1,6 @@
 package lsbdp.agile.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Intersection {
 
@@ -58,33 +57,34 @@ public class Intersection {
 		this.y = y;
 	}
 
-	//TODO : Beware, two intersections may have multiple links
 	public List<Intersection> getNeighbors() {
-		List<Intersection> neighbors = new ArrayList<Intersection>();
+		Set<Intersection> neighbors = new HashSet<>();
 		
 		for(Street street : this.streets) {
 			neighbors.add(street.getEnd());
 		}
 		
-		return neighbors;
+		return new ArrayList<>(neighbors);
 	}
 
-	//TODO : Beware, two intersections may have multiple links (get the shotest)
 	public float distTo(Intersection neighbor) {
-		for(Street street : this.streets) {
-			if(neighbor.equals(street.getEnd()))
-				return street.getLength();
-		}
-		return -1;
+		return getStreetTo(neighbor).getLength();
 	}
 
-	//TODO : Beware, two intersections may have multiple links (get the shotest)
 	public Street getStreetTo(Intersection neighbor) {
+		List<Street> streets = new ArrayList<>();
 		for(Street street : this.streets) {
 			if(neighbor.equals(street.getEnd()))
-				return street;
+				streets.add(street);
 		}
-		return null;
+		streets.sort(new Comparator<Street>() {
+			@Override
+			public int compare(Street street, Street t1) {
+				return (int) (street.getLength()-street.getLength());
+			}
+		});
+
+		return streets.get(0);
 	}
 
 }

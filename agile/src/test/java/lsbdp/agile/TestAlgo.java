@@ -11,7 +11,6 @@ import org.junit.Test;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Street;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestAlgo {
