@@ -40,11 +40,14 @@ public class Controller {
 	}
 	
 	//Gérer Schedule
-	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
+	public static DeliveriesRequest loadDeliveryRequest(File XML) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(XML, map);
-		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
-		return schedule;
+		//algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
+		WindowManager.colorDeliveryRequest(deliveries);
+		WindowManager.loadListView(deliveries);
+		return deliveries;
 	}
+	
 	public static DeliverySchedule getSchedule() {
 		return schedule;
 	}

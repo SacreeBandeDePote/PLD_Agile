@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
@@ -69,18 +70,17 @@ public class WindowManager{
 
 	public static void colorDeliveryRequest(DeliveriesRequest r) {
 		deliveriesRequest = r;
-		loadListView(r);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
-		cv = (Canvas) ap.getChildren().get(0);
+		Pane overlay = (Pane) scene.lookup("#overlay");
+
 		ArrayList<Delivery> list = new ArrayList<Delivery>();
 		list = r.getDeliveryList();
+		
 		for(Delivery d : list) {
-			Intersection inter = d.getLocation();
-			colorIntersection(inter);
-
+			canvasDrawer.drawDelivery(overlay, d, Color.RED, 5d);
 		}
 		Intersection wh = r.getWarehouse();
-		colorIntersection(wh);	
+		canvasDrawer.drawIntersection(wh, Color.GREEN, 5d);	
 	}
 
 
@@ -124,5 +124,33 @@ public class WindowManager{
 		}
 		canvasDrawer.drawMap(map, scene);
 	}
-
+	
+	public static void highlightDeliveryListView(Delivery delivery) {
+		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
+		ObservableList<HBox> list = listview.getItems();
+		String id = ""+delivery.getLocation().getId();
+		for(HBox hbox : list) {
+			Label l = (Label) hbox.getChildren().get(1);
+			if(l.getId().compareTo(id) == 0) {
+				hbox.setStyle("-fx-background-color : d21919");
+			}
+		}
+	}
+	
+	public static void unhighlightDeliveryListView(Delivery delivery) {
+		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
+		ObservableList<HBox> list = listview.getItems();
+		String id = ""+delivery.getLocation().getId();
+		for(HBox hbox : list) {
+			Label l = (Label) hbox.getChildren().get(1);
+			if(l.getId().compareTo(id) == 0) {
+				hbox.setStyle("-fx-background-color : transparent");
+			}
+		}
+	}
+	
+	
+	public static Scene getScene() {
+		return scene;
+	}
 }
