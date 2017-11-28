@@ -77,6 +77,11 @@ public class Intersection {
 			if(neighbor.equals(street.getEnd()))
 				streets.add(street);
 		}
+		if(streets.size() == 0)
+			return null;
+		if(streets.size() == 1)
+			return streets.get(0);
+
 		streets.sort(new Comparator<Street>() {
 			@Override
 			public int compare(Street street, Street t1) {
