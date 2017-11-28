@@ -19,13 +19,13 @@ public class CommandDelete implements Command {
 	
 	@Override
 	public boolean doCommand() {
-		index = CommandHandler.deleteDelivery(schedule, element);
+		index = CommandHandler.deleteDelivery(Controller.getMap(), schedule, element);
 		return true;
 	}
 	
 	@Override
 	public boolean undoCommand() {
-		//
+		CommandHandler.undoDelete(Controller.getMap(), schedule, element, index);
 		return true;
 	}
 
