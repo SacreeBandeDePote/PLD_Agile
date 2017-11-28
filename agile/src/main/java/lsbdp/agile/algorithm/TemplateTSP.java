@@ -14,6 +14,7 @@ public class TemplateTSP implements TSP{
 
 	}
 
+
 	private void adaptModel(DeliverySchedule schedule, StreetMap map, Intersection warehouse, DeliveriesRequest req) {
 		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
