@@ -50,7 +50,7 @@ public class TestAlgo {
 	}
 
 	@Test
-	public void testGetNeighboors() {
+	public void testGetNeighbors() {
 		assertEquals(2, a.getNeighbors().size());
 		assertEquals(1, b.getNeighbors().size());
 	}
@@ -68,8 +68,7 @@ public class TestAlgo {
 
 	@Test
 	public void testDijkstra() {
-		Dijkstra dijkstra = new Dijkstra(map);
-		Route r = dijkstra.performDijkstra(a, d);
+		Route r = Dijkstra.performDijkstra(map, a, d);
 
 		List<Street> streets = r.getStreets();
 

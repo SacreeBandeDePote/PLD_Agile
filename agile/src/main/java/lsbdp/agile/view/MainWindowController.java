@@ -117,8 +117,8 @@ public class MainWindowController{
 
 	@FXML
 	private void computeAlgo (ActionEvent event){
-		Dijkstra dj = new Dijkstra(streetMap);
-		Route r = dj.performDijkstra(selectedDeliveries.get(0).getLocation(), selectedDeliveries.get(1).getLocation());
+		//Dijkstra dj = new Dijkstra(streetMap);
+		Route r = Dijkstra.performDijkstra(streetMap, selectedDeliveries.get(0).getLocation(), selectedDeliveries.get(1).getLocation());
 		colorRoute(r);
 	}
 
