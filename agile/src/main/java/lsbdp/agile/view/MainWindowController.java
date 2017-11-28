@@ -132,7 +132,7 @@ public class MainWindowController{
 		selectedDeliveries = new ArrayList<Delivery>();
 		
 		Label warehouse = new Label("Warehouse");
-		warehouse.setId(String.valueOf(dr.getWarehouse().getId()));
+		warehouse.setId(String.valueOf(dr.getWarehouse().getId(	)));
 		//ol.add(warehouse);
 
 		int cpt = 1;

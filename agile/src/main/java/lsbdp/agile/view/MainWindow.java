@@ -47,14 +47,11 @@ public class MainWindow extends Application {
 	
 	public static File openFileChooser(FileChooser fileChooser) throws InterruptedException {
 		File file = fileChooser.showOpenDialog(stage);
-		
 		return file;
 	}
 	
 	public static File openFileChooserDeliveries(FileChooser fileChooser, StreetMap streetMap) throws InterruptedException, ParseException {
 		File file = fileChooser.showOpenDialog(stage);
-		
-		SerializeXML serializer = new SerializeXML();
 		return file;
 	}
 	
