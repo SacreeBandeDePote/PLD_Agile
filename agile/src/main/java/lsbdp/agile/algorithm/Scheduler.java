@@ -15,7 +15,7 @@ public class Scheduler {
     private TSP tsp;
 
     public Scheduler(StreetMap map, Intersection warehouse, List<Delivery> deliveries, String tspType) {
-        this.dijkstra = new Dijkstra(map);
+        //this.dijkstra = new Dijkstra(map);
         this.warehouse = warehouse;
         this.deliveries = deliveries;
 
@@ -33,9 +33,9 @@ public class Scheduler {
 
     public DeliverySchedule findSchedule() {
         DeliverySchedule schedule = new DeliverySchedule();
-        createTSPGraph();
+        //createTSPGraph();
 
-        tsp.findSolution(schedule, graphTSP, deliveries);
+        //tsp.findSolution(schedule, graphTSP, deliveries);
         return schedule;
     }
 }
