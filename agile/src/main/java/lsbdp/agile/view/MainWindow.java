@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.StreetMap;
 

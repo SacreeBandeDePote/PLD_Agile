@@ -8,7 +8,7 @@ import java.util.List;
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.GloutonTSP;
-import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
@@ -30,7 +30,7 @@ public class Controller {
 	
 	//Gérer Map
 	public void loadMap(File XML) throws ParseException {
-		map = SerializeXML.serializeMapXML(XML);
+		map = SerializerXML.deserializeMapXML(XML);
 		WindowManager.drawMap(map);
 	}
 	public static void drawMap(){
@@ -42,7 +42,7 @@ public class Controller {
 	
 	//Gérer Schedule
 	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
-		deliveries = SerializeXML.serializeDeliveryXML(XML, map);
+		deliveries = SerializerXML.deserializeDeliveryXML(XML, map);
 		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
 		return schedule;
 	}
