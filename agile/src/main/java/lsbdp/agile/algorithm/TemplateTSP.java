@@ -3,6 +3,7 @@ package lsbdp.agile.algorithm;
 import javafx.util.Pair;
 import lsbdp.agile.model.*;
 
+import java.util.Date;
 import java.util.List;
 
 public class TemplateTSP implements TSP{
@@ -30,12 +31,23 @@ public class TemplateTSP implements TSP{
 			}
 		}
 
-		float[] duration = new float[deliveries.size()+1];
+		float[] duration = new float[deliveries.size()+1]; //minutes
 		for (int i = 0; i < duration.length-1 ; i++) {
-			duration[i] = deliveries.get(i).getDuration();
+			duration[i] = deliveries.get(i).getDuration()/60f;
 		}
 		duration[duration.length-1] = 0f;
 
+		Date start = req.getStartingTime();
+		Pair<Float, Float>[] hourWindows = new Pair[deliveries.size()];
+		for (int i = 0; i < hourWindows.length ; i++) {
+			Date timeSpanStart = deliveries.get(i).getTimespanStart();
+			Date timeSpanEnd = deliveries.get(i).getTimespanEnd();
+
+			float startSpan = (timeSpanStart.getTime() - start.getTime())/(1000f*60f); //ms to minutes
+			float endSpan = (timeSpanEnd.getTime() - start.getTime())/(1000f*60f); //ms to minutes
+
+			hourWindows[i] = new Pair<>(startSpan, endSpan);
+		}
 	}
 
 	private Delivery getDel(List<Delivery> deliveries, Intersection target) {
