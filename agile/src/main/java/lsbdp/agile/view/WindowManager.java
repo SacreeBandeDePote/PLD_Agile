@@ -43,116 +43,6 @@ public class WindowManager{
 		WindowManager.scene = scene;
 	}
 	
-	/*private static int getMaxY(StreetMap map) {
-		int maxX = 0;
-		Map<Long, Intersection> intersections = map;
-		Set<Long> keys = intersections.keySet();
-		Iterator<Long> iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			Long key = (Long) iterator.next();
-			Intersection intersection = intersections.get(key);
-			if(maxX < intersection.getY()) {
-				maxX = intersection.getY();
-			}
-		}
-		return maxX+5;
-	}
-
-	private static int getMinY(StreetMap map) {
-		int minX = 100000000;
-		Map<Long, Intersection> intersections = map;
-		Set<Long> keys = intersections.keySet();
-		Iterator<Long> iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			Long key = (Long) iterator.next();
-			Intersection intersection = intersections.get(key);
-			if(minX > intersection.getY()) {
-				minX = intersection.getY();
-			}
-		}
-		return minX+5;
-	}
-
-	private static int getMaxX(StreetMap map) {
-		int maxX = 0;
-		Map<Long, Intersection> intersections = map;
-		Set<Long> keys = intersections.keySet();
-		Iterator<Long> iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			Long key = (Long) iterator.next();
-			Intersection intersection = intersections.get(key);
-			if(maxX < intersection.getX()) {
-				maxX = intersection.getX();
-			}
-		}
-		return maxX+5;
-	}
-
-	private static int getMinX(StreetMap map) {
-		int minX = 100000000;
-		Map<Long, Intersection> intersections = map;
-		Set<Long> keys = intersections.keySet();
-		Iterator<Long> iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			Long key = (Long) iterator.next();
-			Intersection intersection = intersections.get(key);
-			if(minX > intersection.getX()) {
-				minX = intersection.getX();
-			}
-		}
-		return minX-5;
-	}
-
-	@FXML
-	private MenuItem calculateButton;
-
-	@FXML
-	private static SplitPane mainSplitPane;
-
-	@FXML
-	private void calculateSchedule(ActionEvent event) {
-		Scheduler sc = new Scheduler(streetMap, deliveriesRequest.getWarehouse(), deliveriesRequest.getDeliveryList(), "glouton");
-		DeliverySchedule ds =  sc.findSchedule();
-		for( Pair<Route,Delivery> p : ds) {
-			colorRoute(p.getKey());
-		}
-
-	}
-
-	@FXML
-	private void computeAlgo (ActionEvent event){
-		Dijkstra dj = new Dijkstra(streetMap);
-		Route r = dj.performDijkstra(selectedDeliveries.get(0).getLocation(), selectedDeliveries.get(1).getLocation());
-		colorRoute(r);
-	}
-
-	@FXML
-	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Choose your map file");
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("XML File", "*.xml")
-				);
-		File f = MainWindow.openFileChooser(fileChooser);
-		try {
-			streetMap = SerializeXML.serializeMapXML(f);
-			initializeMap(streetMap);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@FXML
-	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Choose your deliverires file");
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("XML File", "*.xml")
-				);
-		File f = MainWindow.openFileChooserDeliveries(fileChooser, streetMap);
-
-	}*/
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
 		for (Pair<Route, Delivery> p : ds) {
 			colorRoute(p.getKey());
@@ -195,27 +85,26 @@ public class WindowManager{
 
 
 	public static void loadListView(DeliveriesRequest dr) {
-		ListView<Label> listview = (ListView<Label>) scene.lookup("#listView");
+		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		computeButton = (Button)scene.lookup("#computeButton");
 		
-		ObservableList<Label> ol = FXCollections.observableArrayList();
+		ObservableList<HBox> ol = FXCollections.observableArrayList();
 		selectedDeliveries = new ArrayList<Delivery>();
 		
 		Label warehouse = new Label("Warehouse");
-		warehouse.setId(String.valueOf(dr.getWarehouse().getId()));
-		ol.add(warehouse);
+		warehouse.setId(String.valueOf(dr.getWarehouse().getId(	)));
 
 		int cpt = 1;
 		for(Delivery d : dr.getDeliveryList()) {
-			Label l = WidgetBuilder.createDeliveryLabel(d, cpt, cv);
+			ol.add(WidgetBuilder.createListViewHBox(d, cpt));
 			cpt++;
-			ol.add(l);
 		}
 		listview.getItems().clear();
 		listview.setItems(ol);
 		listview.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		
-		listview.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv) -> {
+
+		// Si on a besoin de calculer une route entre deux intersections  JUST IN CASE
+		/*listview.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv) -> {
 			selectedDeliveries.clear();
 			for (Label l : listview.getSelectionModel().getSelectedItems()) {
 				selectedDeliveries.add(dr.getDeliveryByIntersectionId(Long.parseLong(l.getId())));
@@ -225,38 +114,15 @@ public class WindowManager{
 			} else {
 				computeButton.setDisable(true);
 			}
-		}
+		}*/
 		);
 	}
 	
-
 	public static void drawMap(StreetMap map) {
 		if(canvasDrawer == null) {
 			canvasDrawer = new CanvasDrawer(map.getMaxX(), map.getMinX(), map.getMaxY(), map.getMinY(), scene);	
 		}
 		canvasDrawer.drawMap(map, scene);
 	}
-
-
-/*
-	@FXML
-	private void loadCanvas(MouseEvent event) {
-
-		FXCollections.observableArrayList();
-	}
-
-	
-
-	public static Double normalizeX(Double x, Double width) {
-		Double newX = (x-MIN_X)/(MAX_X-MIN_X);
-		newX *= width;
-		return newX;
-	}
-	public static Double normalizeY(Double y, Double height) {
-		Double newY = (y-MIN_Y)/(MAX_Y-MIN_Y);
-		newY *= height;
-		return newY;
-	}*/
-
 
 }
