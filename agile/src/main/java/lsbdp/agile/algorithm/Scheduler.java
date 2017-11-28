@@ -26,7 +26,7 @@ public class Scheduler {
             tsp = new StupidTSP();
             break;
         case "glouton" :
-        	tsp = new StupidTSP();
+        	tsp = new GloutonTSP();
         	break;
         }
     }
