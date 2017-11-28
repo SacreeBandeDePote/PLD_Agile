@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.ParseException;
 
 import lsbdp.agile.algorithm.Dijkstra;
+import lsbdp.agile.algorithm.GloutonTSP;
 import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
@@ -14,6 +15,7 @@ import lsbdp.agile.model.StreetMap;
 
 public class Controller {
 	private CommandList cmdList;
+	private GloutonTSP algo; 
 	
 	// Mettre ses méthodes en static
 	public Controller() {
