@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -63,7 +64,12 @@ public class EventHandlers {
 		
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setColor(Color.BLUE);
+		dropShadow.setOffsetX(0);
+		dropShadow.setOffsetY(0);
 		
+		circle.setEffect(dropShadow);
 		circle.setFill(Color.BLUE);
 		circle.setStroke(Color.BLUE);
 		circle.setStrokeWidth(8d);
@@ -83,6 +89,7 @@ public class EventHandlers {
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
 		
+		circle.setEffect(null);
 		circle.setFill(Color.RED);
 		circle.setStroke(Color.RED);
 		circle.setStrokeWidth(1d);	

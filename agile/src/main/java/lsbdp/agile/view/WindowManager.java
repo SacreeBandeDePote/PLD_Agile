@@ -42,6 +42,8 @@ public class WindowManager{
 		
 	public static void initializer (Scene scene) {
 		WindowManager.scene = scene;
+		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
+		sp.getDividers().get(0).setPosition(0.85);
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
@@ -122,8 +124,6 @@ public class WindowManager{
 		}
 		canvasDrawer.drawMap(map, scene);
 	}
-	
-	
 	
 	public static Scene getScene() {
 		return scene;
