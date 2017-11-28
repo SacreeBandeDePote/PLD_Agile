@@ -18,38 +18,49 @@ public class Controller {
 	private CommandList cmdList;
 	private static StreetMap map;
 	private static GloutonTSP algo; 
+	private static DeliverySchedule schedule;
+	private static DeliveriesRequest deliveries;
 	
 	// Mettre ses méthodes en static
 	public Controller() {
 		this.cmdList = new CommandList();
 		this.algo = new GloutonTSP();
 	}
+	
 	public StreetMap addMap(File XML) throws ParseException {
 		map = SerializeXML.serializeMapXML(XML);
 		return map;
-		// AJOUTER LA PARTIE DRAW MAP  
 	}
 	public static StreetMap getMap() {
 		return map;
 	}
+	
 	public static DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
 		//return serializer.serializeDeliveryXML(XML);
 		return null;
 	}
+	
+	/*
 	public static Route calculateRoute(Delivery start, Delivery end) {
 		// Mettre en static et modifier la méthode
 		//Dijkstra dj = new Dijkstra(map);
 		//return dj.performDijkstra(start.getLocation(), end.getLocation());
 		return null;
 	}
+	*/
 	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
-		DeliveriesRequest dr = SerializeXML.serializeDeliveryXML(XML, map);
-		//schedule = algo.createDeliverySchedule(dr);
-		return null;
+		deliveries = SerializeXML.serializeDeliveryXML(XML, map);
+		findDeliverySchedule();
+		return schedule;
 	}
 	
-	public static void findDeliverySchedule(DeliverySchedule schedule, Intersection warehouse, List<Delivery> deliveries ) {
-		 algo.findSolution(schedule, map, warehouse, deliveries); 	
+	public static void findDeliverySchedule() {
+		 algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
+	}
+	
+	
+	public static void DrawMap(){
+		
 	}
 	
 	public void undo() {
