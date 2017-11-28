@@ -4,7 +4,7 @@ import java.io.File;
 import java.text.ParseException;
 
 import lsbdp.agile.algorithm.Dijkstra;
-import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
@@ -16,13 +16,13 @@ public class Controller {
 	private CommandList cmdList;
 	
 	// Mettre ses méthodes en static
-	private SerializeXML serializer;
+	private SerializerXML serializer;
 	public Controller() {
 		this.cmdList = new CommandList();
-		this.serializer = new SerializeXML();
+		this.serializer = new SerializerXML();
 	}
 	public StreetMap addMap(File XML) throws ParseException {
-		return serializer.serializeMapXML(XML);
+		return serializer.deserializeMapXML(XML);
 	}
 	public DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
 		//return serializer.serializeDeliveryXML(XML);

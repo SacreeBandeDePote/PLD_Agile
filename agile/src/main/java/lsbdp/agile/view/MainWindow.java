@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.StreetMap;
 
@@ -54,8 +54,8 @@ public class MainWindow extends Application {
 	public static File openFileChooserDeliveries(FileChooser fileChooser, StreetMap streetMap) throws InterruptedException, ParseException {
 		File file = fileChooser.showOpenDialog(stage);
 		
-		SerializeXML serializer = new SerializeXML();
-		DeliveriesRequest r = serializer.serializeDeliveryXML(file, streetMap);
+		SerializerXML serializer = new SerializerXML();
+		DeliveriesRequest r = serializer.deserializeDeliveryXML(file, streetMap);
 		MainWindowController.colorIntersection(r);
 		return file;
 	}

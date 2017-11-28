@@ -15,7 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
-import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.*;
 
 import java.io.File;
@@ -131,8 +131,8 @@ public class MainWindowController{
 				);
 		File f = MainWindow.openFileChooser(fileChooser);
 		try {
-			SerializeXML s = new  SerializeXML();
-			streetMap = s.serializeMapXML(f);
+			SerializerXML s = new  SerializerXML();
+			streetMap = s.deserializeMapXML(f);
 			loadMap(streetMap);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
