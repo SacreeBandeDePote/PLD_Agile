@@ -16,10 +16,35 @@ public class WidgetBuilder {
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 		
-		Label label = new Label("Livraison n°"+count);	
+		Label label = new Label("Livraison nï¿½"+count);	
 		label.setId(String.valueOf(delivery.getLocation().getId()));
 		
 		return label;
+	}
+	
+	public static HBox createListViewHBoxWarehouse(Intersection warehouse) {
+		HBox hbox = new HBox();
+		hbox.setSpacing(5);
+		hbox.setAlignment(Pos.CENTER_LEFT);
+		
+		Label label = new Label("Warehouse");
+		label.setId(""+warehouse.getId());
+		
+		hbox.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent e) {
+				EventHandlers.highlightWarehouse(warehouse);
+			}
+
+		});
+		
+		hbox.setOnMouseExited(new EventHandler<MouseEvent>(){	
+			public void handle(MouseEvent e) {
+				EventHandlers.unhighlightWarehouse(warehouse);
+			}
+		});
+		
+		hbox.getChildren().add(label);
+		return hbox;
 	}
 	
 	public static HBox createListViewHBox(Delivery delivery, int count) {
@@ -53,7 +78,7 @@ public class WidgetBuilder {
 		return hbox;
 	}
 	
-	public static Circle createIntersectionCircle(Delivery delivery, Color color,Double radius) {
+	public static Circle createDeliveryCircle(Delivery delivery, Color color,Double radius) {
 		Circle circle = new Circle(radius);
 		
         circle.setStroke(color);
@@ -63,14 +88,38 @@ public class WidgetBuilder {
         circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				EventHandlers.mapDeliveryMouseEnter(delivery);
+				EventHandlers.highlightDeliveryListView(delivery);
 			}	
         });
         
         circle.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				EventHandlers.mapDeliveryMouseExit(delivery);
+				EventHandlers.unhighlightDeliveryListView(delivery);
+			}	
+        });
+        
+        return circle;
+	}
+	
+	public static Circle createWarehouseCircle(Intersection warehouse, Color color,Double radius) {
+		Circle circle = new Circle(radius);
+		
+        circle.setStroke(color);
+        circle.setFill(color);
+        circle.setId("Circle"+warehouse.getId());
+        
+        circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				EventHandlers.highlightWarehouse(warehouse);
+			}	
+        });
+        
+        circle.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				EventHandlers.unhighlightWarehouse(warehouse);
 			}	
         });
         

@@ -3,9 +3,13 @@ package lsbdp.agile.view;
 import java.io.File;
 import java.text.ParseException;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -65,6 +69,16 @@ public class EventHandlers {
 		circle.setStrokeWidth(8d);
 	}
 	
+	public static void highlightWarehouse(Intersection warehouse) {
+			
+			Scene scene = WindowManager.getScene();
+			Circle circle = (Circle) scene.lookup("#Circle"+warehouse.getId());
+			
+			circle.setFill(Color.GREEN);
+			circle.setStroke(Color.GREEN);
+			circle.setStrokeWidth(8d);
+		}
+	
 	public static void unhighlightIntersection(Intersection intersection) {
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
@@ -74,15 +88,45 @@ public class EventHandlers {
 		circle.setStrokeWidth(1d);	
 	}
 	
+	public static void unhighlightWarehouse(Intersection warehouse) {
+		Scene scene = WindowManager.getScene();
+		Circle circle = (Circle) scene.lookup("#Circle"+warehouse.getId());
+		
+		circle.setFill(Color.GREEN);
+		circle.setStroke(Color.GREEN);
+		circle.setStrokeWidth(1d);	
+	}
+	
+	public static void highlightDeliveryListView(Delivery delivery) {
+		Scene scene = WindowManager.getScene();
+		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
+		ObservableList<HBox> list = listview.getItems();
+		String id = ""+delivery.getLocation().getId();
+		for(HBox hbox : list) {
+			Label l = (Label) hbox.getChildren().get(1);
+			if(l.getId().compareTo(id) == 0) {
+				//hbox.setStyle("-fx-background-color : d21919");
+				listview.getSelectionModel().select(hbox);
+			}
+		}
+	}
+	
+	public static void unhighlightDeliveryListView(Delivery delivery) {
+		Scene scene = WindowManager.getScene();
+		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
+		ObservableList<HBox> list = listview.getItems();
+		String id = ""+delivery.getLocation().getId();
+		for(HBox hbox : list) {
+			Label l = (Label) hbox.getChildren().get(1);
+			if(l.getId().compareTo(id) == 0) {
+				//hbox.setStyle("-fx-background-color : transparent");
+				listview.getSelectionModel().clearSelection();
+			}
+		}
+	}
+	
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
 	}
 	
-	public static void mapDeliveryMouseEnter(Delivery delivery) {
-		WindowManager.highlightDeliveryListView(delivery);
-	}
-	
-	public static void mapDeliveryMouseExit(Delivery delivery) {
-		WindowManager.unhighlightDeliveryListView(delivery);
-	}
 }

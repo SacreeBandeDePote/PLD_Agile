@@ -98,7 +98,16 @@ public class CanvasDrawer {
 		Intersection intersection = delivery.getLocation();
 		Double x                  = normalizeX((double)intersection.getX(), canvas.getWidth());
 		Double y                  = normalizeY((double)intersection.getY(), canvas.getHeight());
-		Circle circle             = WidgetBuilder.createIntersectionCircle(delivery, color, radius);
+		Circle circle             = WidgetBuilder.createDeliveryCircle(delivery, color, radius);
+        
+		circle.relocate(x-radius, y-radius);
+        overlay.getChildren().add(circle);
+	}
+	
+	public void drawWarehouse(Pane overlay, Intersection warehouse, Color color, Double radius) {
+		Double x                  = normalizeX((double)warehouse.getX(), canvas.getWidth());
+		Double y                  = normalizeY((double)warehouse.getY(), canvas.getHeight());
+		Circle circle             = WidgetBuilder.createWarehouseCircle(warehouse, color, radius);
         
 		circle.relocate(x-radius, y-radius);
         overlay.getChildren().add(circle);
