@@ -1,11 +1,9 @@
 package lsbdp.agile.algorithm;
 
-import lsbdp.agile.model.Delivery;
-import lsbdp.agile.model.DeliverySchedule;
-import lsbdp.agile.model.Route;
+import lsbdp.agile.model.*;
 
 import java.util.List;
 
 public interface TSP {
-    public void findSolution(DeliverySchedule schedule, Route[][] graphTSP, List<Delivery> list);
+    public void findSolution(DeliverySchedule schedule, StreetMap map, Intersection warehouse, List<Delivery> deliveries);
 }

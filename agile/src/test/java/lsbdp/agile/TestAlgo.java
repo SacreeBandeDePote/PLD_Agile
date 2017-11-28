@@ -33,8 +33,8 @@ public class TestAlgo {
 		d = new Intersection(3, 5, 5);
 		aToB = new Street(50.f, "aToB", b);
 		aToC = new Street(25.f, "aToC", c);
-		bToD = new Street(10.f, "BToD", d);
-		cToD = new Street(10.f, "DToD", d);
+		bToD = new Street(10.f, "bToD", d);
+		cToD = new Street(10.f, "cToD", d);
 		
 		a.addStreet(aToB);
 		a.addStreet(aToC);

@@ -2,8 +2,12 @@ package lsbdp.agile.controller;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 
+import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
+import lsbdp.agile.algorithm.GloutonTSP;
 import lsbdp.agile.data.SerializeXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
@@ -13,33 +17,53 @@ import lsbdp.agile.model.Route;
 import lsbdp.agile.model.StreetMap;
 
 public class Controller {
-	private CommandList cmdList;
+	private static CommandList cmdList;
+	private static StreetMap map;
+	private static GloutonTSP algo; 
+	private static DeliverySchedule schedule;
+	private static DeliveriesRequest deliveries;
 	
-	// Mettre ses méthodes en static
-	private SerializeXML serializer;
 	public Controller() {
-		this.cmdList = new CommandList();
-		this.serializer = new SerializeXML();
+		Controller.cmdList = new CommandList();
+		Controller.algo = new GloutonTSP();
 	}
-	public StreetMap addMap(File XML) throws ParseException {
-		return serializer.serializeMapXML(XML);
+	
+	//Gérer Map
+	public void loadMap(File XML) throws ParseException {
+		map = SerializeXML.serializeMapXML(XML);
+		WindowManager.drawMap(map);
 	}
-	public DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
-		//return serializer.serializeDeliveryXML(XML);
-		return null;
+	public static void drawMap(){
+		WindowManager.drawMap(map);
 	}
-	public Route calculateRoute(Delivery start, Delivery end, StreetMap map) {
-		// Mettre en static et modifier la méthode
-		//Dijkstra dj = new Dijkstra(map);
-		//return dj.performDijkstra(start.getLocation(), end.getLocation());
-		return null;
+	public static StreetMap getMap() {
+		return map;
 	}
-	/* On verra ça plus tard
-	 * public void loadDeliveryRequest(File XML, DeliverySchedule schedule) throws ParseException {
-		DeliveriesRequest dr = serializer.serializeDeliveryXML(XML);
-		//schedule = algo.createDeliverySchedule(dr);
-	}*/
-	public void undo() {
+	
+	//Gérer Schedule
+	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
+		deliveries = SerializeXML.serializeDeliveryXML(XML, map);
+		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
+		return schedule;
+	}
+	public static DeliverySchedule getSchedule() {
+		return schedule;
+	}
+	
+	//Interaction avec Commandes
+	public static void cmdDelete(Delivery element) {
+		Command c = new CommandDelete(element);
+		cmdList.addCommand(c);
+	}
+	public static void cmdAdd() {
+		/*Command c = new CommandAdd();
+		cmdList.addCommand(c);*/
+	}
+	public static void cmdModify(Delivery element, Date startTime, Date endTime) {
+		Command c = new CommandModify(element, startTime, endTime);
+		cmdList.addCommand(c);
+	}
+	public static void undo() {
 		cmdList.undo();
 	}
 	public void redo() {

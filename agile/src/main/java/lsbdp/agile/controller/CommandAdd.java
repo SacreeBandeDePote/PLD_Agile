@@ -2,7 +2,7 @@ package lsbdp.agile.controller;
 
 import java.sql.Time;
 
-public class CommandAdd extends Command {
+public class CommandAdd implements Command {
 	private String adresse;
 	private Time td;
 	private Time tf;
@@ -17,10 +17,12 @@ public class CommandAdd extends Command {
 	}
 	
 	@Override
-	public void doCommand() {
+	public boolean doCommand() {
+		return true;
 	}
 	
 	@Override
-	public void undoCommand() {
+	public boolean undoCommand() {
+		return true;
 	}
 }

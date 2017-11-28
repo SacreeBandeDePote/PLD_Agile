@@ -1,26 +1,28 @@
 package lsbdp.agile.controller;
 
-import java.sql.Time;
+import java.util.Date;
 
 import lsbdp.agile.model.Delivery;
 
-public class CommandModify extends Command {
+public class CommandModify implements Command {
 	private Delivery delivery;
-	private Time td;
-	private Time tf;
+	private Date td;
+	private Date tf;
 	
-	public CommandModify(Delivery d, Time td, Time tf) {
+	public CommandModify(Delivery d, Date td, Date tf) {
 		this.delivery = d;
 		this.td = td;
 		this.tf = tf;
 	}
 	
 	@Override
-	public void doCommand() {
+	public boolean doCommand() {
+		return true;
 	}
 	
 	@Override
-	public void undoCommand() {
+	public boolean undoCommand() {
+		return true;
 	}
 
 }
