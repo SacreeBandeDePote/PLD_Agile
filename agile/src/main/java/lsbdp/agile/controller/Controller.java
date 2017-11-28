@@ -37,6 +37,16 @@ public class Controller {
 		//schedule = algo.createDeliverySchedule(dr);
 		return null;
 	}
+	
+	public DeliverySchedule findDeliverySchedule() {
+		
+		 DeliverySchedule schedule = new DeliverySchedule();
+		 
+	    // tsp.findSolution(schedule, graphTSP, deliveries);
+	     return schedule;
+		
+	}
+	
 	public void undo() {
 		cmdList.undo();
 	}
