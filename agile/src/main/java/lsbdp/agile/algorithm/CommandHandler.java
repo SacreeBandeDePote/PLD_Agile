@@ -9,6 +9,13 @@ import lsbdp.agile.model.StreetMap;
 public class CommandHandler {
 
 	//Handler CommandDelete
+	public static Pair<Route, Delivery> findByDelivery(DeliverySchedule schedule, Delivery d) {
+		for(Pair<Route, Delivery> p : schedule) {
+			if(p.getValue() == d)
+				return p;
+		}
+		return null;
+	}
 	public static int deleteDelivery(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> element) {
 		//Sauvegarde l'index de la delivery
 		int index = schedule.indexOf(element);

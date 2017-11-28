@@ -4,5 +4,4 @@ import java.util.List;
 
 import javafx.util.Pair;
 
-public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
-}
+public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{}

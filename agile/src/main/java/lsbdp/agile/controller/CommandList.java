@@ -14,10 +14,12 @@ public class CommandList {
 	public void addCommand(Command c) {
 		index ++;
 		indexMax = index;
-		if(commandList.size() - 1 > index)
-			commandList.set(index, c);
-		else
-			commandList.add(index, c);
+		if(c.doCommand()) {
+			if(commandList.size() - 1 > index)
+				commandList.set(index, c);
+			else
+				commandList.add(index, c);
+		}
 	}
 	public void undo() {
 		if(index > -1) {

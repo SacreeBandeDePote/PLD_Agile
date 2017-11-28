@@ -23,33 +23,24 @@ public class Controller {
 	private static DeliverySchedule schedule;
 	private static DeliveriesRequest deliveries;
 	
-	// Mettre ses méthodes en static
 	public Controller() {
-		this.cmdList = new CommandList();
-		this.algo = new GloutonTSP();
+		Controller.cmdList = new CommandList();
+		Controller.algo = new GloutonTSP();
 	}
 	
-	public StreetMap addMap(File XML) throws ParseException {
+	//Gérer Map
+	public void loadMap(File XML) throws ParseException {
 		map = SerializeXML.serializeMapXML(XML);
-		return map;
+		WindowManager.drawMap(map);
+	}
+	public static void drawMap(){
+		WindowManager.drawMap(map);
 	}
 	public static StreetMap getMap() {
 		return map;
 	}
 	
-	public static DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
-		//return serializer.serializeDeliveryXML(XML);
-		return null;
-	}
-	
-	/*
-	public static Route calculateRoute(Delivery start, Delivery end) {
-		// Mettre en static et modifier la méthode
-		//Dijkstra dj = new Dijkstra(map);
-		//return dj.performDijkstra(start.getLocation(), end.getLocation());
-		return null;
-	}
-	*/
+	//Gérer Schedule
 	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
 		deliveries = SerializeXML.serializeDeliveryXML(XML, map);
 		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
@@ -59,11 +50,7 @@ public class Controller {
 		return schedule;
 	}
 	
-	
-	public static void DrawMap(){
-		
-	}
-	
+	//Interaction avec Commandes
 	public static void cmdDelete(Delivery element) {
 		Command c = new CommandDelete(element);
 		cmdList.addCommand(c);

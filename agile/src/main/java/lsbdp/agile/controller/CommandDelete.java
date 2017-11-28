@@ -12,7 +12,7 @@ public class CommandDelete implements Command {
 	//private Pair<Route, Delivery> nextElement;
 	
 	public CommandDelete(Delivery d) {
-		this.element = p;
+		this.element = CommandHandler.findByDelivery(Controller.getSchedule(), d);
 	}
 	
 	@Override
