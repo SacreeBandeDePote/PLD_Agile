@@ -1,21 +1,14 @@
 package lsbdp.agile.algorithm;
 
-import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
-import lsbdp.agile.model.StreetMap;
+import javafx.scene.transform.Rotate;
+import lsbdp.agile.model.*;
 
 import java.util.*;
 
 public class Dijkstra {
-    private StreetMap map;
     private static final long UNDEFINED = -1l;
 
-    public Dijkstra(StreetMap map) {
-        super();
-        this.map = map;
-    }
-
-    public Route performDijkstra(Intersection start, Intersection end) {
+    public static Route performDijkstra(StreetMap map, Intersection start, Intersection end) {
         Route route = new Route(start);
 
         Map<Long, Float> distances = new HashMap<>();
@@ -58,6 +51,25 @@ public class Dijkstra {
         }
         return route;
     }
+
+    public static Route[][] createTSPGraph(StreetMap map, Intersection warehouse, List<Delivery> deliveries) {
+        Route[][] graphTSP = new Route[deliveries.size()+1][deliveries.size()+1];
+
+        for(int i=0 ; i<graphTSP.length-1 ; i++) {
+            for(int j=0 ; j<graphTSP.length-1 ; j++) {
+                if (i!=j)
+                    graphTSP[i][j] = Dijkstra.performDijkstra(map, deliveries.get(i).getLocation(), deliveries.get(j).getLocation());
+            }
+            graphTSP[i][graphTSP.length-1] = Dijkstra.performDijkstra(map, deliveries.get(i).getLocation(), warehouse);
+        }
+
+        for (int j=0 ; j<graphTSP.length-1 ; j++) {
+            graphTSP[graphTSP.length-1][j] = Dijkstra.performDijkstra(map, warehouse, deliveries.get(j).getLocation());
+        }
+
+        return graphTSP;
+    }
+
 
 }
 
