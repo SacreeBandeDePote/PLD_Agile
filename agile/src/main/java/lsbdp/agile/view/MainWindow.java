@@ -55,8 +55,6 @@ public class MainWindow extends Application {
 		File file = fileChooser.showOpenDialog(stage);
 		
 		SerializeXML serializer = new SerializeXML();
-		DeliveriesRequest r = serializer.serializeDeliveryXML(file, streetMap);
-		MainWindowController.colorIntersection(r);
 		return file;
 	}
 	
