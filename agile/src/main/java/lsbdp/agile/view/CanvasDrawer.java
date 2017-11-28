@@ -1,9 +1,18 @@
 package lsbdp.agile.view;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import lsbdp.agile.model.Intersection;
+import lsbdp.agile.model.Street;
+import lsbdp.agile.model.StreetMap;
 
 public class CanvasDrawer {
 
@@ -12,6 +21,9 @@ public class CanvasDrawer {
 	int maxY;
 	int minY;
 	Canvas canvas;
+
+	
+
 	
 	/**
 	 * 
@@ -21,12 +33,37 @@ public class CanvasDrawer {
 	 * @param minY
 	 * @param canvas
 	 */
-	public CanvasDrawer(int maxX, int minX, int maxY, int minY, Canvas canvas) {
+	public CanvasDrawer(int maxX, int minX, int maxY, int minY, Scene scene) {
 		this.maxX   = maxX;
 		this.minX   = minX;
 		this.maxY   = maxY;
 		this.minY   = minY;
-		this.canvas = canvas;
+	}
+	
+	public void drawMap(StreetMap map, Scene scene) {
+		canvas = new Canvas(750,750);
+		Double canvasWidth = canvas.getWidth();
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		Map<Long, Intersection> intersections = map;
+		Set keys = intersections.keySet();
+		Iterator iterator = keys.iterator();
+		while(iterator.hasNext() ) {
+			Long key = (Long) iterator.next();
+			Intersection intersection = intersections.get(key);
+			this.drawIntersection(intersection, Color.GREY,(double)1);
+			
+			List<Street> neighbors = intersection.getStreets();
+			for(Street inter : neighbors) {
+				this.drawStreet(intersection, inter.getEnd(), Color.GREY);
+			}
+		}
+		gc.strokeLine(0, 0, canvasWidth, 0);
+		gc.strokeLine(0, 0, 0, canvasWidth);
+		gc.strokeLine(canvasWidth, canvasWidth, canvasWidth, 0);
+		gc.strokeLine(canvasWidth, canvasWidth, 0, canvasWidth);
+		HBox ap = (HBox) scene.lookup("#canvasHBox");
+		ap.getChildren().clear();
+		ap.getChildren().add(canvas);
 	}
 
 	/**

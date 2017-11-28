@@ -39,7 +39,7 @@ public class MainWindow extends Application {
 		primaryStage.setTitle("AGILE Project - Sprint 1");
 		primaryStage.setOnShown(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent event) {
-				MainWindowController.initializer(mainScene);
+				WindowManager.initializer(mainScene);
 			}
 		});
 		primaryStage.show();
@@ -47,16 +47,11 @@ public class MainWindow extends Application {
 	
 	public static File openFileChooser(FileChooser fileChooser) throws InterruptedException {
 		File file = fileChooser.showOpenDialog(stage);
-		
 		return file;
 	}
 	
-	public static File openFileChooserDeliveries(FileChooser fileChooser, StreetMap streetMap) throws InterruptedException, ParseException {
+	public static File openFileChooserDeliveries(FileChooser fileChooser) throws InterruptedException, ParseException {
 		File file = fileChooser.showOpenDialog(stage);
-		
-		SerializeXML serializer = new SerializeXML();
-		DeliveriesRequest r = serializer.serializeDeliveryXML(file, streetMap);
-		MainWindowController.colorIntersection(r);
 		return file;
 	}
 	
