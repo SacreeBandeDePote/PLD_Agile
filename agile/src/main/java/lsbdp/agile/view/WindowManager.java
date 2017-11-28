@@ -132,7 +132,8 @@ public class WindowManager{
 		for(HBox hbox : list) {
 			Label l = (Label) hbox.getChildren().get(1);
 			if(l.getId().compareTo(id) == 0) {
-				hbox.setStyle("-fx-background-color : d21919");
+				//hbox.setStyle("-fx-background-color : d21919");
+				listview.getSelectionModel().select(hbox);
 			}
 		}
 	}
@@ -144,7 +145,8 @@ public class WindowManager{
 		for(HBox hbox : list) {
 			Label l = (Label) hbox.getChildren().get(1);
 			if(l.getId().compareTo(id) == 0) {
-				hbox.setStyle("-fx-background-color : transparent");
+				//hbox.setStyle("-fx-background-color : transparent");
+				listview.getSelectionModel().clearSelection();
 			}
 		}
 	}
