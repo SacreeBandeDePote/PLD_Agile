@@ -131,8 +131,7 @@ public class MainWindowController{
 				);
 		File f = MainWindow.openFileChooser(fileChooser);
 		try {
-			SerializeXML s = new  SerializeXML();
-			streetMap = s.serializeMapXML(f);
+			streetMap = SerializeXML.serializeMapXML(f);
 			loadMap(streetMap);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
