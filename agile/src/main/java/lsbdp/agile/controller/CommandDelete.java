@@ -25,7 +25,7 @@ public class CommandDelete implements Command {
 	
 	@Override
 	public boolean undoCommand() {
-		//
+		CommandHandler.undoDelete(Controller.getMap(), schedule, element, index);
 		return true;
 	}
 
