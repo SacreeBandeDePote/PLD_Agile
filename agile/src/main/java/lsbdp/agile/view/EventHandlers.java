@@ -5,7 +5,10 @@ import java.text.ParseException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
@@ -53,14 +56,33 @@ public class EventHandlers {
 	}
 	
 	public static void highlightIntersection(Intersection intersection) {
-		WindowManager.canvasDrawer.drawIntersection(intersection, Color.BLUE, (double)10);
+		
+		Scene scene = WindowManager.getScene();
+		Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
+		
+		circle.setFill(Color.BLUE);
+		circle.setStroke(Color.BLUE);
+		circle.setStrokeWidth(8d);
 	}
 	
 	public static void unhighlightIntersection(Intersection intersection) {
-		WindowManager.canvasDrawer.drawIntersection(intersection, Color.RED, (double)10);
+		Scene scene = WindowManager.getScene();
+		Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
+		
+		circle.setFill(Color.RED);
+		circle.setStroke(Color.RED);
+		circle.setStrokeWidth(1d);	
 	}
 	
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
+	}
+	
+	public static void mapDeliveryMouseEnter(Delivery delivery) {
+		WindowManager.highlightDeliveryListView(delivery);
+	}
+	
+	public static void mapDeliveryMouseExit(Delivery delivery) {
+		WindowManager.unhighlightDeliveryListView(delivery);
 	}
 }

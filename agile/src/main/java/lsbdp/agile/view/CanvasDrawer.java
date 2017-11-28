@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
@@ -23,7 +27,7 @@ public class CanvasDrawer {
 	Canvas canvas;
 
 	
-
+	
 	
 	/**
 	 * 
@@ -41,16 +45,20 @@ public class CanvasDrawer {
 	}
 	
 	public void drawMap(StreetMap map, Scene scene) {
-		canvas = new Canvas(750,750);
+
+		HBox ap            = (HBox) scene.lookup("#canvasHBox");	
+		canvas             = new Canvas(750,750);
+		Pane overlay       = new Pane();
 		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		Map<Long, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
+		Set<Long> keys     = map.keySet();
+		Iterator iterator  = keys.iterator();
+		
+		overlay.setId("overlay");
 		while(iterator.hasNext() ) {
 			Long key = (Long) iterator.next();
-			Intersection intersection = intersections.get(key);
-			this.drawIntersection(intersection, Color.GREY,(double)1);
+			Intersection intersection = map.get(key);
+			this.drawIntersection(intersection, Color.GREY, 1d);
 			
 			List<Street> neighbors = intersection.getStreets();
 			for(Street inter : neighbors) {
@@ -61,9 +69,11 @@ public class CanvasDrawer {
 		gc.strokeLine(0, 0, 0, canvasWidth);
 		gc.strokeLine(canvasWidth, canvasWidth, canvasWidth, 0);
 		gc.strokeLine(canvasWidth, canvasWidth, 0, canvasWidth);
-		HBox ap = (HBox) scene.lookup("#canvasHBox");
+		
+		Group mapGroup = new Group(canvas, overlay);
+		
 		ap.getChildren().clear();
-		ap.getChildren().add(canvas);
+		ap.getChildren().add(mapGroup);
 	}
 
 	/**
@@ -77,10 +87,21 @@ public class CanvasDrawer {
 		Double x           = normalizeX((double)intersection.getX(), canvas.getWidth());
 		Double y           = normalizeY((double)intersection.getY(), canvas.getHeight());
 		Double delta       = radius/2;
+		
 		gc.setFill(color);
 		gc.setStroke(color);
 		gc.fillOval(x-delta, y-delta, radius, radius);
 		gc.strokeOval(x-delta, y-delta, radius, radius);
+	}
+	
+	public void drawDelivery(Pane overlay, Delivery delivery, Color color, Double radius) {
+		Intersection intersection = delivery.getLocation();
+		Double x                  = normalizeX((double)intersection.getX(), canvas.getWidth());
+		Double y                  = normalizeY((double)intersection.getY(), canvas.getHeight());
+		Circle circle             = WidgetBuilder.createIntersectionCircle(delivery, color, radius);
+        
+		circle.relocate(x-radius, y-radius);
+        overlay.getChildren().add(circle);
 	}
 	
 	/**

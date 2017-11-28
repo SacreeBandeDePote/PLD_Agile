@@ -129,7 +129,8 @@ public class SerializerXML {
 					if (element.getNodeName() == "entrepot") {
 						startingTime = (Date) sdf.parse((element.getAttribute("heureDepart")));
 						long idWarehouse= Long.parseLong(element.getAttribute("adresse"));
-						warehouse = streetMap.get(idWarehouse);
+						Long id = (long) idIdentifier.indexOf(idWarehouse);
+						warehouse = streetMap.get(id);
 					}
 				}
 			}
@@ -157,7 +158,8 @@ public class SerializerXML {
 							timespanEnd = (Date) sdf.parse(element.getAttribute("finPlage"));
 						int duration = Integer.parseInt(element.getAttribute("duree"));
 						long idIntersection= Long.parseLong(element.getAttribute("adresse"));
-						Intersection location = streetMap.get(idIntersection); 
+						Long id = (long) idIdentifier.indexOf(idIntersection);
+						Intersection location = streetMap.get(id);
 						deliveryList.add(new Delivery(duration, timespanStart, timespanEnd, location));
 					}
 				}
