@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -22,6 +23,15 @@ public class WidgetBuilder {
 		return label;
 	}
 	
+	public static Button createListViewDeleteButton(Delivery delivery) {
+		Button btn = new Button();
+		btn.setText("X");
+		btn.setStyle("-fx-background-color : d21919");
+		btn.setMaxHeight(4);
+		btn.setMaxWidth(4);
+		return btn;
+	}
+	
 	public static HBox createListViewHBox(Delivery delivery, int count) {
 		HBox hbox = new HBox();
 		hbox.setSpacing(5);
@@ -29,12 +39,7 @@ public class WidgetBuilder {
 		
 		Label label = createDeliveryLabel(delivery, count);
 		
-		Button btn = new Button();
-		btn.setText("X");
-		btn.setStyle("-fx-background-color : d21919");
-		
-		btn.setMaxHeight(4);
-		btn.setMaxWidth(4);
+		Button btn = WidgetBuilder.createListViewDeleteButton(delivery);
 
 		hbox.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent e) {
@@ -60,9 +65,13 @@ public class WidgetBuilder {
         circle.setFill(color);
         circle.setId("Circle"+delivery.getLocation().getId());
         
+        Tooltip tooltip = new Tooltip("Delivery duration : " + delivery.getDuration());
+        tooltip.setAutoHide(false);
+        tooltip.install(circle, tooltip);
         circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				EventHandlers.highlightIntersection(delivery.getLocation());
 				EventHandlers.mapDeliveryMouseEnter(delivery);
 			}	
         });
@@ -70,6 +79,7 @@ public class WidgetBuilder {
         circle.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				EventHandlers.unhighlightIntersection(delivery.getLocation());
 				EventHandlers.mapDeliveryMouseExit(delivery);
 			}	
         });

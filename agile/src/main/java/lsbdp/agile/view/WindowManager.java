@@ -42,6 +42,8 @@ public class WindowManager{
 		
 	public static void initializer (Scene scene) {
 		WindowManager.scene = scene;
+		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
+		sp.getDividers().get(0).setPosition(0.85);
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
@@ -132,7 +134,6 @@ public class WindowManager{
 		for(HBox hbox : list) {
 			Label l = (Label) hbox.getChildren().get(1);
 			if(l.getId().compareTo(id) == 0) {
-				//hbox.setStyle("-fx-background-color : d21919");
 				listview.getSelectionModel().select(hbox);
 			}
 		}
@@ -145,12 +146,10 @@ public class WindowManager{
 		for(HBox hbox : list) {
 			Label l = (Label) hbox.getChildren().get(1);
 			if(l.getId().compareTo(id) == 0) {
-				//hbox.setStyle("-fx-background-color : transparent");
 				listview.getSelectionModel().clearSelection();
 			}
 		}
 	}
-	
 	
 	public static Scene getScene() {
 		return scene;

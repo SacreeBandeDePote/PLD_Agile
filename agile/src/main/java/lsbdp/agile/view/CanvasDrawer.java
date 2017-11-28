@@ -46,8 +46,9 @@ public class CanvasDrawer {
 	
 	public void drawMap(StreetMap map, Scene scene) {
 
-		HBox ap            = (HBox) scene.lookup("#canvasHBox");	
-		canvas             = new Canvas(750,750);
+		HBox ap            = (HBox) scene.lookup("#canvasHBox");
+		Double dimension      = Double.min(ap.getHeight(), ap.getWidth());
+		canvas             = new Canvas(dimension-30, dimension-30);
 		Pane overlay       = new Pane();
 		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();
