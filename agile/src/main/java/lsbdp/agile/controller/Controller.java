@@ -15,6 +15,7 @@ import lsbdp.agile.model.StreetMap;
 
 public class Controller {
 	private CommandList cmdList;
+	private static StreetMap map;
 	private GloutonTSP algo; 
 	
 	// Mettre ses méthodes en static
@@ -22,7 +23,11 @@ public class Controller {
 		this.cmdList = new CommandList();
 	}
 	public StreetMap addMap(File XML) throws ParseException {
-		return SerializeXML.serializeMapXML(XML);
+		map = SerializeXML.serializeMapXML(XML);
+		return map;
+	}
+	public static StreetMap getMap() {
+		return map;
 	}
 	public DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
 		//return serializer.serializeDeliveryXML(XML);
