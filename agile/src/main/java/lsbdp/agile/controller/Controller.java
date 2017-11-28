@@ -2,8 +2,10 @@ package lsbdp.agile.controller;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
+import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.GloutonTSP;
 import lsbdp.agile.data.SerializeXML;
@@ -15,7 +17,7 @@ import lsbdp.agile.model.Route;
 import lsbdp.agile.model.StreetMap;
 
 public class Controller {
-	private CommandList cmdList;
+	private static CommandList cmdList;
 	private static StreetMap map;
 	private static GloutonTSP algo; 
 	private static DeliverySchedule schedule;
@@ -50,12 +52,11 @@ public class Controller {
 	*/
 	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
 		deliveries = SerializeXML.serializeDeliveryXML(XML, map);
-		findDeliverySchedule();
+		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
 		return schedule;
 	}
-	
-	public static void findDeliverySchedule() {
-		 algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
+	public static DeliverySchedule getSchedule() {
+		return schedule;
 	}
 	
 	
@@ -63,7 +64,19 @@ public class Controller {
 		
 	}
 	
-	public void undo() {
+	public static void cmdDelete(Delivery element) {
+		Command c = new CommandDelete(element);
+		cmdList.addCommand(c);
+	}
+	public static void cmdAdd() {
+		/*Command c = new CommandAdd();
+		cmdList.addCommand(c);*/
+	}
+	public static void cmdModify(Delivery element, Date startTime, Date endTime) {
+		Command c = new CommandModify(element, startTime, endTime);
+		cmdList.addCommand(c);
+	}
+	public static void undo() {
 		cmdList.undo();
 	}
 	public void redo() {
