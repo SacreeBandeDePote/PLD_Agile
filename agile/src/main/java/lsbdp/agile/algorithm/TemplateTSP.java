@@ -6,8 +6,7 @@ import lsbdp.agile.model.*;
 import java.util.Date;
 import java.util.List;
 
-public class TemplateTSP implements TSP{
-
+public class TemplateTSP implements TSP {
 
 
 	@Override
@@ -19,32 +18,31 @@ public class TemplateTSP implements TSP{
 		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
 
-		float[][] timeCost = new float[deliveries.size()+1][deliveries.size()+1];
-		for (int i = 0; i < timeCost.length ; i++) {
-			for (int j = 0; j < timeCost.length ; j++) {
-				if(i == j) {
+		float[][] timeCost = new float[deliveries.size() + 1][deliveries.size() + 1];
+		for (int i = 0; i < timeCost.length; i++) {
+			for (int j = 0; j < timeCost.length; j++) {
+				if (i == j) {
 					timeCost[i][j] = 0f;
-				}
-				else {
+				} else {
 					timeCost[i][j] = graphTSP[i][j].getTotalTime();
 				}
 			}
 		}
 
-		float[] duration = new float[deliveries.size()+1]; //minutes
-		for (int i = 0; i < duration.length-1 ; i++) {
-			duration[i] = deliveries.get(i).getDuration()/60f;
+		float[] duration = new float[deliveries.size() + 1]; //minutes
+		for (int i = 0; i < duration.length - 1; i++) {
+			duration[i] = deliveries.get(i).getDuration() / 60f;
 		}
-		duration[duration.length-1] = 0f;
+		duration[duration.length - 1] = 0f;
 
 		Date start = req.getStartingTime();
 		Pair<Float, Float>[] hourWindows = new Pair[deliveries.size()];
-		for (int i = 0; i < hourWindows.length ; i++) {
+		for (int i = 0; i < hourWindows.length; i++) {
 			Date timeSpanStart = deliveries.get(i).getTimespanStart();
 			Date timeSpanEnd = deliveries.get(i).getTimespanEnd();
 
-			float startSpan = (timeSpanStart.getTime() - start.getTime())/(1000f*60f); //ms to minutes
-			float endSpan = (timeSpanEnd.getTime() - start.getTime())/(1000f*60f); //ms to minutes
+			float startSpan = (timeSpanStart.getTime() - start.getTime()) / (1000f * 60f); //ms to minutes
+			float endSpan = (timeSpanEnd.getTime() - start.getTime()) / (1000f * 60f); //ms to minutes
 
 			hourWindows[i] = new Pair<>(startSpan, endSpan);
 		}
