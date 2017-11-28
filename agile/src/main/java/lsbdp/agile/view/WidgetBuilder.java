@@ -30,12 +30,12 @@ public class WidgetBuilder {
 		
 		Label label = new Label("Warehouse");
 		label.setId(""+warehouse.getId());
+		hbox.getChildren().add(label);
 		
 		hbox.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent e) {
 				EventHandlers.highlightWarehouse(warehouse);
 			}
-
 		});
 		
 		hbox.setOnMouseExited(new EventHandler<MouseEvent>(){	
@@ -44,8 +44,8 @@ public class WidgetBuilder {
 			}
 		});
 		
-		hbox.getChildren().add(label);
 		return hbox;
+	}
 
 	public static Button createListViewDeleteButton(Delivery delivery) {
 		Button btn = new Button();
@@ -64,6 +64,7 @@ public class WidgetBuilder {
 		Label label = createDeliveryLabel(delivery, count);
 		
 		Button btn = WidgetBuilder.createListViewDeleteButton(delivery);
+		hbox.getChildren().addAll(btn, label);
 
 		hbox.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent e) {
@@ -78,7 +79,6 @@ public class WidgetBuilder {
 			}
 		});
 		
-		hbox.getChildren().addAll(btn, label);
 		return hbox;
 	}
 	

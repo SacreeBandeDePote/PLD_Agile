@@ -110,10 +110,12 @@ public class EventHandlers {
 		ObservableList<HBox> list = listview.getItems();
 		String id = ""+delivery.getLocation().getId();
 		for(HBox hbox : list) {
-			Label l = (Label) hbox.getChildren().get(1);
-			if(l.getId().compareTo(id) == 0) {
-				//hbox.setStyle("-fx-background-color : d21919");
-				listview.getSelectionModel().select(hbox);
+			if (hbox.getChildren().size() > 1) {
+				Label l = (Label) hbox.getChildren().get(1);
+				if(l.getId().compareTo(id) == 0) {
+					//hbox.setStyle("-fx-background-color : d21919");
+					listview.getSelectionModel().select(hbox);
+				}
 			}
 		}
 	}
@@ -124,10 +126,12 @@ public class EventHandlers {
 		ObservableList<HBox> list = listview.getItems();
 		String id = ""+delivery.getLocation().getId();
 		for(HBox hbox : list) {
-			Label l = (Label) hbox.getChildren().get(1);
-			if(l.getId().compareTo(id) == 0) {
-				//hbox.setStyle("-fx-background-color : transparent");
-				listview.getSelectionModel().clearSelection();
+			if (hbox.getChildren().size() > 1) {
+				Label l = (Label) hbox.getChildren().get(1);
+				if(l.getId().compareTo(id) == 0) {
+					//hbox.setStyle("-fx-background-color : transparent");
+					listview.getSelectionModel().clearSelection();
+				}
 			}
 		}
 	}
