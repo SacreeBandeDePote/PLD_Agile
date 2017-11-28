@@ -22,24 +22,28 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.*;
 
-public class MainWindowController{
+public class WindowManager{
 
 	private static int MIN_X;
 	private static int MIN_Y;
 	private static int MAX_X;
 	private static int MAX_Y;
+	private static Scene scene;
 
-	public static CanvasDrawer canvasDrawer;
+	private static CanvasDrawer canvasDrawer = null;
 	
 	private static StreetMap streetMap;
 	private static DeliveriesRequest deliveriesRequest;
 	private static Canvas cv;
 	private static Button computeButton;
 	
-	private static Scene scene;
-	private static ArrayList<Delivery> selectedDeliveries;
+		private static ArrayList<Delivery> selectedDeliveries;
+		
+	public static void initializer (Scene scene) {
+		WindowManager.scene = scene;
+	}
 	
-	private static int getMaxY(StreetMap map) {
+	/*private static int getMaxY(StreetMap map) {
 		int maxX = 0;
 		Map<Long, Intersection> intersections = map;
 		Set<Long> keys = intersections.keySet();
@@ -132,7 +136,7 @@ public class MainWindowController{
 		File f = MainWindow.openFileChooser(fileChooser);
 		try {
 			streetMap = SerializeXML.serializeMapXML(f);
-			loadMap(streetMap);
+			initializeMap(streetMap);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -148,6 +152,12 @@ public class MainWindowController{
 				);
 		File f = MainWindow.openFileChooserDeliveries(fileChooser, streetMap);
 
+	}*/
+	public static void colorDeliverySchedule (DeliverySchedule ds) {
+		for (Pair<Route, Delivery> p : ds) {
+			colorRoute(p.getKey());
+			colorIntersection(p.getValue().getLocation());
+		}
 	}
 
 	public static void colorRoute(Route route) {
@@ -162,8 +172,12 @@ public class MainWindowController{
 		}
 
 	}
+	
+	public static void colorIntersection(Intersection inter) {
+		canvasDrawer.drawIntersection(inter, Color.RED, (double)10);
+	}
 
-	public static void colorIntersection(DeliveriesRequest r) {
+	public static void colorDeliveryRequest(DeliveriesRequest r) {
 		deliveriesRequest = r;
 		loadListView(r);
 		HBox ap = (HBox) scene.lookup("#canvasHBox");
@@ -172,11 +186,11 @@ public class MainWindowController{
 		list = r.getDeliveryList();
 		for(Delivery d : list) {
 			Intersection inter = d.getLocation();
-			canvasDrawer.drawIntersection(inter, Color.RED, (double)10);
+			colorIntersection(inter);
 
 		}
 		Intersection wh = r.getWarehouse();
-		canvasDrawer.drawIntersection(wh, Color.LIMEGREEN, (double)10);
+		colorIntersection(wh);	
 	}
 
 
@@ -216,56 +230,22 @@ public class MainWindowController{
 	}
 	
 
-	public static void initializer(Scene sc) {
-
-		scene = sc;
-		//AnchorPane sp = (AnchorPane) sc.lookup("#canvasAnchorPane");
-		//sp.setDividerPosition(0, 0.8);
-
-		//sp.getItems().add(cv);
+	public static void drawMap(StreetMap map) {
+		if(canvasDrawer == null) {
+			canvasDrawer = new CanvasDrawer(map.getMaxX(), map.getMinX(), map.getMaxY(), map.getMinY(), scene);	
+		}
+		canvasDrawer.drawMap(map, scene);
 	}
 
 
-
+/*
 	@FXML
 	private void loadCanvas(MouseEvent event) {
 
 		FXCollections.observableArrayList();
 	}
 
-	public static void loadMap(StreetMap map) throws InterruptedException {
-
-		MAX_X = getMaxX(map);
-		MIN_X = getMinX(map);
-		MAX_Y = getMaxY(map);
-		MIN_Y = getMinY(map);
-		HBox ap = (HBox) scene.lookup("#canvasHBox");
-		cv = new Canvas(750,750);
-
-		canvasDrawer = new CanvasDrawer(MAX_X, MIN_X, MAX_Y, MIN_Y, cv);
-		
-		Double canvasWidth = cv.getWidth();
-		GraphicsContext gc = cv.getGraphicsContext2D();
-		Map<Long, Intersection> intersections = map;
-		Set keys = intersections.keySet();
-		Iterator iterator = keys.iterator();
-		while(iterator.hasNext() ) {
-			Long key = (Long) iterator.next();
-			Intersection intersection = intersections.get(key);
-			canvasDrawer.drawIntersection(intersection, Color.GREY,(double)1);
-			
-			List<Street> neighbors = intersection.getStreets();
-			for(Street inter : neighbors) {
-				canvasDrawer.drawStreet(intersection, inter.getEnd(), Color.GREY);
-			}
-		}
-		gc.strokeLine(0, 0, canvasWidth, 0);
-		gc.strokeLine(0, 0, 0, canvasWidth);
-		gc.strokeLine(canvasWidth, canvasWidth, canvasWidth, 0);
-		gc.strokeLine(canvasWidth, canvasWidth, 0, canvasWidth);
-		ap.getChildren().clear();
-		ap.getChildren().add(cv);
-	}
+	
 
 	public static Double normalizeX(Double x, Double width) {
 		Double newX = (x-MIN_X)/(MAX_X-MIN_X);
@@ -276,7 +256,7 @@ public class MainWindowController{
 		Double newY = (y-MIN_Y)/(MAX_Y-MIN_Y);
 		newY *= height;
 		return newY;
-	}
+	}*/
 
 
 }

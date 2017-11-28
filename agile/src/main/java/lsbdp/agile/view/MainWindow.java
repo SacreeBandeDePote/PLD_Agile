@@ -39,7 +39,7 @@ public class MainWindow extends Application {
 		primaryStage.setTitle("AGILE Project - Sprint 1");
 		primaryStage.setOnShown(new EventHandler<WindowEvent>() {
 			public void handle(WindowEvent event) {
-				MainWindowController.initializer(mainScene);
+				WindowManager.initializer(mainScene);
 			}
 		});
 		primaryStage.show();
@@ -55,7 +55,7 @@ public class MainWindow extends Application {
 		File file = fileChooser.showOpenDialog(stage);
 		
 		DeliveriesRequest r = SerializeXML.serializeDeliveryXML(file, streetMap);
-		MainWindowController.colorIntersection(r);
+		colorIntersection(r);
 		return file;
 	}
 	
