@@ -2,7 +2,7 @@ package lsbdp.agile.controller;
 
 import java.sql.Time;
 
-public class CommandAdd extends Command {
+public class CommandAdd implements Command {
 	private String adresse;
 	private Time td;
 	private Time tf;
