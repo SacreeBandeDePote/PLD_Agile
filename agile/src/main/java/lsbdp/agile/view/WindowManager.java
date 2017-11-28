@@ -30,7 +30,7 @@ public class WindowManager{
 	private static int MAX_Y;
 	private static Scene scene;
 
-	private static CanvasDrawer canvasDrawer = null;
+	public static CanvasDrawer canvasDrawer = null;
 	
 	private static StreetMap streetMap;
 	private static DeliveriesRequest deliveriesRequest;
@@ -114,8 +114,8 @@ public class WindowManager{
 			} else {
 				computeButton.setDisable(true);
 			}
-		}*/
-		);
+		}
+		); */
 	}
 	
 	public static void drawMap(StreetMap map) {

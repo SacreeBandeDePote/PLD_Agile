@@ -50,7 +50,7 @@ public class MainWindow extends Application {
 		return file;
 	}
 	
-	public static File openFileChooserDeliveries(FileChooser fileChooser, StreetMap streetMap) throws InterruptedException, ParseException {
+	public static File openFileChooserDeliveries(FileChooser fileChooser) throws InterruptedException, ParseException {
 		File file = fileChooser.showOpenDialog(stage);
 		return file;
 	}
