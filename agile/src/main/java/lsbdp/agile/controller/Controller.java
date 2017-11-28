@@ -12,9 +12,8 @@ import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
-import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
 import lsbdp.agile.model.StreetMap;
+import lsbdp.agile.view.WindowManager;
 
 public class Controller {
 	private static CommandList cmdList;
@@ -29,7 +28,7 @@ public class Controller {
 	}
 	
 	//Gérer Map
-	public void loadMap(File XML) throws ParseException {
+	public static void loadMap(File XML) throws ParseException {
 		map = SerializerXML.deserializeMapXML(XML);
 		WindowManager.drawMap(map);
 	}
