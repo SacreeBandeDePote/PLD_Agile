@@ -15,7 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
-import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.*;
 
 import java.io.File;

@@ -7,11 +7,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
 import lsbdp.agile.controller.Controller;
-import lsbdp.agile.data.SerializeXML;
+import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
@@ -31,19 +30,19 @@ public class EventHandlers {
 	}
 	
 	@FXML
-	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException {
+	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose your map file");
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("XML File", "*.xml")
 				);
 		File f = MainWindow.openFileChooser(fileChooser);
-		Controller.addMap(f);
+		Controller.loadMap(f);
 	}
 	
 	@FXML
 	private void calculateSchedule(ActionEvent event) {
-		DeliverySchedule schedule = Controller.findDeliverySchedule();
+		// DeliverySchedule schedule = Controller.findDeliverySchedule();
 	}
 
 	@FXML
