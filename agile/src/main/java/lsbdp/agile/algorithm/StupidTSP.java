@@ -8,7 +8,7 @@ import lsbdp.agile.model.Route;
 
 import java.util.List;
 
-public class stupidTSP implements TSP{
+public class StupidTSP implements TSP{
 
     @Override
     public void findSolution(DeliverySchedule schedule, Route[][] graphTSP, List<Delivery> list) {

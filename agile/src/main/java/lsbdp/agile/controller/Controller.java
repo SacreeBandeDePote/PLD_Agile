@@ -22,13 +22,15 @@ public class Controller {
 	public StreetMap addMap(File XML) throws ParseException {
 		return SerializeXML.serializeMapXML(XML);
 	}
-	public DeliveriesRequest addDeliveriesRequest(File XML, StreetMap map) throws ParseException {
-		return SerializeXML.serializeDeliveryXML(XML, map);
+	public DeliveriesRequest addDeliveriesRequest(File XML) throws ParseException {
+		//return serializer.serializeDeliveryXML(XML);
+		return null;
 	}
 	public Route calculateRoute(Delivery start, Delivery end, StreetMap map) {
 		// Mettre en static et modifier la méthode
-		Dijkstra dj = new Dijkstra(map);
-		return dj.performDijkstra(start.getLocation(), end.getLocation());
+		//Dijkstra dj = new Dijkstra(map);
+		//return dj.performDijkstra(start.getLocation(), end.getLocation());
+		return null;
 	}
 	public DeliverySchedule loadDeliveryRequest(File XML, StreetMap map) throws ParseException {
 		DeliveriesRequest dr = SerializeXML.serializeDeliveryXML(XML, map);
