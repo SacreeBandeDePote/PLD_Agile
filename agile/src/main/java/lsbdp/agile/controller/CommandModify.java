@@ -4,7 +4,7 @@ import java.sql.Time;
 
 import lsbdp.agile.model.Delivery;
 
-public class CommandModify extends Command {
+public class CommandModify implements Command {
 	private Delivery delivery;
 	private Time td;
 	private Time tf;
