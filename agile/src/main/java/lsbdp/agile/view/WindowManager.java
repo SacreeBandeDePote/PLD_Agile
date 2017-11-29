@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
+import lsbdp.agile.controller.Controller;
 import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.*;
 
@@ -44,39 +45,37 @@ public class WindowManager{
 		WindowManager.scene = scene;
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);
+		Controller controller = new Controller();
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
 		for (Pair<Route, Delivery> p : ds) {
-			colorRoute(p.getKey());
-			colorIntersection(p.getValue().getLocation());
+			if(p.getKey() != null && p.getValue() != null) {
+				colorRoute(p.getKey(), p.getValue());
+			}
 		}
 	}
 
-	public static void colorRoute(Route route) {
+	public static void colorRoute(Route route, Delivery delivery) {
+		Pane overlay = (Pane) scene.lookup("#overlay");
 		Intersection startingPoint = route.getStartingPoint();
-		List<Street> streets =  route.getStreets();
+		List<Street> streets       = route.getStreets();
 
 		for( Street street : streets) {
+			canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
 			Intersection end = street.getEnd();
-			canvasDrawer.drawStreet(startingPoint, end, Color.RED);
+			canvasDrawer.drawStreetOverlay(overlay, startingPoint, end, Color.RED);
 			startingPoint = end;
-
 		}
-
-	}
-	
-	public static void colorIntersection(Intersection inter) {
-		canvasDrawer.drawIntersection(inter, Color.RED, (double)10);
 	}
 
 	public static void colorDeliveryRequest(DeliveriesRequest r) {
-		deliveriesRequest = r;
-		Pane overlay = (Pane) scene.lookup("#overlay");
-
+		deliveriesRequest        = r;
+		Pane overlay             = (Pane) scene.lookup("#overlay");
 		ArrayList<Delivery> list = new ArrayList<Delivery>();
-		list = r.getDeliveryList();
+		list                     = r.getDeliveryList();
 		
+		overlay.getChildren().clear();
 		for(Delivery d : list) {
 			canvasDrawer.drawDelivery(overlay, d, Color.RED, 5d);
 		}
