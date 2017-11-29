@@ -42,6 +42,8 @@ public class WindowManager{
 		
 	public static void initializer (Scene scene) {
 		WindowManager.scene = scene;
+		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
+		sp.getDividers().get(0).setPosition(0.85);
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
@@ -70,7 +72,6 @@ public class WindowManager{
 
 	public static void colorDeliveryRequest(DeliveriesRequest r) {
 		deliveriesRequest = r;
-		HBox ap = (HBox) scene.lookup("#canvasHBox");
 		Pane overlay = (Pane) scene.lookup("#overlay");
 
 		ArrayList<Delivery> list = new ArrayList<Delivery>();
@@ -80,7 +81,7 @@ public class WindowManager{
 			canvasDrawer.drawDelivery(overlay, d, Color.RED, 5d);
 		}
 		Intersection wh = r.getWarehouse();
-		canvasDrawer.drawIntersection(wh, Color.GREEN, 5d);	
+		canvasDrawer.drawWarehouse(overlay, wh, Color.GREEN, 5d);	
 	}
 
 
@@ -91,8 +92,7 @@ public class WindowManager{
 		ObservableList<HBox> ol = FXCollections.observableArrayList();
 		selectedDeliveries = new ArrayList<Delivery>();
 		
-		Label warehouse = new Label("Warehouse");
-		warehouse.setId(String.valueOf(dr.getWarehouse().getId(	)));
+		ol.add(WidgetBuilder.createListViewHBoxWarehouse(dr.getWarehouse()));
 
 		int cpt = 1;
 		for(Delivery d : dr.getDeliveryList()) {
@@ -124,33 +124,6 @@ public class WindowManager{
 		}
 		canvasDrawer.drawMap(map, scene);
 	}
-	
-	public static void highlightDeliveryListView(Delivery delivery) {
-		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
-		ObservableList<HBox> list = listview.getItems();
-		String id = ""+delivery.getLocation().getId();
-		for(HBox hbox : list) {
-			Label l = (Label) hbox.getChildren().get(1);
-			if(l.getId().compareTo(id) == 0) {
-				//hbox.setStyle("-fx-background-color : d21919");
-				listview.getSelectionModel().select(hbox);
-			}
-		}
-	}
-	
-	public static void unhighlightDeliveryListView(Delivery delivery) {
-		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
-		ObservableList<HBox> list = listview.getItems();
-		String id = ""+delivery.getLocation().getId();
-		for(HBox hbox : list) {
-			Label l = (Label) hbox.getChildren().get(1);
-			if(l.getId().compareTo(id) == 0) {
-				//hbox.setStyle("-fx-background-color : transparent");
-				listview.getSelectionModel().clearSelection();
-			}
-		}
-	}
-	
 	
 	public static Scene getScene() {
 		return scene;

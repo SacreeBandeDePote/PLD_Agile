@@ -46,8 +46,9 @@ public class CanvasDrawer {
 	
 	public void drawMap(StreetMap map, Scene scene) {
 
-		HBox ap            = (HBox) scene.lookup("#canvasHBox");	
-		canvas             = new Canvas(750,750);
+		HBox ap            = (HBox) scene.lookup("#canvasHBox");
+		Double dimension      = Double.min(ap.getHeight(), ap.getWidth());
+		canvas             = new Canvas(dimension-30, dimension-30);
 		Pane overlay       = new Pane();
 		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -98,7 +99,16 @@ public class CanvasDrawer {
 		Intersection intersection = delivery.getLocation();
 		Double x                  = normalizeX((double)intersection.getX(), canvas.getWidth());
 		Double y                  = normalizeY((double)intersection.getY(), canvas.getHeight());
-		Circle circle             = WidgetBuilder.createIntersectionCircle(delivery, color, radius);
+		Circle circle             = WidgetBuilder.createDeliveryCircle(delivery, color, radius);
+        
+		circle.relocate(x-radius, y-radius);
+        overlay.getChildren().add(circle);
+	}
+	
+	public void drawWarehouse(Pane overlay, Intersection warehouse, Color color, Double radius) {
+		Double x                  = normalizeX((double)warehouse.getX(), canvas.getWidth());
+		Double y                  = normalizeY((double)warehouse.getY(), canvas.getHeight());
+		Circle circle             = WidgetBuilder.createWarehouseCircle(warehouse, color, radius);
         
 		circle.relocate(x-radius, y-radius);
         overlay.getChildren().add(circle);
