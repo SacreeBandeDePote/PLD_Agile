@@ -33,7 +33,7 @@ public class Street {
 	}
 	
 	public String toString() {
-		String s = "Prendre la route " + this.name + " sur un longueur de " + this.length + " jusqu'à l'intersection " + this.end.getX() + this.end.getY();
+		String s = "Prendre la route " + this.name + " sur une longueur de " + this.length + " jusqu'à l'intersection " + this.end.getX() + this.end.getY();
 		return s;
 	}
 	
