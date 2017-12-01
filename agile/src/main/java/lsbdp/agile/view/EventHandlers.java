@@ -78,7 +78,7 @@ public class EventHandlers {
 	public static void highlightWarehouse(Intersection warehouse) {
 			
 			Scene scene = WindowManager.getScene();
-			Circle circle = (Circle) scene.lookup("#Circle"+warehouse.getId());
+			Circle circle = (Circle) scene.lookup("#CircleWarehouse"+warehouse.getId());
 			
 			DropShadow dropShadow = new DropShadow();
 			dropShadow.setColor(Color.GREEN);
@@ -103,7 +103,7 @@ public class EventHandlers {
 	
 	public static void unhighlightWarehouse(Intersection warehouse) {
 		Scene scene = WindowManager.getScene();
-		Circle circle = (Circle) scene.lookup("#Circle"+warehouse.getId());
+		Circle circle = (Circle) scene.lookup("#CircleWarehouse"+warehouse.getId());
 		
 		circle.setEffect(null);
 		circle.setFill(Color.GREEN);
@@ -127,6 +127,12 @@ public class EventHandlers {
 		}
 	}
 	
+	public static void highlightWarehouseListView() {
+		Scene scene = WindowManager.getScene();
+		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
+		listview.getSelectionModel().select(0);
+	}
+	
 	public static void unhighlightDeliveryListView(Delivery delivery) {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
@@ -135,12 +141,19 @@ public class EventHandlers {
 		for(HBox hbox : list) {
 			if (hbox.getChildren().size() > 1) {
 				Label l = (Label) hbox.getChildren().get(1);
-				if(l.getId().compareTo(id) == 0) {
+				String labelId = l.getId().substring(l.getId().lastIndexOf("-")+1);
+				if(labelId.compareTo(id) == 0) {
 					//hbox.setStyle("-fx-background-color : transparent");
 					listview.getSelectionModel().clearSelection();
 				}
 			}
 		}
+	}
+	
+	public static void unhighlightWarehouseListView () {
+		Scene scene = WindowManager.getScene();
+		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
+		listview.getSelectionModel().clearSelection();
 	}
 	
 	public static void deleteDelivery(Delivery delivery) {

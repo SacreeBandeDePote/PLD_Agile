@@ -8,23 +8,26 @@ import java.util.List;
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.GloutonTSP;
+import lsbdp.agile.algorithm.StupidTSP;
 import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
+import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.StreetMap;
 import lsbdp.agile.view.WindowManager;
 
 public class Controller {
 	private static CommandList cmdList;
 	private static StreetMap map;
-	private static GloutonTSP algo; 
+	private static StupidTSP algo; 
 	private static DeliverySchedule schedule;
 	private static DeliveriesRequest deliveries;
 	
 	public Controller() {
+		Controller.schedule = new DeliverySchedule();
 		Controller.cmdList = new CommandList();
-		Controller.algo = new GloutonTSP();
+		Controller.algo = new StupidTSP();
 	}
 	
 	//Gérer Map
@@ -40,12 +43,12 @@ public class Controller {
 	}
 	
 	//Gérer Schedule
-	public static DeliveriesRequest loadDeliveryRequest(File XML) throws ParseException {
+	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(XML, map);
-		//algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
-		WindowManager.colorDeliveryRequest(deliveries);
-		WindowManager.loadListView(deliveries);
-		return deliveries;
+		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
+		WindowManager.colorDeliverySchedule(schedule);
+		WindowManager.loadListView(schedule);
+		return schedule;
 	}
 	
 	public static DeliverySchedule getSchedule() {
@@ -56,6 +59,8 @@ public class Controller {
 	public static void cmdDelete(Delivery element) {
 		Command c = new CommandDelete(element);
 		cmdList.addCommand(c);
+		WindowManager.loadListView(schedule);
+		WindowManager.colorDeliverySchedule(schedule);
 	}
 	public static void cmdAdd() {
 		/*Command c = new CommandAdd();

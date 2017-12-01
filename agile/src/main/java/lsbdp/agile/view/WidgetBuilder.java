@@ -1,10 +1,14 @@
 package lsbdp.agile.view;
 
+import java.util.Date;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -17,8 +21,8 @@ public class WidgetBuilder {
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 		
-		Label label = new Label("Livraison n�"+count);	
-		label.setId(String.valueOf(delivery.getLocation().getId()));
+		Label label = new Label("Livraison n°"+count);	
+		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		
 		return label;
 	}
@@ -29,10 +33,16 @@ public class WidgetBuilder {
 		hbox.setAlignment(Pos.CENTER_LEFT);
 		
 		Label label = new Label("Warehouse");
-		label.setId(""+warehouse.getId());
+		label.setId("Warehouse-"+warehouse.getId());
 		hbox.getChildren().add(label);
 		
 		hbox.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent e) {
+				EventHandlers.highlightWarehouse(warehouse);
+			}
+		});
+		
+		hbox.setOnMouseClicked(new EventHandler<MouseEvent>(){	
 			public void handle(MouseEvent e) {
 				EventHandlers.highlightWarehouse(warehouse);
 			}
@@ -53,6 +63,14 @@ public class WidgetBuilder {
 		btn.setStyle("-fx-background-color : d21919");
 		btn.setMaxHeight(4);
 		btn.setMaxWidth(4);
+		
+		
+		btn.setOnMouseClicked(new EventHandler<MouseEvent>(){	
+			public void handle(MouseEvent e) {
+				EventHandlers.deleteDelivery(delivery);		
+				}
+		});
+		
 		return btn;
 	}
 	
@@ -70,7 +88,13 @@ public class WidgetBuilder {
 			public void handle(MouseEvent e) {
 				EventHandlers.highlightIntersection(delivery.getLocation());
 			}
-
+		});
+		
+		hbox.setOnMouseClicked(new EventHandler<MouseEvent>(){	
+			public void handle(MouseEvent e) {
+				EventHandlers.highlightIntersection(delivery.getLocation());
+				
+			}
 		});
 		
 		hbox.setOnMouseExited(new EventHandler<MouseEvent>(){	
@@ -96,12 +120,14 @@ public class WidgetBuilder {
 			@Override
 			public void handle(MouseEvent event) {
 				EventHandlers.highlightDeliveryListView(delivery);
+				EventHandlers.highlightIntersection(delivery.getLocation());
 			}	
         });
         
         circle.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				EventHandlers.unhighlightIntersection(delivery.getLocation());
 				EventHandlers.unhighlightDeliveryListView(delivery);
 			}	
         });
@@ -114,11 +140,12 @@ public class WidgetBuilder {
 		
         circle.setStroke(color);
         circle.setFill(color);
-        circle.setId("Circle"+warehouse.getId());
+        circle.setId("CircleWarehouse"+warehouse.getId());
         
         circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				EventHandlers.highlightWarehouseListView();
 				EventHandlers.highlightWarehouse(warehouse);
 			}	
         });
@@ -126,6 +153,7 @@ public class WidgetBuilder {
         circle.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				EventHandlers.unhighlightWarehouseListView();
 				EventHandlers.unhighlightWarehouse(warehouse);
 			}	
         });

@@ -24,6 +24,8 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.*;
 
+import com.sun.javafx.scene.canvas.CanvasHelper.CanvasAccessor;
+
 public class WindowManager{
 
 	private static int MIN_X;
@@ -49,6 +51,10 @@ public class WindowManager{
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
+		Pane overlay = (Pane) scene.lookup("#overlay");
+		overlay.getChildren().clear();
+		Intersection warehouse = ds.get(0).getKey().getStartingPoint();
+		canvasDrawer.drawWarehouse(overlay, warehouse, Color.GREEN, 5d);
 		for (Pair<Route, Delivery> p : ds) {
 			if(p.getKey() != null && p.getValue() != null) {
 				colorRoute(p.getKey(), p.getValue());
@@ -60,6 +66,7 @@ public class WindowManager{
 		Pane overlay = (Pane) scene.lookup("#overlay");
 		Intersection startingPoint = route.getStartingPoint();
 		List<Street> streets       = route.getStreets();
+		
 
 		for( Street street : streets) {
 			canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
@@ -84,23 +91,25 @@ public class WindowManager{
 	}
 
 
-	public static void loadListView(DeliveriesRequest dr) {
+	public static void loadListView(DeliverySchedule ds) {
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		computeButton = (Button)scene.lookup("#computeButton");
 		
 		ObservableList<HBox> ol = FXCollections.observableArrayList();
 		selectedDeliveries = new ArrayList<Delivery>();
 		
-		ol.add(WidgetBuilder.createListViewHBoxWarehouse(dr.getWarehouse()));
+		ol.add(WidgetBuilder.createListViewHBoxWarehouse(ds.get(0).getKey().getStartingPoint()));
 
 		int cpt = 1;
-		for(Delivery d : dr.getDeliveryList()) {
-			ol.add(WidgetBuilder.createListViewHBox(d, cpt));
-			cpt++;
+		for(Pair<Route,Delivery> p : ds) {
+				if (p.getValue() != null) {
+				ol.add(WidgetBuilder.createListViewHBox(p.getValue(), cpt));
+				cpt++;
+			}
 		}
 		listview.getItems().clear();
 		listview.setItems(ol);
-		listview.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		listview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 		// Si on a besoin de calculer une route entre deux intersections  JUST IN CASE
 		/*listview.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv) -> {
