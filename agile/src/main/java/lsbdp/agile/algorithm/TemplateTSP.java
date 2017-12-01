@@ -47,6 +47,8 @@ public class TemplateTSP implements TSP {
 				Route r = graphTSP[bestSolution[i]][bestSolution[i + 1]];
 				schedule.add(new Pair<>(r, d));
 			}
+			Route r = graphTSP[bestSolution[bestSolution.length - 1]][graphTSP.length - 1];
+			schedule.add(new Pair<>(r, null));
 		} else {
 			System.out.println("No Solution Found");
 		}
