@@ -39,4 +39,12 @@ public class Route {
 		}
 		return sum;
 	}
+	
+	public String toString() {
+		String s = "Point de départ: " + startingPoint.getX() + " | " + startingPoint.getY() + "\r\n";
+		for(Street street: streets) {
+			s += street.toString();
+		}
+		return s;
+	}
 }
