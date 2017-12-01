@@ -17,7 +17,7 @@ public class StupidTSP implements TSP {
 
 		for (int i = 0; i < graphTSP.length - 1; i++) {
 			Route r1 = graphTSP[i][i + 1];
-			Delivery d1 = getDel(deliveries, r.getEnd());
+			Delivery d1 = getDel(deliveries, r1.getEnd());
 
 			schedule.add(new Pair<>(r1, d1));
 		}
