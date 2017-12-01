@@ -65,6 +65,7 @@ public class Controller {
 	public static void cmdAdd() {
 		/*Command c = new CommandAdd();
 		cmdList.addCommand(c);*/
+		WindowManager.highlightAll(map, schedule);
 	}
 	public static void cmdModify(Delivery element, Date startTime, Date endTime) {
 		Command c = new CommandModify(element, startTime, endTime);
