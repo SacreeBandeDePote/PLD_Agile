@@ -25,6 +25,12 @@
                               <MenuItem mnemonicParsing="false" onAction="#LoadDeliveriesActionHandler" text="Load Deliveries" />
                         </items>
                       </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#UndoAction" text="Undo" />
+                              <MenuItem mnemonicParsing="false" onAction="#RedoAction" text="Redo" />
+                        </items>
+                      </Menu>
                       <Menu mnemonicParsing="false" text="Deliveries">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#calculateSchedule" text="Calculate schedul with stupid TSP" />

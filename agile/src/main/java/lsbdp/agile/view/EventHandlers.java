@@ -2,6 +2,7 @@ package lsbdp.agile.view;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -32,6 +33,16 @@ public class EventHandlers {
 	@FXML
 	private void addDelivery(ActionEvent event) {
 		Controller.cmdAdd();
+	}
+	
+	@FXML
+	private void UndoAction(ActionEvent event) {
+		Controller.undo();
+	}
+	
+	@FXML
+	private void RedoAction(ActionEvent event) {
+		Controller.redo();
 	}
 	
 	@FXML
@@ -123,7 +134,7 @@ public class EventHandlers {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		ObservableList<HBox> list = listview.getItems();
-		String id = ""+delivery.getLocation().getId();
+		String id = "Delivery-"+delivery.getLocation().getId();
 		for(HBox hbox : list) {
 			if (hbox.getChildren().size() > 1) {
 				Label l = (Label) hbox.getChildren().get(1);
@@ -193,6 +204,14 @@ public class EventHandlers {
 
 	public static void temporaryIntersectionClicked(Intersection intersection) {
 		MainWindow.openPopUp(intersection);
+	}
+
+	public static void addDelivery(Intersection intersection, String duration, String startingTime, String endTime) {
+		int tmpDuration = Integer.parseInt(duration);
+		Date start = new Date(10);
+		Date end = new Date(11);
+		Delivery d = new Delivery(tmpDuration, start, end, intersection);
+		Controller.cmdAdd2(d);
 	}
 	
 }

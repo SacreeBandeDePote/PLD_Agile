@@ -43,7 +43,17 @@ public class CommandHandler {
 	}
 	
 	//Handler CommandAdd
-	public static void addDelivery() {
+	public static void addDelivery(StreetMap map, DeliverySchedule schedule, Delivery d) {
+		int index = 2;
+		Delivery firstDelivery = schedule.get(index-1).getValue();
+		Delivery nextDelivery = schedule.get(index).getValue();
+		
+		Route firstRoute = Dijkstra.performDijkstra(map, firstDelivery.getLocation(), d.getLocation());
+		
+		Route nextRoute = Dijkstra.performDijkstra(map, d.getLocation(), nextDelivery.getLocation());
+		
+		schedule.add(index-1, new Pair<>(firstRoute, d));
+		schedule.add(index, new Pair<>(nextRoute,nextDelivery));
 		
 	}
 	public static void undoAdd() {
