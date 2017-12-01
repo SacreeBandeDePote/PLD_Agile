@@ -10,10 +10,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
+import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.StreetMap;
 
 public class MainWindow extends Application {
@@ -53,6 +55,11 @@ public class MainWindow extends Application {
 	public static File openFileChooserDeliveries(FileChooser fileChooser) throws InterruptedException, ParseException {
 		File file = fileChooser.showOpenDialog(stage);
 		return file;
+	}
+	
+	public static void openPopUp(Intersection intersection) {
+		Popup pop = PopupWindowManager.createPopup(intersection);
+		pop.show(stage);
 	}
 	
 	public static void main(String[] args) {
