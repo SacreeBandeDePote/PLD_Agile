@@ -1,8 +1,12 @@
 package lsbdp.agile.data;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,8 +24,10 @@ import org.xml.sax.SAXException;
 
 import javafx.util.Pair;
 import lsbdp.agile.model.Delivery;
+import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Intersection;
+import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
@@ -168,5 +174,17 @@ public class SerializerXML {
 			e.printStackTrace();
 		}
 		return deliveryList;
+	}
+	
+	public static void generateRoadMap(File f, DeliverySchedule d) throws FileNotFoundException {
+		PrintWriter out = new PrintWriter(f);
+		String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+		String entete = "-------------------------------------------------\r\n\r\n";
+		entete += "| FEUILLE DE ROUTE\r\n";
+		entete += "|\r\n";
+		entete += "| Date/Heure de génération: " + timeStamp + "\r\n";
+		entete += "-------------------------------------------------\r\n\r\n";
+		out.print(entete + d.toString());
+		out.close();
 	}
 }
