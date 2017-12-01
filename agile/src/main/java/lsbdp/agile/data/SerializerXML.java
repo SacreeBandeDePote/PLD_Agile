@@ -142,7 +142,7 @@ public class SerializerXML {
 	
 	public static ArrayList<Delivery> readDelivery(Element root, StreetMap streetMap){
 		ArrayList<Delivery> deliveryList = new ArrayList<Delivery>();
-		DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		NodeList racineNoeuds = root.getChildNodes();
 		int nbRacineNoeuds = racineNoeuds.getLength();
 		try {

@@ -20,7 +20,7 @@ public class TestTSP {
 		File f = new File("./Data/fichiersXML/planLyonMoyen.xml");
 		map = SerializerXML.deserializeMapXML(f);
 
-		f = new File("./Data/fichiersXML/DLmoyen5.xml");
+		f = new File("./Data/fichiersXML/DLmoyen5TW4.xml");
 		req = SerializerXML.deserializeDeliveryXML(f, map);
 	}
 

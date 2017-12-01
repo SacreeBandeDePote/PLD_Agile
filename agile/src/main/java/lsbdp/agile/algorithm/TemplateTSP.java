@@ -38,14 +38,17 @@ public class TemplateTSP implements TSP {
 		view.add(timeCost.length - 1);
 
 		branchAndBound(timeCost.length - 1, nonView, view, 0f, timeCost, duration, timeWindows);
+		if (solutionFound) {
+			System.out.println("Best Solution found : cost : " + bestSolutionCost);
+			System.out.println(Arrays.toString(bestSolution));
 
-		System.out.println("Best Solution found : cost : " + bestSolutionCost);
-		System.out.println(Arrays.toString(bestSolution));
-
-		for (int i = 0; i < bestSolution.length-1; i++) {
-			Delivery d = deliveries.get(bestSolution[i+1]);
-			Route r = graphTSP[bestSolution[i]][bestSolution[i+1]];
-			schedule.add(new Pair<>(r, d));
+			for (int i = 0; i < bestSolution.length - 1; i++) {
+				Delivery d = deliveries.get(bestSolution[i + 1]);
+				Route r = graphTSP[bestSolution[i]][bestSolution[i + 1]];
+				schedule.add(new Pair<>(r, d));
+			}
+		} else {
+			System.out.println("No Solution Found");
 		}
 		//TODO : What to do with the come back to the warehouse ??
 	}
@@ -63,6 +66,7 @@ public class TemplateTSP implements TSP {
 	When i visit a node, it means that i manage to get to the node and that it is possible to get there. the crtCost has been increment by its duration
 	 */
 	private void branchAndBound(int crtNode, ArrayList<Integer> nonView, ArrayList<Integer> view, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
+		System.out.println("Time of arrival in " + crtNode + " : " + crtCost);
 		if (nonView.isEmpty()) { //this is the last node that has been visited
 			crtCost += timeCost[crtNode][timeCost.length - 1]; //we have to go back to the warehouse
 			System.out.println("Solution found : cost : " + crtCost);
@@ -71,6 +75,7 @@ public class TemplateTSP implements TSP {
 				bestSolutionCost = crtCost;
 				solutionFound = true;
 				System.out.println("New Best Solution found : cost : " + bestSolutionCost);
+				System.out.println(Arrays.toString(bestSolution));
 			}
 		} else {
 			if (bound(crtNode, nonView, crtCost, timeCost, duration, timeWindows)) { //there are still nodes to visit
@@ -81,18 +86,19 @@ public class TemplateTSP implements TSP {
 					if (timeWindows[nextNode] != null) {
 						if (crtCost + timeCost[crtNode][nextNode] > timeWindows[nextNode].getValue()) { //do we arrive to late for the delivery
 							System.out.println("we arrive to late to the delivery " + nextNode);
-							break; // not useful to explore this branch
+							continue; // not useful to explore this branch
 						}
 					}
 					view.add(nextNode);
 					nonView.remove(nextNode);
-					crtCost += timeCost[crtNode][nextNode] + duration[nextNode];
+					float newCrtCost = crtCost + timeCost[crtNode][nextNode] + duration[nextNode];
 					if (timeWindows[nextNode] != null) {
-						if (crtCost < timeWindows[nextNode].getKey()) { //if we arrive before the beginning of a time window, we wait !
-							crtCost = timeWindows[nextNode].getKey();
+						if (newCrtCost < timeWindows[nextNode].getKey()) { //if we arrive before the beginning of a time window, we wait !
+							System.out.println("We arrive too early, actual time : " + newCrtCost);
+							newCrtCost = timeWindows[nextNode].getKey();
 						}
 					}
-					branchAndBound(nextNode, nonView, view, crtCost, timeCost, duration, timeWindows);
+					branchAndBound(nextNode, nonView, view, newCrtCost, timeCost, duration, timeWindows);
 					view.remove(nextNode);
 					nonView.add(nextNode);
 				}

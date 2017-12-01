@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
-	public final float MEAN_SPEED = 25f; //m*min^-1
+	public final float MEAN_SPEED = 250f; //m*min^-1
 	private List<Street> streets = new ArrayList<Street>();
 	private Intersection startingPoint;
 	
