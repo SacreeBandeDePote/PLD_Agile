@@ -112,6 +112,15 @@ public class CanvasDrawer {
         overlay.getChildren().add(circle);
 	}
 	
+	public void drawTemporaryIntersection(Pane overlay, Intersection intersection, Color color, Double radius) {
+		Double x                  = normalizeX((double)intersection.getX(), canvas.getWidth());
+		Double y                  = normalizeY((double)intersection.getY(), canvas.getHeight());
+		Circle circle             = WidgetBuilder.createTemporaryIntersectionCircle(intersection, color, radius);
+        
+		circle.relocate(x-radius, y-radius);
+        overlay.getChildren().add(circle);
+	}
+	
 	/**
 	 * 
 	 * @param start
@@ -136,7 +145,7 @@ public class CanvasDrawer {
 		Double startY      = normalizeY((double)start.getY(), canvas.getHeight());
 		Double endX        = normalizeX((double)end.getX(), canvas.getWidth());
 		Double endY        = normalizeY((double)end.getY(), canvas.getHeight());
-		Line line    = new Line(startX, startY, endX, endY);
+		Line line          = new Line(startX, startY, endX, endY);
 		
 	    line.setStrokeWidth(1);
 	    line.setStroke(color);

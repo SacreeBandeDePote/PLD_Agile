@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
@@ -56,6 +57,7 @@ public class WindowManager{
 		Intersection warehouse = ds.get(0).getKey().getStartingPoint();
 		canvasDrawer.drawWarehouse(overlay, warehouse, Color.GREEN, 5d);
 		for (Pair<Route, Delivery> p : ds) {
+			System.out.println(p.getKey() +" " + p.getValue());
 			if(p.getKey() != null && p.getValue() != null) {
 				colorRoute(p.getKey(), p.getValue());
 			}
@@ -124,6 +126,21 @@ public class WindowManager{
 			}
 		}
 		); */
+	}
+	
+	public static void highlightAll(StreetMap map, DeliverySchedule schedule) {
+		Pane overlay = (Pane) scene.lookup("#overlay");
+		Set<Long> keys     = map.keySet();
+		Iterator iterator  = keys.iterator();
+		
+		while(iterator.hasNext()) {
+			Long key = (Long) iterator.next();
+			Intersection intersection = map.get(key);
+			Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
+			if(circle == null) {
+				canvasDrawer.drawTemporaryIntersection(overlay, intersection, Color.GRAY, 3d);
+			}
+		}
 	}
 	
 	public static void drawMap(StreetMap map) {

@@ -2,6 +2,8 @@ package lsbdp.agile.view;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Iterator;
+import java.util.Set;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,9 +25,15 @@ import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Route;
+import lsbdp.agile.model.StreetMap;
 
 public class EventHandlers {
 
+	@FXML
+	private void addDelivery(ActionEvent event) {
+		Controller.cmdAdd();
+	}
+	
 	@FXML
 	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		FileChooser fileChooser = new FileChooser();
@@ -155,9 +163,36 @@ public class EventHandlers {
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		listview.getSelectionModel().clearSelection();
 	}
+		
+	public static void highlightTemporaryIntersection(Intersection intersection) {
+
+		Scene scene = WindowManager.getScene();
+		Circle circle = (Circle) scene.lookup("#Tmp"+intersection.getId());
+		
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setColor(Color.BLUE);
+		dropShadow.setOffsetX(0);
+		dropShadow.setOffsetY(0);
+		
+		circle.setEffect(dropShadow);
+		circle.setStrokeWidth(6d);
+	}
+	
+	public static void unhighlightTemporaryIntersection(Intersection intersection) {
+
+		Scene scene = WindowManager.getScene();
+		Circle circle = (Circle) scene.lookup("#Tmp"+intersection.getId());
+		
+		circle.setEffect(null);
+		circle.setStrokeWidth(2d);
+	}
 	
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
+	}
+
+	public static void temporaryIntersectionClicked(Intersection intersection) {
+		MainWindow.openPopUp(intersection);
 	}
 	
 }
