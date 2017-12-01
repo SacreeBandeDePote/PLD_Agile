@@ -1,10 +1,14 @@
 package lsbdp.agile.model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javafx.util.Pair;
 
 public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
+	
+	private Date startingTime;
+	private Date endingTime;
 	
 	public Intersection getWhareHouse() {
 		return this.get(0).getKey().getStartingPoint();
@@ -14,7 +18,7 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 		Intersection entrepot = this.getWhareHouse();
 		String s = "Entrepôt\r\n";
 		s += "Localisation" + entrepot.getX() + " " + entrepot.getY() + "\r\n";
-		s += "8h00: départ"; //TODO implement stratingTime
+		s += this.startingTime + ": départ"; //TODO implement stratingTime
 		
 		for(int i = 0; i < this.size() ; i++) {
 			Pair<Route, Delivery> pair = this.get(i);
@@ -34,7 +38,7 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 			if(i == this.size()-1) {
 				s += "Entrepôt\r\n";
 				s += "Localisation" + entrepot.getX() + " " + entrepot.getY() + "\r\n";
-				s += "10h00: arrivée\r\n"; // TODO implement eta :)
+				s += this.endingTime + ": arrivée\r\n"; // TODO implement eta :)
 			} else {
 				s += "Livraison " + i;
 				s += "Localisation" + pair.getValue().getLocation().getX() + " | " + pair.getValue().getLocation().getY() + "\r\n";
@@ -45,5 +49,21 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 			}
 		}
 		return s;
-     } 
+     }
+
+	public Date getEndingTime() {
+		return endingTime;
+	}
+
+	public void setEndingTime(Date endingTime) {
+		this.endingTime = endingTime;
+	}
+
+	public Date getStartingTime() {
+		return startingTime;
+	}
+
+	public void setStartingTime(Date startingTime) {
+		this.startingTime = startingTime;
+	} 
 }
