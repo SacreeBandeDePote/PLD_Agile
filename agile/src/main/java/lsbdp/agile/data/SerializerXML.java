@@ -150,8 +150,8 @@ public class SerializerXML {
 				if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) racineNoeuds.item(i);
 					if (element.getNodeName() == "livraison") {
-						Date timespanStart = new Date(0);
-						Date timespanEnd = new Date(0);
+						Date timespanStart = null;
+						Date timespanEnd = null;
 						if (element.getAttribute("debutPlage").length() != 0)
 							timespanStart = (Date) sdf.parse(element.getAttribute("debutPlage"));
 						if (element.getAttribute("finPlage").length() != 0)

@@ -10,17 +10,14 @@ import java.util.Map;
 public class Scheduler {
 	private Dijkstra dijkstra;
 	private Intersection warehouse;
-	private List<Delivery> deliveries;
-	private Route[][] graphTSP;
+	private DeliveriesRequest deliveries;
 	private StreetMap map;
 	private TSP tsp;
 
-	public Scheduler(StreetMap map, Intersection warehouse, List<Delivery> deliveries, String tspType) {
+	public Scheduler(StreetMap map, Intersection warehouse, DeliveriesRequest deliveries, String tspType) {
 		this.warehouse = warehouse;
 		this.deliveries = deliveries;
 		this.map = map;
-
-		graphTSP = new Route[deliveries.size() + 1][deliveries.size() + 1];
 
 		switch (tspType) {
 			case "stupid":
@@ -35,7 +32,7 @@ public class Scheduler {
 	public DeliverySchedule findSchedule() {
 		DeliverySchedule schedule = new DeliverySchedule();
 
-		tsp.findSolution(schedule, map, warehouse, deliveries);
+		tsp.findSolution(schedule, map, deliveries);
 		return schedule;
 	}
 }

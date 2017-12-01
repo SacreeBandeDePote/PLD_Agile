@@ -3,49 +3,147 @@ package lsbdp.agile.algorithm;
 import javafx.util.Pair;
 import lsbdp.agile.model.*;
 
-import java.util.Date;
-import java.util.List;
+import javax.sound.midi.Soundbank;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class TemplateTSP implements TSP {
 
+	private Integer[] bestSolution;
+	private float bestSolutionCost;
+	private boolean solutionFound;
 
 	@Override
-	public void findSolution(DeliverySchedule schedule, StreetMap map, Intersection warehouse, List<Delivery> deliveries) {
-
-	}
-
-	private void adaptModel(DeliverySchedule schedule, StreetMap map, Intersection warehouse, DeliveriesRequest req) {
+	public void findSolution(DeliverySchedule schedule, StreetMap map, DeliveriesRequest req) {
+		Intersection warehouse = req.getWarehouse();
 		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
 
-		float[][] timeCost = new float[deliveries.size() + 1][deliveries.size() + 1];
+		float[][] timeCost = createCostGraph(graphTSP, deliveries.size());
+
+		float[] duration = createDurationTable(deliveries);
+
+		Date start = req.getStartingTime();
+		Pair<Float, Float>[] timeWindows = createTimeWindowsTable(deliveries, start);
+
+		bestSolution = new Integer[deliveries.size() + 1];
+		bestSolutionCost = Float.MAX_VALUE;
+		solutionFound = false;
+
+		ArrayList<Integer> nonView = new ArrayList<>();
+		for (int i = 0; i < deliveries.size(); i++)
+			nonView.add(i);
+
+		ArrayList<Integer> view = new ArrayList<>();
+		view.add(timeCost.length - 1);
+
+		branchAndBound(timeCost.length - 1, nonView, view, 0f, timeCost, duration, timeWindows);
+
+		System.out.println("Best Solution found : cost : " + bestSolutionCost);
+		System.out.println(Arrays.toString(bestSolution));
+
+		for (int i = 0; i < bestSolution.length-1; i++) {
+			Delivery d = deliveries.get(bestSolution[i+1]);
+			Route r = graphTSP[bestSolution[i]][bestSolution[i+1]];
+			schedule.add(new Pair<>(r, d));
+		}
+		//TODO : What to do with the come back to the warehouse ??
+	}
+
+
+	private boolean bound(int crtNode, ArrayList<Integer> nonView, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
+		return crtCost < bestSolutionCost;
+	}
+
+	private Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
+		return new SeqIterator(nonView);
+	}
+
+	/*
+	When i visit a node, it means that i manage to get to the node and that it is possible to get there. the crtCost has been increment by its duration
+	 */
+	private void branchAndBound(int crtNode, ArrayList<Integer> nonView, ArrayList<Integer> view, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
+		if (nonView.isEmpty()) { //this is the last node that has been visited
+			crtCost += timeCost[crtNode][timeCost.length - 1]; //we have to go back to the warehouse
+			System.out.println("Solution found : cost : " + crtCost);
+			if (crtCost < bestSolutionCost) { //we find a better solution
+				view.toArray(bestSolution);
+				bestSolutionCost = crtCost;
+				solutionFound = true;
+				System.out.println("New Best Solution found : cost : " + bestSolutionCost);
+			}
+		} else {
+			if (bound(crtNode, nonView, crtCost, timeCost, duration, timeWindows)) { //there are still nodes to visit
+				Iterator<Integer> it = iterator(crtNode, nonView, timeCost, duration, timeWindows);
+				while (it.hasNext()) {
+					Integer nextNode = it.next();
+					//TODO : ask the teacher if the the duration have to be in the time window
+					if (timeWindows[nextNode] != null) {
+						if (crtCost + timeCost[crtNode][nextNode] > timeWindows[nextNode].getValue()) { //do we arrive to late for the delivery
+							System.out.println("we arrive to late to the delivery " + nextNode);
+							break; // not useful to explore this branch
+						}
+					}
+					view.add(nextNode);
+					nonView.remove(nextNode);
+					crtCost += timeCost[crtNode][nextNode] + duration[nextNode];
+					if (timeWindows[nextNode] != null) {
+						if (crtCost < timeWindows[nextNode].getKey()) { //if we arrive before the beginning of a time window, we wait !
+							crtCost = timeWindows[nextNode].getKey();
+						}
+					}
+					branchAndBound(nextNode, nonView, view, crtCost, timeCost, duration, timeWindows);
+					view.remove(nextNode);
+					nonView.add(nextNode);
+				}
+			} else {
+				System.out.println("No use to explore this branch");
+			}
+		}
+	}
+
+	private float[][] createCostGraph(Route[][] routeGraph, int nbDeliveries) {
+		float[][] timeCost = new float[nbDeliveries + 1][nbDeliveries + 1];
 		for (int i = 0; i < timeCost.length; i++) {
 			for (int j = 0; j < timeCost.length; j++) {
 				if (i == j) {
 					timeCost[i][j] = 0f;
 				} else {
-					timeCost[i][j] = graphTSP[i][j].getTotalTime();
+					timeCost[i][j] = routeGraph[i][j].getTotalTime();
 				}
 			}
 		}
+		return timeCost;
+	}
 
+	private float[] createDurationTable(List<Delivery> deliveries) {
 		float[] duration = new float[deliveries.size() + 1]; //minutes
 		for (int i = 0; i < duration.length - 1; i++) {
 			duration[i] = deliveries.get(i).getDuration() / 60f;
 		}
 		duration[duration.length - 1] = 0f;
 
-		Date start = req.getStartingTime();
-		Pair<Float, Float>[] hourWindows = new Pair[deliveries.size()];
-		for (int i = 0; i < hourWindows.length; i++) {
+		return duration;
+	}
+
+	private Pair<Float, Float>[] createTimeWindowsTable(List<Delivery> deliveries, Date start) {
+		Pair<Float, Float>[] timeWindows = new Pair[deliveries.size() + 1];
+		for (int i = 0; i < timeWindows.length - 1; i++) {
 			Date timeSpanStart = deliveries.get(i).getTimespanStart();
 			Date timeSpanEnd = deliveries.get(i).getTimespanEnd();
 
+			if (timeSpanEnd == null) {
+				timeWindows[i] = null;
+				break;
+			}
 			float startSpan = (timeSpanStart.getTime() - start.getTime()) / (1000f * 60f); //ms to minutes
 			float endSpan = (timeSpanEnd.getTime() - start.getTime()) / (1000f * 60f); //ms to minutes
 
-			hourWindows[i] = new Pair<>(startSpan, endSpan);
+			timeWindows[i] = new Pair<>(startSpan, endSpan);
 		}
+		timeWindows[timeWindows.length - 1] = null;
+
+		return timeWindows;
 	}
 
 	private Delivery getDel(List<Delivery> deliveries, Intersection target) {
