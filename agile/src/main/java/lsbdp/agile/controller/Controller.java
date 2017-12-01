@@ -45,7 +45,7 @@ public class Controller {
 	//Gérer Schedule
 	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(XML, map);
-		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
+		algo.findSolution(schedule, map, deliveries);
 		WindowManager.colorDeliverySchedule(schedule);
 		WindowManager.loadListView(schedule);
 		return schedule;
