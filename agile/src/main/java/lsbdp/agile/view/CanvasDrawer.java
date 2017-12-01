@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Street;
@@ -25,9 +26,6 @@ public class CanvasDrawer {
 	int maxY;
 	int minY;
 	Canvas canvas;
-
-	
-	
 	
 	/**
 	 * 
@@ -132,6 +130,19 @@ public class CanvasDrawer {
 		gc.strokeLine(startX, startY, endX, endY);
 	}
 	
+	
+	public void drawStreetOverlay(Pane overlay, Intersection start, Intersection end, Color color) {
+		Double startX      = normalizeX((double)start.getX(), canvas.getWidth());
+		Double startY      = normalizeY((double)start.getY(), canvas.getHeight());
+		Double endX        = normalizeX((double)end.getX(), canvas.getWidth());
+		Double endY        = normalizeY((double)end.getY(), canvas.getHeight());
+		Line line    = new Line(startX, startY, endX, endY);
+		
+	    line.setStrokeWidth(1);
+	    line.setStroke(color);
+	    
+	    overlay.getChildren().add(line);
+	}
 	/**
 	 * 
 	 * @param x

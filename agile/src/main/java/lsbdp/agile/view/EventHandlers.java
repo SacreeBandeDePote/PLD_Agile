@@ -80,6 +80,12 @@ public class EventHandlers {
 			Scene scene = WindowManager.getScene();
 			Circle circle = (Circle) scene.lookup("#Circle"+warehouse.getId());
 			
+			DropShadow dropShadow = new DropShadow();
+			dropShadow.setColor(Color.GREEN);
+			dropShadow.setOffsetX(0);
+			dropShadow.setOffsetY(0);
+			
+			circle.setEffect(dropShadow);
 			circle.setFill(Color.GREEN);
 			circle.setStroke(Color.GREEN);
 			circle.setStrokeWidth(8d);
@@ -99,6 +105,7 @@ public class EventHandlers {
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Circle"+warehouse.getId());
 		
+		circle.setEffect(null);
 		circle.setFill(Color.GREEN);
 		circle.setStroke(Color.GREEN);
 		circle.setStrokeWidth(1d);	
