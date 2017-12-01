@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lsbdp.agile.view.EventHandlers">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="471.0" prefWidth="690.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -29,6 +28,7 @@
                       <Menu mnemonicParsing="false" text="Deliveries">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#calculateSchedule" text="Calculate schedul with stupid TSP" />
+                              <MenuItem mnemonicParsing="false" onAction="#addDelivery" text="Add delivery" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">
@@ -48,11 +48,11 @@
                      </children></AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
-                        <TitledPane alignment="CENTER" collapsible="false" text="Delivery Schedule" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TitledPane collapsible="false" text="Delivery Schedule" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <content>
                               <AnchorPane>
                                  <children>
-                                    <ListView fx:id="listView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <ListView fx:id="listView" prefHeight="417.6" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     <Button fx:id="computeButton" disable="true" layoutX="42.0" layoutY="367.0" mnemonicParsing="false" onAction="#shortestPathButtonHandler" text="Compute shortest path" AnchorPane.bottomAnchor="22.0" />
                                  </children>
                               </AnchorPane>
