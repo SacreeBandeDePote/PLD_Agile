@@ -59,13 +59,18 @@ public class Controller {
 	public static void cmdDelete(Delivery element) {
 		Command c = new CommandDelete(element);
 		cmdList.addCommand(c);
-		WindowManager.loadListView(schedule);
-		WindowManager.colorDeliverySchedule(schedule);
+		refreshIHM();
 	}
 	public static void cmdAdd() {
 		/*Command c = new CommandAdd();
 		cmdList.addCommand(c);*/
 		WindowManager.highlightAll(map, schedule);
+	}
+	
+	public static void cmdAdd2(Delivery element) {
+		Command c = new CommandAdd(element);
+		cmdList.addCommand(c);
+		refreshIHM();
 	}
 	public static void cmdModify(Delivery element, Date startTime, Date endTime) {
 		Command c = new CommandModify(element, startTime, endTime);
@@ -73,9 +78,16 @@ public class Controller {
 	}
 	public static void undo() {
 		cmdList.undo();
+		refreshIHM();
 	}
-	public void redo() {
+	public static void redo() {
 		cmdList.redo();
+		refreshIHM();
+	}
+	
+	public static void refreshIHM() {
+		WindowManager.loadListView(schedule);
+		WindowManager.colorDeliverySchedule(schedule);
 	}
 	
 }

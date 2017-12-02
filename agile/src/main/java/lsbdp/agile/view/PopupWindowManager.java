@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
+import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.Intersection;
 
 public class PopupWindowManager {
@@ -46,9 +47,11 @@ public class PopupWindowManager {
 			@Override
 			public void handle(ActionEvent arg0) {
 				System.out.println("xdfgvhbj");
+				EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
 				if(isInteger(durationField.getText())) {
 				}else {
 				}
+				pop.hide();
 			}
 		});
 		
