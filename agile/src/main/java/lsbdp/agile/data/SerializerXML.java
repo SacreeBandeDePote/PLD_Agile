@@ -148,7 +148,7 @@ public class SerializerXML {
 	
 	public static ArrayList<Delivery> readDelivery(Element root, StreetMap streetMap){
 		ArrayList<Delivery> deliveryList = new ArrayList<Delivery>();
-		DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		NodeList racineNoeuds = root.getChildNodes();
 		int nbRacineNoeuds = racineNoeuds.getLength();
 		try {
@@ -156,8 +156,8 @@ public class SerializerXML {
 				if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 					Element element = (Element) racineNoeuds.item(i);
 					if (element.getNodeName() == "livraison") {
-						Date timespanStart = new Date(0);
-						Date timespanEnd = new Date(0);
+						Date timespanStart = null;
+						Date timespanEnd = null;
 						if (element.getAttribute("debutPlage").length() != 0)
 							timespanStart = (Date) sdf.parse(element.getAttribute("debutPlage"));
 						if (element.getAttribute("finPlage").length() != 0)

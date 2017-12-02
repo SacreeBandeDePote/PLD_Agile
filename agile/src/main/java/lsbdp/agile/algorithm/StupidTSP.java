@@ -8,7 +8,9 @@ import java.util.List;
 public class StupidTSP implements TSP {
 
 	@Override
-	public void findSolution(DeliverySchedule schedule, StreetMap map, Intersection warehouse, List<Delivery> deliveries) {
+	public void findSolution(DeliverySchedule schedule, StreetMap map, DeliveriesRequest req) {
+		Intersection warehouse = req.getWarehouse();
+		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
 		Route r = graphTSP[graphTSP.length - 1][0];
 		Delivery d = getDel(deliveries, r.getEnd());

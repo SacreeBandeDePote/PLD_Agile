@@ -25,8 +25,6 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.*;
 
-import com.sun.javafx.scene.canvas.CanvasHelper.CanvasAccessor;
-
 public class WindowManager{
 
 	private static int MIN_X;

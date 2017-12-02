@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
+	public final float MEAN_SPEED = 250f; //m*min^-1
 	private List<Street> streets = new ArrayList<Street>();
 	private Intersection startingPoint;
 	
@@ -39,12 +40,16 @@ public class Route {
 		}
 		return sum;
 	}
-	
+
 	public String toString() {
 		String s = "Point de départ: " + startingPoint.getX() + " | " + startingPoint.getY() + "\r\n";
 		for(Street street: streets) {
 			s += street.toString();
 		}
 		return s;
+	}
+
+	public float getTotalTime() {
+		return getTotalLength()/MEAN_SPEED;
 	}
 }

@@ -6,9 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javafx.util.Pair;
-import lsbdp.agile.algorithm.Dijkstra;
-import lsbdp.agile.algorithm.GloutonTSP;
-import lsbdp.agile.algorithm.StupidTSP;
+import lsbdp.agile.algorithm.*;
 import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
@@ -20,14 +18,14 @@ import lsbdp.agile.view.WindowManager;
 public class Controller {
 	private static CommandList cmdList;
 	private static StreetMap map;
-	private static StupidTSP algo; 
+	private static TSP algo;
 	private static DeliverySchedule schedule;
 	private static DeliveriesRequest deliveries;
 	
 	public Controller() {
 		Controller.schedule = new DeliverySchedule();
 		Controller.cmdList = new CommandList();
-		Controller.algo = new StupidTSP();
+		Controller.algo = new TemplateTSP();
 	}
 	
 	//Gérer Map
@@ -45,7 +43,7 @@ public class Controller {
 	//Gérer Schedule
 	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(XML, map);
-		algo.findSolution(schedule, map, deliveries.getWarehouse(), deliveries.getDeliveryList());
+		algo.findSolution(schedule, map, deliveries);
 		WindowManager.colorDeliverySchedule(schedule);
 		WindowManager.loadListView(schedule);
 		return schedule;
