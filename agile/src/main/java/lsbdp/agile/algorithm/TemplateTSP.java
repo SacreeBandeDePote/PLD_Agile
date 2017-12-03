@@ -56,8 +56,7 @@ public class TemplateTSP implements TSP {
 	}
 
 	private Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		//return new SeqIterator(nonView);
-		return new LessCostIterator(crtNode, nonView, timeCost);
+		return new SeqIterator(nonView);
 	}
 
 	/*
