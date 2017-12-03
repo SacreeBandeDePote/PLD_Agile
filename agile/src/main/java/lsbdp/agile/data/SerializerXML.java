@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,17 +32,20 @@ import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
-
+/**
+ * Classe permettant de désérialiser un fichier XML(une map ou un fichier de livraisons) en objet JAVA
+ * @author Vincent
+ *
+ */
 public class SerializerXML {
 	
 	static ArrayList<Long> idIdentifier;
-	
-	public static void main(String[] args) {
-        File fileMap = new File("Data/fichiersXML/planLyonMoyen.xml");
-        File fileDL = new File("Data/fichiersXML/DLmoyen5.xml");
-        deserializeDeliveryXML(fileDL, deserializeMapXML(fileMap));
-	}
 
+	/**
+	 * Méthode permettant de désérialiser une map à partir d'un fichier XML
+	 * @param fileXML
+	 * @return
+	 */
 	public static StreetMap deserializeMapXML(File fileXML) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		StreetMap streetMap = new StreetMap();
@@ -59,12 +64,18 @@ public class SerializerXML {
 		}
 		return streetMap;
 	}
-	
+	/**
+	 * Méthode permettant de lire et de créer toutes les intersections à partir d'un fichier XML
+	 * @param root
+	 * @return
+	 */
 	public static StreetMap readIntersection (Element root) {
 		NodeList racineNoeuds = root.getChildNodes();
 		int nbRacineNoeuds = racineNoeuds.getLength();
 		StreetMap streetMap = new StreetMap();
 		idIdentifier = new ArrayList<Long>();
+		long mid = 0;
+		int count = 0;
 		for (int i = 0; i < nbRacineNoeuds; i++) {
 			if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 				Element element = (Element) racineNoeuds.item(i);
@@ -74,13 +85,32 @@ public class SerializerXML {
 					idIdentifier.add(idLong);
 					int x = Integer.parseInt(element.getAttribute("x"));
 					int y = Integer.parseInt(element.getAttribute("y"));
-					streetMap.put((long) id, new Intersection(id, x, y));
+					mid += y;
+					count++;
+					streetMap.put((long) id, new Intersection(id, y, x));
 				}
 			}
 		}
+		mid = mid/count;
+		Set<Long> keys = streetMap.keySet();
+		Iterator<Long> iterator = keys.iterator();
+		while(iterator.hasNext()) {
+			Long key = (Long) iterator.next();
+			long yCoord = streetMap.get(key).getY();
+			long dif = yCoord - mid;
+			if(dif>0) streetMap.get(key).setY((int) (mid+dif));
+			if(dif<0) streetMap.get(key).setY((int) (mid-dif));
+
+		}
+		
 		return streetMap;
 	}
 	
+	/**
+	 * Méthode permettant de lire et de créer toutes les rues à partir d'un fichier XML
+	 * @param root
+	 * @param streetMap
+	 */
 	public static void readTroncon (Element root, StreetMap streetMap) {
 		NodeList racineNoeuds = root.getChildNodes();
 		int nbRacineNoeuds = racineNoeuds.getLength();
@@ -102,6 +132,12 @@ public class SerializerXML {
 		}
 	}
 
+	/**
+	 * Méthode permettant de lire un fichier de livraisons et de créer un parcours de livraisons à partir d'un fichier XML
+	 * @param fileXML
+	 * @param streetMap
+	 * @return
+	 */
 	public static DeliveriesRequest deserializeDeliveryXML(File fileXML, StreetMap streetMap) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DeliveriesRequest deliveriesRequest = null;
@@ -122,6 +158,12 @@ public class SerializerXML {
 		return deliveriesRequest;
 	}
 	
+	/**
+	 * Méthode permettant de lire un entrepôt et une heure de départ de livraison à partir d'un fichier XML
+	 * @param root
+	 * @param streetMap
+	 * @return
+	 */
 	public static Pair <Intersection, Date> readWarehouse (Element root, StreetMap streetMap) {
 		DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 		Date startingTime = null;
@@ -144,8 +186,14 @@ public class SerializerXML {
 			e.printStackTrace();
 		}
 		return new Pair <Intersection, Date> (warehouse,startingTime);
-	}
+	} 
 	
+	/**
+	 * Méthode permettant de lire et de créer un lieu de livraison à partir d'un fichier XML
+	 * @param root
+	 * @param streetMap
+	 * @return
+	 */
 	public static ArrayList<Delivery> readDelivery(Element root, StreetMap streetMap){
 		ArrayList<Delivery> deliveryList = new ArrayList<Delivery>();
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
