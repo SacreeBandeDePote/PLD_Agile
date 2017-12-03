@@ -57,12 +57,22 @@ public class MainWindow extends Application {
 		return file;
 	}
 	
-	public static void openPopUp(Intersection intersection) {
-		Popup pop = PopupWindowManager.createPopup(intersection);
+	public static void openMessagePopup(String message) {
+		Popup pop = PopupWindowManager.createMessagePopup(message);
+		pop.show(stage);
+	}
+	
+	public static void openAddPopUp(Intersection intersection) {
+		Popup pop = PopupWindowManager.createAddPopup(intersection);
 		pop.show(stage);
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public static File openFileChooserRoadmap(FileChooser fileChooser) {
+		File file = fileChooser.showSaveDialog(stage);
+		return file;
 	}
 }

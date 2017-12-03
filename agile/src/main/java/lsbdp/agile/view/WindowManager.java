@@ -3,11 +3,16 @@ package lsbdp.agile.view;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -33,6 +38,9 @@ public class WindowManager{
 	private static int MAX_Y;
 	private static Scene scene;
 
+	public static boolean mapLoaded = false;
+	public static boolean deliveriesLoaded = false;
+	
 	public static CanvasDrawer canvasDrawer = null;
 	
 	private static StreetMap streetMap;
@@ -47,6 +55,17 @@ public class WindowManager{
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);
 		Controller controller = new Controller();
+		KeyCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
+		
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent arg0) {
+				if(ctrlZ.match(arg0)) {
+					Controller.undo();
+				}
+			}
+			
+		});
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {

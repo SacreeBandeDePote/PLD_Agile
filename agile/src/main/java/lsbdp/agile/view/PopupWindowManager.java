@@ -15,7 +15,7 @@ import lsbdp.agile.model.Intersection;
 
 public class PopupWindowManager {
 
-	public static Popup createPopup(Intersection intersection) {
+	public static Popup createAddPopup(Intersection intersection) {
 		Popup pop = new Popup();
 		Label l = new Label("Create Delivery on intersection " + intersection.getId());
 		
@@ -46,10 +46,10 @@ public class PopupWindowManager {
 		validButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent arg0) {
-				System.out.println("xdfgvhbj");
-				EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
 				if(isInteger(durationField.getText())) {
+					EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
 				}else {
+					MainWindow.openMessagePopup("Please enter a correct duration");
 				}
 				pop.hide();
 			}
@@ -105,4 +105,31 @@ public class PopupWindowManager {
 	    return true;
 	}
 	
+	public static Popup createMessagePopup(String message) {
+		Popup pop = new Popup();
+		Label mess = new Label(message);
+		mess.setPadding(new Insets(15));
+		Button returnButton = new Button("Return");
+		
+		returnButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				pop.hide();
+			}		
+		});
+		
+		VBox vbox = new VBox(mess, returnButton);
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setSpacing(5);
+		vbox.setPadding(new Insets(10));
+		vbox.setStyle("-fx-background-color : FFFFFF;"
+					+ "-fx-background-radius : 5;"
+				    + "-fx-border-color : C0C0C0;"
+				    + "-fx-border-width : 3;"
+				    + "-fx-border-radius : 5");
+		
+		pop.getContent().add(vbox);
+		
+		return pop;
+	}
 }
