@@ -224,6 +224,12 @@ public class SerializerXML {
 		return deliveryList;
 	}
 	
+	/**
+	 * Méthode permettant de générer une feuille de route
+	 * @param f
+	 * @param d
+	 * @throws FileNotFoundException
+	 */
 	public static void generateRoadMap(File f, DeliverySchedule d) throws FileNotFoundException {
 		PrintWriter out = new PrintWriter(f);
 		String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
