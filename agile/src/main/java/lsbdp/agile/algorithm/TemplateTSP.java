@@ -14,8 +14,11 @@ public abstract class TemplateTSP implements TSP {
 	protected float bestSolutionCost;
 	private boolean solutionFound;
 
+	private int count;
+
 	@Override
 	public void findSolution(DeliverySchedule schedule, StreetMap map, DeliveriesRequest req) {
+		count = 0;
 		Intersection warehouse = req.getWarehouse();
 		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
@@ -56,11 +59,13 @@ public abstract class TemplateTSP implements TSP {
 		} else {
 			System.out.println("No Solution Found");
 		}
+
+		System.out.println("Number of call : " + count);
 		//TODO : What to do with the come back to the warehouse ??
 	}
 
 
-	protected abstract boolean bound(int crtNode, ArrayList<Integer> nonView, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
+	protected abstract float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
 
 	protected abstract Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
 
@@ -68,10 +73,9 @@ public abstract class TemplateTSP implements TSP {
 	When i visit a node, it means that i manage to get to the node and that it is possible to get there. the crtCost has been increment by its duration
 	 */
 	private void branchAndBound(int crtNode, ArrayList<Integer> nonView, ArrayList<Integer> view, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		//System.out.println("Time of arrival in " + crtNode + " : " + crtCost);
+		count++;
 		if (nonView.isEmpty()) { //this is the last node that has been visited
 			crtCost += timeCost[crtNode][timeCost.length - 1]; //we have to go back to the warehouse
-			//System.out.println("Solution found : cost : " + crtCost);
 			if (crtCost < bestSolutionCost) { //we find a better solution
 				bestSolutionCost = crtCost;
 				view.toArray(bestSolution);
@@ -82,35 +86,29 @@ public abstract class TemplateTSP implements TSP {
 				//System.out.println(Arrays.toString(bestSolution));
 			}
 		} else {
-			if (bound(crtNode, nonView, crtCost, timeCost, duration, timeWindows)) { //there are still nodes to visit
+			if (crtCost + bound(crtNode, nonView, timeCost, duration, timeWindows) < bestSolutionCost) { //there are still nodes to visit
 				Iterator<Integer> it = iterator(crtNode, nonView, timeCost, duration, timeWindows);
 				while (it.hasNext()) {
 					Integer nextNode = it.next();
 					//TODO : ask the teacher if the the duration have to be in the time window
 					//TODO : answer -> we take account of the duration of delivery
-					if (timeWindows[nextNode] != null) {
-						if (crtCost + timeCost[crtNode][nextNode] + duration[nextNode] > timeWindows[nextNode].getValue()) { //do we arrive to late for the delivery
-							//System.out.println("we arrive to late to the delivery " + nextNode);
+					if (timeWindows[nextNode] != null)
+						if (crtCost + timeCost[crtNode][nextNode] + duration[nextNode] > timeWindows[nextNode].getValue()) //do we arrive to late for the delivery
 							continue; // not useful to explore this branch
-						}
-					}
+
 					view.add(nextNode);
 					nonView.remove(nextNode);
 					float newCrtCost = crtCost + timeCost[crtNode][nextNode];
-					if (timeWindows[nextNode] != null) {
-						if (newCrtCost < timeWindows[nextNode].getKey()) { //if we arrive before the beginning of a time window, we wait !
-							//System.out.println("We arrive too early at "+ nextNode +" actual time : " + newCrtCost);
+					if (timeWindows[nextNode] != null)
+						if (newCrtCost < timeWindows[nextNode].getKey()) //if we arrive before the beginning of a time window, we wait !
 							newCrtCost = timeWindows[nextNode].getKey();
-						}
-					}
+
 					tempTimeOfArrival[nextNode] = newCrtCost;
 					newCrtCost += duration[nextNode];
 					branchAndBound(nextNode, nonView, view, newCrtCost, timeCost, duration, timeWindows);
 					view.remove(nextNode);
 					nonView.add(nextNode);
 				}
-			} else {
-				//System.out.println("No use to explore this branch");
 			}
 		}
 	}

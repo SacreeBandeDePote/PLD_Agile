@@ -34,14 +34,6 @@ public class TestIterator {
 	@Test
 	public void testIterator() {
 		LessCostIterator b = new LessCostIterator(crtNode, nonView, timeCost);
-		/*	
-	 	System.out.println(b.next());
-		System.out.println(b.next());
-		System.out.println(b.next());
-		System.out.println(b.next());
-		
-		*/
-
 		assertEquals(new Integer(4), b.next());
 		assertEquals(new Integer(2), b.next());
 		assertEquals(new Integer(3), b.next());

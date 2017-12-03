@@ -1,56 +1,34 @@
 package lsbdp.agile.algorithm;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 
 public class LessCostIterator implements Iterator<Integer> {
-	private Integer[] neighbors;
-	private int nbNeighbors;
+	private PriorityQueue<Integer> neighbors;
 
 	public LessCostIterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost) {
-		neighbors = new Integer[nonView.size()];
-		nbNeighbors = 0;
-		int i = 0;
-		float[] cost = new float[nonView.size()];
-		for (Integer s : nonView) {
-			cost[i] = timeCost[crtNode][s];
-			neighbors[nbNeighbors++] = s;
-			i++;
-		}
-
-
-		boolean tab_en_ordre = false;
-		int taille = nbNeighbors;
-		while (!tab_en_ordre) {
-			tab_en_ordre = true;
-			for (int j = 0; j < taille - 1; j++) {
-				if (cost[j] < cost[j + 1]) {
-					float pivot = cost[j];
-					cost[j] = cost[j + 1];
-					cost[j + 1] = pivot;
-
-					int pivot2 = neighbors[j];
-					neighbors[j] = neighbors[j + 1];
-					neighbors[j + 1] = pivot2;
-
-					tab_en_ordre = false;
-				}
+		neighbors = new PriorityQueue<>(nonView.size(), new Comparator<Integer>() {
+			@Override
+			public int compare(Integer integer, Integer t1) {
+				return (int) (timeCost[crtNode][integer] - timeCost[crtNode][t1]);
 			}
-			taille--;
+		});
+		for (Integer s : nonView) {
+			neighbors.add(s);
 		}
-
-
 	}
 
 
 	@Override
 	public boolean hasNext() {
-		return nbNeighbors > 0;
+		return !neighbors.isEmpty();
 	}
 
 	@Override
 	public Integer next() {
-		return neighbors[--nbNeighbors];
+		return neighbors.poll();
 	}
 
 }

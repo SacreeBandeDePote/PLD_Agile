@@ -22,7 +22,7 @@ public class Controller {
 	public Controller() {
 		Controller.schedule = new DeliverySchedule();
 		Controller.cmdList = new CommandList();
-		Controller.algo = new NaiveTSP();
+		Controller.algo = new ShortestLessCostTSP();
 	}
 	
 	//Gérer Map
