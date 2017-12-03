@@ -1,5 +1,6 @@
 package lsbdp.agile;
 
+import lsbdp.agile.algorithm.NaiveTSP;
 import lsbdp.agile.algorithm.TSP;
 import lsbdp.agile.algorithm.TemplateTSP;
 import lsbdp.agile.data.SerializerXML;
@@ -20,7 +21,7 @@ public class TestTSP {
 		File f = new File("./Data/fichiersXML/planLyonMoyen.xml");
 		map = SerializerXML.deserializeMapXML(f);
 
-		f = new File("./Data/fichiersXML/DLmoyen5TW4.xml");
+		f = new File("./Data/fichiersXML/DLmoyen10TW3.xml");
 		req = SerializerXML.deserializeDeliveryXML(f, map);
 	}
 
@@ -31,9 +32,11 @@ public class TestTSP {
 
 	@Test
 	public void tesTSP() {
-		TSP test = new TemplateTSP();
+		TSP test = new NaiveTSP();
 		DeliverySchedule s = new DeliverySchedule();
 
+		long start = System.currentTimeMillis();
 		test.findSolution(s, map, req);
+		System.out.println(System.currentTimeMillis() - start);
 	}
 }

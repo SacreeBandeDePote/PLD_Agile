@@ -3,15 +3,12 @@ package lsbdp.agile.controller;
 import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
-import javafx.util.Pair;
 import lsbdp.agile.algorithm.*;
 import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
-import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.StreetMap;
 import lsbdp.agile.view.WindowManager;
 
@@ -25,7 +22,7 @@ public class Controller {
 	public Controller() {
 		Controller.schedule = new DeliverySchedule();
 		Controller.cmdList = new CommandList();
-		Controller.algo = new TemplateTSP();
+		Controller.algo = new NaiveTSP();
 	}
 	
 	//Gérer Map
