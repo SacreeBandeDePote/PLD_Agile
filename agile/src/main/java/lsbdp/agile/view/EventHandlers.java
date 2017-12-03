@@ -32,7 +32,39 @@ public class EventHandlers {
 
 	@FXML
 	private void addDelivery(ActionEvent event) {
+		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
 		Controller.cmdAdd();
+		} else {
+			MainWindow.openMessagePopup("Please load a map and a delivery request");
+		}
+	}
+	
+	@FXML
+	private void saveDeliveries(ActionEvent event) {
+		if(WindowManager.deliveriesLoaded) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Save your deliveries");
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("XML File", "*.xml")
+					);
+			File f = MainWindow.openFileChooserRoadmap(fileChooser);
+		} else {
+			MainWindow.openMessagePopup("Please load a delivery file");
+		}	
+	}
+	
+	@FXML
+	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException {
+		if(WindowManager.deliveriesLoaded) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Save your roadMap");
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("txt File", "*.txt")
+					);
+			File f = MainWindow.openFileChooserRoadmap(fileChooser);
+		} else {
+			MainWindow.openMessagePopup("Please load a delivery file");
+		}	
 	}
 	
 	@FXML
@@ -47,13 +79,18 @@ public class EventHandlers {
 	
 	@FXML
 	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Choose your deliverires file");
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("XML File", "*.xml")
-				);
-		File f = MainWindow.openFileChooserDeliveries(fileChooser);
-		Controller.loadDeliveryRequest(f);
+			if(WindowManager.mapLoaded) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Choose your deliverires file");
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("XML File", "*.xml")
+					);
+			File f = MainWindow.openFileChooserDeliveries(fileChooser);
+			Controller.loadDeliveryRequest(f);
+			WindowManager.deliveriesLoaded = true;
+			} else {
+				MainWindow.openMessagePopup("Please load a map");
+			}
 	}
 	
 	@FXML
@@ -65,18 +102,12 @@ public class EventHandlers {
 				);
 		File f = MainWindow.openFileChooser(fileChooser);
 		Controller.loadMap(f);
+		WindowManager.mapLoaded = true;
 	}
 	
 	@FXML
 	private void calculateSchedule(ActionEvent event) {
 		// DeliverySchedule schedule = Controller.findDeliverySchedule();
-	}
-
-	@FXML
-	private void shortestPathButtonHandler (ActionEvent event){
-		/*Dijkstra dj = new Dijkstra(streetMap);
-		Route r = dj.performDijkstra(selectedDeliveries.get(0).getLocation(), selectedDeliveries.get(1).getLocation());
-		colorRoute(r);*/
 	}
 	
 	public static void highlightIntersection(Intersection intersection) {
@@ -203,7 +234,7 @@ public class EventHandlers {
 	}
 
 	public static void temporaryIntersectionClicked(Intersection intersection) {
-		MainWindow.openPopUp(intersection);
+		MainWindow.openAddPopUp(intersection);
 	}
 
 	public static void addDelivery(Intersection intersection, String duration, String startingTime, String endTime) {

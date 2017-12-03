@@ -21,7 +21,8 @@ public class WidgetBuilder {
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 		
-		Label label = new Label("Livraison nÂ°"+count);	
+		Label label = new Label("Livraison n°"+count + ", duration : " + delivery.getDuration()+"s");	
+		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		
 		return label;
@@ -58,7 +59,7 @@ public class WidgetBuilder {
 	public static Button createListViewDeleteButton(Delivery delivery) {
 		Button btn = new Button();
 		btn.setText("X");
-		btn.setStyle("-fx-background-color : d21919");
+		btn.setStyle("-fx-background-radius : 40");
 		btn.setMaxHeight(4);
 		btn.setMaxWidth(4);
 		
