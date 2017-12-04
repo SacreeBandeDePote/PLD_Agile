@@ -112,7 +112,8 @@ public class WidgetBuilder {
 		circle.setFill(color);
 		circle.setId("Circle"+delivery.getLocation().getId());
 
-		Tooltip tooltip = new Tooltip("Delivery duration : " + delivery.getDuration());
+		Tooltip tooltip = new Tooltip("Delivery on Intersection number : " + delivery.getLocation().getId()
+									+ "\nDuration : " + delivery.getDuration());
 		tooltip.setAutoHide(false);
 		tooltip.install(circle, tooltip);
 		circle.setOnMouseEntered(new EventHandler<MouseEvent>() {

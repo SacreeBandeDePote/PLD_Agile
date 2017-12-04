@@ -147,7 +147,7 @@ public class CanvasDrawer {
 		Double endY        = normalizeY((double)end.getY(), canvas.getHeight());
 		Line line          = new Line(startX, startY, endX, endY);
 		
-	    line.setStrokeWidth(1);
+	    line.setStrokeWidth(2);
 	    line.setStroke(color);
 	    
 	    overlay.getChildren().add(line);

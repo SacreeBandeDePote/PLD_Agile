@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lsbdp.agile.view.EventHandlers">
@@ -29,16 +30,23 @@
                       </Menu>
                       <Menu mnemonicParsing="false" text="Edit">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#UndoAction" text="Undo" />
-                              <MenuItem mnemonicParsing="false" onAction="#RedoAction" text="Redo" />
+                          <MenuItem mnemonicParsing="false" onAction="#UndoAction" text="Undo (Ctrl + Z)" />
+                              <MenuItem mnemonicParsing="false" onAction="#RedoAction" text="Redo (Ctrl + R)" />
+                              <MenuItem mnemonicParsing="false" onAction="#switchViewHandler" text="Switch View" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Deliveries">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#calculateSchedule" text="Calculate schedul with stupid TSP" />
                               <MenuItem mnemonicParsing="false" onAction="#addDelivery" text="Add delivery" />
+                              <MenuItem mnemonicParsing="false" onAction="#quitAdditionHandler" text="Quit Addition Mode" />
                         </items>
                       </Menu>
+                        <Menu mnemonicParsing="false" text="Roadmap">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#generateRoadmapActionHandler" text="Generate Roadmap" />
+                          </items>
+                        </Menu>
                     </menus>
                   </MenuBar>
                </children>
@@ -47,7 +55,12 @@
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
-                        <HBox fx:id="canvasHBox" alignment="CENTER" prefHeight="444.0" prefWidth="517.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <StackPane fx:id="mainStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox fx:id="timeCheeseHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: derive(#ececec,26.4%);" />
+                              <HBox fx:id="canvasHBox" alignment="CENTER" prefHeight="444.0" prefWidth="517.6" style="-fx-background-color: derive(#ececec,26.4%);" />
+                           </children>
+                        </StackPane>
                      </children></AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>

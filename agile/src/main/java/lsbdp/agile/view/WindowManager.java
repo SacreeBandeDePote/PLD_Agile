@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -40,32 +41,44 @@ public class WindowManager{
 
 	public static boolean mapLoaded = false;
 	public static boolean deliveriesLoaded = false;
-	
+
 	public static CanvasDrawer canvasDrawer = null;
-	
+
 	private static StreetMap streetMap;
 	private static DeliveriesRequest deliveriesRequest;
 	private static Canvas cv;
 	private static Button computeButton;
-	
-		private static ArrayList<Delivery> selectedDeliveries;
-		
+
+	private static ArrayList<Delivery> selectedDeliveries;
+
 	public static void initializer (Scene scene) {
 		WindowManager.scene = scene;
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);
 		Controller controller = new Controller();
 		KeyCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
-		
+		KeyCombination ctrlR = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_ANY);
+
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent arg0) {
 				if(ctrlZ.match(arg0)) {
 					Controller.undo();
 				}
+				if(ctrlR.match(arg0)) {
+					Controller.redo();
+				}
 			}
-			
+
 		});
+	}
+	
+	public static void loadTimeCheese(DeliverySchedule schedule) throws ParseException {
+		HBox hbox = (HBox) scene.lookup("#timeCheeseHBox");
+		Pane overlay = new Pane();
+		
+		TimeCheese.fillTimeCheese(overlay, schedule, scene);
+		hbox.getChildren().add(overlay);
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
@@ -85,7 +98,7 @@ public class WindowManager{
 		Pane overlay = (Pane) scene.lookup("#overlay");
 		Intersection startingPoint = route.getStartingPoint();
 		List<Street> streets       = route.getStreets();
-		
+
 
 		for( Street street : streets) {
 			canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
@@ -100,7 +113,7 @@ public class WindowManager{
 		Pane overlay             = (Pane) scene.lookup("#overlay");
 		ArrayList<Delivery> list = new ArrayList<Delivery>();
 		list                     = r.getDeliveryList();
-		
+
 		overlay.getChildren().clear();
 		for(Delivery d : list) {
 			canvasDrawer.drawDelivery(overlay, d, Color.RED, 5d);
@@ -112,16 +125,15 @@ public class WindowManager{
 
 	public static void loadListView(DeliverySchedule ds) {
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
-		computeButton = (Button)scene.lookup("#computeButton");
-		
+
 		ObservableList<HBox> ol = FXCollections.observableArrayList();
 		selectedDeliveries = new ArrayList<Delivery>();
-		
+
 		ol.add(WidgetBuilder.createListViewHBoxWarehouse(ds.get(0).getKey().getStartingPoint()));
 
 		int cpt = 1;
 		for(Pair<Route,Delivery> p : ds) {
-				if (p.getValue() != null) {
+			if (p.getValue() != null) {
 				ol.add(WidgetBuilder.createListViewHBox(p.getValue(), cpt));
 				cpt++;
 			}
@@ -144,12 +156,12 @@ public class WindowManager{
 		}
 		); */
 	}
-	
+
 	public static void highlightAll(StreetMap map, DeliverySchedule schedule) {
 		Pane overlay = (Pane) scene.lookup("#overlay");
 		Set<Long> keys     = map.keySet();
 		Iterator iterator  = keys.iterator();
-		
+
 		while(iterator.hasNext()) {
 			Long key = (Long) iterator.next();
 			Intersection intersection = map.get(key);
@@ -159,14 +171,14 @@ public class WindowManager{
 			}
 		}
 	}
-	
+
 	public static void drawMap(StreetMap map) {
 		if(canvasDrawer == null) {
 			canvasDrawer = new CanvasDrawer(map.getMaxX(), map.getMinX(), map.getMaxY(), map.getMinY(), scene);	
 		}
 		canvasDrawer.drawMap(map, scene);
 	}
-	
+
 	public static Scene getScene() {
 		return scene;
 	}
