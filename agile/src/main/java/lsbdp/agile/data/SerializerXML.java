@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -29,7 +28,6 @@ import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 /**
@@ -40,7 +38,7 @@ import lsbdp.agile.model.StreetMap;
 public class SerializerXML {
 	
 	static ArrayList<Long> idIdentifier;
-
+	
 	/**
 	 * Méthode permettant de désérialiser une map à partir d'un fichier XML
 	 * @param fileXML
@@ -74,8 +72,7 @@ public class SerializerXML {
 		int nbRacineNoeuds = racineNoeuds.getLength();
 		StreetMap streetMap = new StreetMap();
 		idIdentifier = new ArrayList<Long>();
-		long mid = 0;
-		int count = 0;
+		int mid = 0;
 		for (int i = 0; i < nbRacineNoeuds; i++) {
 			if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 				Element element = (Element) racineNoeuds.item(i);
@@ -83,15 +80,15 @@ public class SerializerXML {
 					Long idLong = Long.parseLong(element.getAttribute("id"));
 					int id = idIdentifier.size();
 					idIdentifier.add(idLong);
+					
 					int x = Integer.parseInt(element.getAttribute("x"));
 					int y = Integer.parseInt(element.getAttribute("y"));
 					mid += y;
-					count++;
 					streetMap.put((long) id, new Intersection(id, y, x));
 				}
 			}
 		}
-		mid = mid/count;
+		mid = mid/streetMap.size();
 		Set<Long> keys = streetMap.keySet();
 		Iterator<Long> iterator = keys.iterator();
 		while(iterator.hasNext()) {
@@ -99,8 +96,7 @@ public class SerializerXML {
 			long yCoord = streetMap.get(key).getY();
 			long dif = yCoord - mid;
 			if(dif>0) streetMap.get(key).setY((int) (mid+dif));
-			if(dif<0) streetMap.get(key).setY((int) (mid-dif));
-
+			if(dif<0) streetMap.get(key).setY((int) (mid-dif));		
 		}
 		
 		return streetMap;
