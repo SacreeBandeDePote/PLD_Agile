@@ -1,6 +1,7 @@
 package lsbdp.agile.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -52,6 +53,10 @@ public class Controller {
 	
 	public static DeliverySchedule getSchedule() {
 		return schedule;
+	}
+	
+	public static void generateRoadmapActionHandler(File xml) {
+		SerializerXML.generateRoadMap(xml, schedule);
 	}
 	
 	//Interaction avec Commandes

@@ -1,4 +1,5 @@
 package lsbdp.agile.model;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +16,11 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 	}
 	
 	public String toString() {
+		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+
 		Intersection entrepot = this.getWhareHouse();
 		String s = "Entrepôt\r\n";
-		s += "Localisation" + entrepot.getX() + " " + entrepot.getY() + "\r\n";
+		s += "Localisation " + entrepot.getX() + " " + entrepot.getY() + "\r\n";
 		s += this.startingTime + ": départ"; //TODO implement stratingTime
 		
 		for(int i = 0; i < this.size() ; i++) {
@@ -37,11 +40,11 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 			
 			if(i == this.size()-1) {
 				s += "Entrepôt\r\n";
-				s += "Localisation" + entrepot.getX() + " " + entrepot.getY() + "\r\n";
+				s += "Localisation " + entrepot.getX() + " " + entrepot.getY() + "\r\n";
 				s += this.endingTime + ": arrivée\r\n"; // TODO implement eta :)
 			} else {
-				s += "Livraison " + i;
-				s += "Localisation" + pair.getValue().getLocation().getX() + " | " + pair.getValue().getLocation().getY() + "\r\n";
+				s += "LIVRAISON	" + i;
+				s += " Localisation " + pair.getValue().getLocation().getX() + " | " + pair.getValue().getLocation().getY() + "\r\n";
 				s += pair.getValue().getTimespanStart() + ": arrivée\r\n";
 				s += "     |\r\n";
 				s += pair.getValue().getTimespanStart() + ": départ";
