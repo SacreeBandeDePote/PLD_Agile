@@ -14,7 +14,7 @@ public class Dijkstra {
 		Map<Long, Float> distances = new HashMap<>();
 		Map<Long, Long> previous = new HashMap<>();
 		Comparator<Intersection> comparator = new RouteComparator(distances);
-		List<Intersection> nonView = new ArrayList<>();
+		PriorityQueue<Intersection> nonView = new PriorityQueue<>(map.size(), comparator);
 
 		//init the non view list
 		for (Intersection node : map.values()) {
@@ -29,8 +29,8 @@ public class Dijkstra {
 
 		//We know that a treated node has its shortest route
 		//then we stop as soon as we go to the end node
-		while (!nonView.get(0).equals(end)) {
-			Intersection current = nonView.get(0);
+		while (!nonView.peek().equals(end)) {
+			Intersection current = nonView.poll();
 			if (current.equals(end))
 				break;
 			for (Intersection neighbor : current.getNeighbors()) {
@@ -38,10 +38,11 @@ public class Dijkstra {
 				if (dist < distances.get(neighbor.getId())) {
 					distances.put(neighbor.getId(), dist);
 					previous.put(neighbor.getId(), current.getId());
+					nonView.remove(neighbor);
+					nonView.add(neighbor);
 				}
 			}
-			nonView.remove(0);
-			nonView.sort(comparator);
+			nonView.remove(current);
 		}
 
 		long routeId = end.getId();
