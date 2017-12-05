@@ -9,7 +9,7 @@ import lsbdp.agile.model.StreetMap;
 
 public class CommandHandler {
 
-	//Handler CommandDelete
+	//General Handler
 	public static Pair<Route, Delivery> findByDelivery(DeliverySchedule schedule, Delivery d) {
 		for(Pair<Route, Delivery> p : schedule) {
 			if(p.getValue() == d)
@@ -17,6 +17,11 @@ public class CommandHandler {
 		}
 		return null;
 	}
+	public boolean isOK(DeliverySchedule schedule, Delivery delivery) {
+		return true;
+	}
+	
+	//Handler CommandDelete
 	public static int deleteDelivery(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> element) {
 		//Sauvegarde l'index de la delivery
 		int index = schedule.indexOf(element);

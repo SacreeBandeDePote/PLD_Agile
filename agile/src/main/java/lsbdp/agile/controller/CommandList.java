@@ -19,6 +19,9 @@ public class CommandList {
 				commandList.set(index, c);
 			else
 				commandList.add(index, c);
+		} else {
+			index --;
+			indexMax = index;
 		}
 	}
 	public void undo() {
