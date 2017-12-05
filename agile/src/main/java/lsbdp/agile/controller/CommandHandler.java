@@ -1,6 +1,7 @@
-package lsbdp.agile.algorithm;
+package lsbdp.agile.controller;
 
 import javafx.util.Pair;
+import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Route;
@@ -21,12 +22,12 @@ public class CommandHandler {
 		int index = schedule.indexOf(element);
 		
 		//Calcule la nouvelle route
-		Delivery startDelivery = schedule.get(index-1).getValue();
-		Delivery endDelivery = schedule.get(index+1).getValue();
-		Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation() , endDelivery.getLocation());
-		
-		schedule.set(index+1, new Pair<>(newRoute, endDelivery));
-		//Enleve la delivery
+		if(index < schedule.size() - 1) {
+			Delivery endDelivery = schedule.get(index+1).getValue();
+			Route newRoute = Dijkstra.performDijkstra(map, element.getKey().getStartingPoint() , endDelivery.getLocation());
+			schedule.set(index+1, new Pair<>(newRoute, endDelivery));
+			//Enleve la delivery
+		}
 		schedule.remove(index);
 		return index;
 	}
