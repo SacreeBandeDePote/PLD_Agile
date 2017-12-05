@@ -10,14 +10,14 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 	private Date startingTime;
 	private Date endingTime;
 	
-	public Intersection getWhareHouse() {
+	public Intersection getWarehouse() {
 		return this.get(0).getKey().getStartingPoint();
 	}
 	
 	public String toString() {
 		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 
-		Intersection entrepot = this.getWhareHouse();
+		Intersection entrepot = this.getWarehouse();
 		String s = "Entrepôt\r\n";
 		s += "Localisation : Coordonnées X " + entrepot.getX() + " | Y " + entrepot.getY() + "\r\n";
 		s += "Heure de départ : " + formater.format(this.startingTime) +"\r\n";

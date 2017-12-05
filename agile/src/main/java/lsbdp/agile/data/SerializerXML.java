@@ -49,7 +49,7 @@ public class SerializerXML {
 	 * @param file
 	 */
 	public static void serializeDeliveryXML(DeliverySchedule deliveriesSchedule, File file) {
-		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat formater = new SimpleDateFormat("H:m:s");
 		try {
 			file.createNewFile();
 			FileWriter ffw=new FileWriter(file);
