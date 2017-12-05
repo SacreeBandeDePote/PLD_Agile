@@ -7,12 +7,14 @@ public class Delivery {
 	private Date timespanStart;
 	private Date timespanEnd;
 	private Intersection location;
+	private Date deliveryTime;
 	
-	public Delivery(int duration, Date timespanStart, Date timespanEnd, Intersection location) {
+	public Delivery(int duration, Date timespanStart, Date timespanEnd, Intersection location, Date deliveryT) {
 		this.duration = duration;
 		this.timespanStart = timespanStart;
 		this.timespanEnd = timespanEnd;
 		this.location = location;
+		this.deliveryTime = deliveryT;
 	}
 
 	public Intersection getLocation() {
@@ -44,5 +46,13 @@ public class Delivery {
 
 	public void setTimespanEnd(Date timespanEnd) {
 		this.timespanEnd = timespanEnd;
+	}
+
+	public Date getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	public void setDeliveryTime(Date deliveryTime) {
+		this.deliveryTime = deliveryTime;
 	}
 }

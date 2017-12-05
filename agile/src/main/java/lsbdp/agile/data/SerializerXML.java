@@ -214,7 +214,7 @@ public class SerializerXML {
 						long idIntersection= Long.parseLong(element.getAttribute("adresse"));
 						Long id = (long) idIdentifier.indexOf(idIntersection);
 						Intersection location = streetMap.get(id);
-						deliveryList.add(new Delivery(duration, timespanStart, timespanEnd, location));
+						deliveryList.add(new Delivery(duration, timespanStart, timespanEnd, location, null));
 					}
 				}
 			}
