@@ -20,12 +20,24 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <mainClass>lsbdp.agile.view.MainWindow</mainClass>
+                    <mainClass>lsbdp.agile.view.MainWindow	</mainClass>
                     <arguments>
                         <argument>argument1</argument>
                     </arguments>
                 </configuration>
             </plugin>
+      <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+					<check />
+				</configuration>
+			</plugin>
     </plugins>
   </build>
   <packaging>jar</packaging>

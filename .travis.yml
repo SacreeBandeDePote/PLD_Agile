@@ -4,6 +4,7 @@ jdk:
 
 script:
   - cd agile/ && mvn install
+  - mvn cobertura:cobertura
 
 # Upload coverage data to codecov.io
 after_success:
