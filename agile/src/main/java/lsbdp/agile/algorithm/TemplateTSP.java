@@ -52,8 +52,14 @@ public abstract class TemplateTSP implements TSP {
 			for (int i = 0; i < bestSolution.length - 1; i++) {
 				Delivery d = deliveries.get(bestSolution[i + 1]);
 				Route r = graphTSP[bestSolution[i]][bestSolution[i + 1]];
+				long diffTime = start.getTime() + (long)(timeOfArrival[bestSolution[i + 1]]*60f*1000f);
+				Date delTime = new Date(diffTime);
+				d.setDeliveryTime(delTime);
 				schedule.add(new Pair<>(r, d));
 			}
+			long diffTime = start.getTime() + (long)(timeOfArrival[graphTSP.length - 1]*60f*1000f);
+			Date delTime = new Date(diffTime);
+			schedule.setEndingTime(delTime);
 			Route r = graphTSP[bestSolution[bestSolution.length - 1]][graphTSP.length - 1];
 			schedule.add(new Pair<>(r, null));
 		} else {
