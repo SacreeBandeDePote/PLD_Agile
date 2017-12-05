@@ -3,8 +3,6 @@ package lsbdp.agile.controller;
 import java.sql.Time;
 
 import javafx.util.Pair;
-import lsbdp.agile.algorithm.CommandHandler;
-
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.StreetMap;
