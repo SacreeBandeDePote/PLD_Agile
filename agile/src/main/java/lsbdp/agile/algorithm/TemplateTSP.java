@@ -3,18 +3,22 @@ package lsbdp.agile.algorithm;
 import javafx.util.Pair;
 import lsbdp.agile.model.*;
 
-import javax.sound.midi.Soundbank;
 import java.lang.reflect.Array;
 import java.util.*;
 
-public class TemplateTSP implements TSP {
+public abstract class TemplateTSP implements TSP {
 
 	private Integer[] bestSolution;
-	private float bestSolutionCost;
+	private Float[] timeOfArrival;
+	private Float[] tempTimeOfArrival;
+	protected float bestSolutionCost;
 	private boolean solutionFound;
+
+	private int count;
 
 	@Override
 	public void findSolution(DeliverySchedule schedule, StreetMap map, DeliveriesRequest req) {
+		count = 0;
 		Intersection warehouse = req.getWarehouse();
 		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
@@ -27,6 +31,8 @@ public class TemplateTSP implements TSP {
 		Pair<Float, Float>[] timeWindows = createTimeWindowsTable(deliveries, start);
 
 		bestSolution = new Integer[deliveries.size() + 1];
+		timeOfArrival = new Float[deliveries.size() + 1];
+		tempTimeOfArrival = new Float[deliveries.size() + 1];
 		bestSolutionCost = Float.MAX_VALUE;
 		solutionFound = false;
 
@@ -41,6 +47,7 @@ public class TemplateTSP implements TSP {
 		if (solutionFound) {
 			System.out.println("Best Solution found : cost : " + bestSolutionCost);
 			System.out.println(Arrays.toString(bestSolution));
+			System.out.println(Arrays.toString(timeOfArrival));
 
 			for (int i = 0; i < bestSolution.length - 1; i++) {
 				Delivery d = deliveries.get(bestSolution[i + 1]);
@@ -52,60 +59,56 @@ public class TemplateTSP implements TSP {
 		} else {
 			System.out.println("No Solution Found");
 		}
+
+		System.out.println("Number of call : " + count);
 		//TODO : What to do with the come back to the warehouse ??
 	}
 
 
-	private boolean bound(int crtNode, ArrayList<Integer> nonView, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		return crtCost < bestSolutionCost;
-	}
+	protected abstract float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
 
-	private Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		return new SeqIterator(nonView);
-	}
+	protected abstract Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
 
 	/*
 	When i visit a node, it means that i manage to get to the node and that it is possible to get there. the crtCost has been increment by its duration
 	 */
 	private void branchAndBound(int crtNode, ArrayList<Integer> nonView, ArrayList<Integer> view, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		System.out.println("Time of arrival in " + crtNode + " : " + crtCost);
+		count++;
 		if (nonView.isEmpty()) { //this is the last node that has been visited
 			crtCost += timeCost[crtNode][timeCost.length - 1]; //we have to go back to the warehouse
-			System.out.println("Solution found : cost : " + crtCost);
 			if (crtCost < bestSolutionCost) { //we find a better solution
-				view.toArray(bestSolution);
 				bestSolutionCost = crtCost;
+				view.toArray(bestSolution);
+				timeOfArrival = tempTimeOfArrival.clone();
+				timeOfArrival[timeOfArrival.length - 1] = bestSolutionCost;
 				solutionFound = true;
-				System.out.println("New Best Solution found : cost : " + bestSolutionCost);
-				System.out.println(Arrays.toString(bestSolution));
+				//System.out.println("New Best Solution found : cost : " + bestSolutionCost);
+				//System.out.println(Arrays.toString(bestSolution));
 			}
 		} else {
-			if (bound(crtNode, nonView, crtCost, timeCost, duration, timeWindows)) { //there are still nodes to visit
+			if (crtCost + bound(crtNode, nonView, timeCost, duration, timeWindows) < bestSolutionCost) { //there are still nodes to visit
 				Iterator<Integer> it = iterator(crtNode, nonView, timeCost, duration, timeWindows);
 				while (it.hasNext()) {
 					Integer nextNode = it.next();
 					//TODO : ask the teacher if the the duration have to be in the time window
-					if (timeWindows[nextNode] != null) {
-						if (crtCost + timeCost[crtNode][nextNode] > timeWindows[nextNode].getValue()) { //do we arrive to late for the delivery
-							System.out.println("we arrive to late to the delivery " + nextNode);
+					//TODO : answer -> we take account of the duration of delivery
+					if (timeWindows[nextNode] != null)
+						if (crtCost + timeCost[crtNode][nextNode] + duration[nextNode] > timeWindows[nextNode].getValue()) //do we arrive to late for the delivery
 							continue; // not useful to explore this branch
-						}
-					}
+
 					view.add(nextNode);
 					nonView.remove(nextNode);
-					float newCrtCost = crtCost + timeCost[crtNode][nextNode] + duration[nextNode];
-					if (timeWindows[nextNode] != null) {
-						if (newCrtCost < timeWindows[nextNode].getKey()) { //if we arrive before the beginning of a time window, we wait !
-							System.out.println("We arrive too early, actual time : " + newCrtCost);
+					float newCrtCost = crtCost + timeCost[crtNode][nextNode];
+					if (timeWindows[nextNode] != null)
+						if (newCrtCost < timeWindows[nextNode].getKey()) //if we arrive before the beginning of a time window, we wait !
 							newCrtCost = timeWindows[nextNode].getKey();
-						}
-					}
+
+					tempTimeOfArrival[nextNode] = newCrtCost;
+					newCrtCost += duration[nextNode];
 					branchAndBound(nextNode, nonView, view, newCrtCost, timeCost, duration, timeWindows);
 					view.remove(nextNode);
 					nonView.add(nextNode);
 				}
-			} else {
-				System.out.println("No use to explore this branch");
 			}
 		}
 	}
@@ -142,7 +145,7 @@ public class TemplateTSP implements TSP {
 
 			if (timeSpanEnd == null) {
 				timeWindows[i] = null;
-				break;
+				continue;
 			}
 			float startSpan = (timeSpanStart.getTime() - start.getTime()) / (1000f * 60f); //ms to minutes
 			float endSpan = (timeSpanEnd.getTime() - start.getTime()) / (1000f * 60f); //ms to minutes
@@ -152,13 +155,5 @@ public class TemplateTSP implements TSP {
 		timeWindows[timeWindows.length - 1] = null;
 
 		return timeWindows;
-	}
-
-	private Delivery getDel(List<Delivery> deliveries, Intersection target) {
-		for (Delivery del : deliveries) {
-			if (del.getLocation().equals(target))
-				return del;
-		}
-		return null;
 	}
 }
