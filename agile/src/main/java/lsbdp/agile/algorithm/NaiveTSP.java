@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public class NaiveTSP extends TemplateTSP{
 	@Override
-	protected float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
+	protected float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost) {
 		return 0;
 	}
 

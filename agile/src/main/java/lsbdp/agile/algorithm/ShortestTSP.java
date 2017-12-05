@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class ShortestTSP extends NaiveTSP{
 
 	@Override
-	protected float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
+	protected float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost) {
 		ArrayList<Integer> toVisit = new ArrayList<>(nonView);
 		int nextIndex;
 		int index = crtNode;
