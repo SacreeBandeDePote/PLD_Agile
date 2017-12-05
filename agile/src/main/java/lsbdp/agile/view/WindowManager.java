@@ -57,7 +57,7 @@ public class WindowManager{
 		sp.getDividers().get(0).setPosition(0.85);
 		Controller controller = new Controller();
 		KeyCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
-		KeyCombination ctrlR = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_ANY);
+		KeyCombination ctrlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_ANY);
 
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -65,7 +65,7 @@ public class WindowManager{
 				if(ctrlZ.match(arg0)) {
 					Controller.undo();
 				}
-				if(ctrlR.match(arg0)) {
+				if(ctrlY.match(arg0)) {
 					Controller.redo();
 				}
 			}
