@@ -35,7 +35,7 @@ import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
 /**
- * Classe permettant de désérialiser un fichier XML(une map ou un fichier de livraisons) en objet JAVA
+ * Classe permettant de deserialiser un fichier XML(une map ou un fichier de livraisons) en objet JAVA
  * @author Vincent
  *
  */
@@ -44,7 +44,7 @@ public class SerializerXML {
 	static ArrayList<Long> idIdentifier;
 	
 	/**
-	 * Méthode permettant de sérialiser des objets Java en un document XML dans le but de faire une sauvegarde
+	 * Methode permettant de serialiser des objets Java en un document XML dans le but de faire une sauvegarde
 	 * @param deliveriesRequest
 	 * @param file
 	 */
@@ -78,7 +78,7 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de désérialiser une map à partir d'un fichier XML
+	 * Methode permettant de deserialiser une map a partir d'un fichier XML
 	 * @param fileXML
 	 * @return
 	 */
@@ -101,7 +101,7 @@ public class SerializerXML {
 		return streetMap;
 	}
 	/**
-	 * Méthode permettant de lire et de créer toutes les intersections à partir d'un fichier XML
+	 * Methode permettant de lire et de creer toutes les intersections a partir d'un fichier XML
 	 * @param root
 	 * @return
 	 */
@@ -140,7 +140,7 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de lire et de créer toutes les rues à partir d'un fichier XML
+	 * Methode permettant de lire et de creer toutes les rues a partir d'un fichier XML
 	 * @param root
 	 * @param streetMap
 	 */
@@ -166,7 +166,7 @@ public class SerializerXML {
 	}
 
 	/**
-	 * Méthode permettant de lire un fichier de livraisons et de créer un parcours de livraisons à partir d'un fichier XML
+	 * Methode permettant de lire un fichier de livraisons et de creer un parcours de livraisons a partir d'un fichier XML
 	 * @param fileXML
 	 * @param streetMap
 	 * @return
@@ -192,7 +192,7 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de lire un entrepôt et une heure de départ de livraison à partir d'un fichier XML
+	 * Methode permettant de lire un entrepot et une heure de depart de livraison a partir d'un fichier XML
 	 * @param root
 	 * @param streetMap
 	 * @return
@@ -222,7 +222,7 @@ public class SerializerXML {
 	} 
 	
 	/**
-	 * Méthode permettant de lire et de créer un lieu de livraison à partir d'un fichier XML
+	 * Methode permettant de lire et de creer un lieu de livraison a partir d'un fichier XML
 	 * @param root
 	 * @param streetMap
 	 * @return
@@ -258,7 +258,7 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de générer une feuille de route
+	 * Methode permettant de generer une feuille de route
 	 * @param f
 	 * @param d
 	 * @throws FileNotFoundException

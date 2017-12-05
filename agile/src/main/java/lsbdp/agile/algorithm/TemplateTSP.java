@@ -46,10 +46,6 @@ public abstract class TemplateTSP implements TSP {
 
 		branchAndBound(timeCost.length - 1, nonView, view, 0f, timeCost, duration, timeWindows);
 		if (solutionFound) {
-			System.out.println("Best Solution found : cost : " + bestSolutionCost);
-			System.out.println(Arrays.toString(bestSolution));
-			System.out.println(Arrays.toString(timeOfArrival));
-
 			for (int i = 0; i < bestSolution.length - 1; i++) {
 				Delivery d = deliveries.get(bestSolution[i + 1]);
 				Route r = graphTSP[bestSolution[i]][bestSolution[i + 1]];
@@ -63,11 +59,8 @@ public abstract class TemplateTSP implements TSP {
 			schedule.setEndingTime(delTime);
 			Route r = graphTSP[bestSolution[bestSolution.length - 1]][graphTSP.length - 1];
 			schedule.add(new Pair<>(r, null));
-		} else {
-			System.out.println("No Solution Found");
 		}
 
-		System.out.println("Number of call : " + count);
 		//TODO : What to do with the come back to the warehouse ??
 	}
 
@@ -89,8 +82,6 @@ public abstract class TemplateTSP implements TSP {
 				timeOfArrival = tempTimeOfArrival.clone();
 				timeOfArrival[timeOfArrival.length - 1] = bestSolutionCost;
 				solutionFound = true;
-				//System.out.println("New Best Solution found : cost : " + bestSolutionCost);
-				//System.out.println(Arrays.toString(bestSolution));
 			}
 		} else {
 			if (crtCost + bound(crtNode, nonView, timeCost, duration, timeWindows, crtCost) < bestSolutionCost) { //there are still nodes to visit
