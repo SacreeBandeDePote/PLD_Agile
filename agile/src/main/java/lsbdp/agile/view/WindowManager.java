@@ -73,7 +73,7 @@ public class WindowManager{
 		});
 	}
 	
-	public static void loadTimeDoughnut(DeliverySchedule schedule) throws ParseException {
+	public static void loadTimeDoughnut(DeliverySchedule schedule) {
 		HBox hbox = (HBox) scene.lookup("#timeCheeseHBox");
 		Pane overlay = new Pane();
 		

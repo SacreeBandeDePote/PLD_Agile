@@ -50,19 +50,38 @@ public class TimeDoughnut extends Application {
 		return circle;
 	}
 	
-	public static Arc createArc(Delivery delivery, double start, double duration, Color color) {
+	public static Arc createArcFreeTime(double start, double duration) {
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeCheeseHBox");
+		double centerX = hbox.getWidth()/2;
+		double centerY = hbox.getHeight()/2;
+		
+		Arc arc = new Arc();
+
+		arc.setCenterX(centerX);
+		arc.setCenterY(centerY);
+        arc.setRadiusX(200f);
+        arc.setRadiusY(200f);
+        arc.setStartAngle(start);
+        arc.setLength(duration);
+        arc.setType(ArcType.ROUND);
+        arc.setFill(Color.LIGHTBLUE);
+		
+		return arc;
+	}
+	
+	public static Arc createArcDelivery(Delivery delivery, double start, double duration) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeCheeseHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
 		Arc arc = new Arc();
 		arc.setCenterX(centerX);
 		arc.setCenterY(centerY);
-        arc.setRadiusX(250f);
-        arc.setRadiusY(250f);
+        arc.setRadiusX(225f);
+        arc.setRadiusY(225f);
         arc.setStartAngle(start);
         arc.setLength(duration);
         arc.setType(ArcType.ROUND);
-        arc.setFill(color);
+        arc.setFill(Color.RED);
         
         arc.setOnMouseEntered(new EventHandler<MouseEvent>() {
 
@@ -75,13 +94,18 @@ public class TimeDoughnut extends Application {
         return arc;
 	}
 	
-	public static void fillTimeDoughnut(Pane overlay, DeliverySchedule schedule, Scene scene) throws ParseException {
+	public static void fillTimeDoughnut(Pane overlay, DeliverySchedule schedule, Scene scene) {
 		Date currentTime = null;
 		int odd = 0;
 		int seconds = 10*60*60;
 		Double startT = 360d;
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-		currentTime = sdf.parse("8:0:0");
+		try {
+			currentTime = sdf.parse("8:0:0");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (Pair<Route, Delivery> p : schedule) {
 			if(p.getKey() != null && p.getValue() != null) {
 				Delivery del = p.getValue();
@@ -89,20 +113,18 @@ public class TimeDoughnut extends Application {
 				Date end = del.getTimespanEnd();
 				double dur = del.getDuration();
 				if(odd == 0) {
-					System.err.println(startT);
 					dur += getRouteDuration(p.getKey());
 					dur = dur/seconds;
 					dur = dur*360;
-					Arc arc = createArc(del, startT, -1*dur, Color.BLUE);
+					Arc arc = createArcFreeTime(startT, -1*dur);
 					startT -= dur;
 					overlay.getChildren().add(arc);
 					odd++;
 				}else{
-					System.err.println(startT);
 					dur += getRouteDuration(p.getKey());
 					dur = dur/seconds;
 					dur = dur*360;
-					Arc arc = createArc(del, startT, -1*dur, Color.RED);
+					Arc arc = createArcDelivery(del, startT, -1*dur);
 					startT -= dur;
 					overlay.getChildren().add(arc);
 					odd--;
