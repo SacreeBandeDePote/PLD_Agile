@@ -18,6 +18,7 @@ public abstract class TemplateTSP implements TSP {
 
 	@Override
 	public void findSolution(DeliverySchedule schedule, StreetMap map, DeliveriesRequest req) {
+		schedule.setStartingTime(req.getStartingTime());
 		count = 0;
 		Intersection warehouse = req.getWarehouse();
 		List<Delivery> deliveries = req.getDeliveryList();

@@ -56,6 +56,7 @@ public class EventHandlers {
 					new FileChooser.ExtensionFilter("XML File", "*.xml")
 					);
 			File f = MainWindow.openFileChooserRoadmap(fileChooser);
+			Controller.saveDeliveries(f);
 		} else {
 			MainWindow.openMessagePopup("Please load a delivery file");
 		}	
@@ -89,7 +90,7 @@ public class EventHandlers {
 	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		if(WindowManager.mapLoaded) {
 			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Choose your deliverires file");
+			fileChooser.setTitle("Choose your deliveries file");
 			fileChooser.getExtensionFilters().addAll(
 					new FileChooser.ExtensionFilter("XML File", "*.xml")
 					);
