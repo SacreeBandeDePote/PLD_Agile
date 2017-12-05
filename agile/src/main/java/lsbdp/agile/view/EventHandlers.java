@@ -256,7 +256,7 @@ public class EventHandlers {
 		int tmpDuration = Integer.parseInt(duration);
 		Date start = new Date(10);
 		Date end = new Date(11);
-		Delivery d = new Delivery(tmpDuration, start, end, intersection);
+		Delivery d = new Delivery(tmpDuration, start, end, intersection, null);
 		Controller.cmdAdd2(d);
 	}
 
