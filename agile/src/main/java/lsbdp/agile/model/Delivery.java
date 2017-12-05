@@ -52,7 +52,7 @@ public class Delivery {
 		return deliveryTime;
 	}
 
-	public void setDeliveryTime(Date deliveryTime) {
-		this.deliveryTime = deliveryTime;
+	public void setDeliveryTime(long deliveryTime) {
+		this.deliveryTime.setTime(deliveryTime);
 	}
 }

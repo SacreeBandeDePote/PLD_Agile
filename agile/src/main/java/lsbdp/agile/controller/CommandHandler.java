@@ -62,8 +62,8 @@ public class CommandHandler {
 		Route nextRoute = Dijkstra.performDijkstra(map, d.getLocation(), nextDelivery.getLocation());
 		
 		schedule.set(index, new Pair<>(nextRoute, nextDelivery));
+		d.setDeliveryTime(prevDelivery.getDeliveryTime().getTime() + prevDelivery.getDuration() + (long) route.getTotalTime());
 		schedule.add(index, new Pair<>(route, d));
-		
 	}
 	
 	//Handler CommandModify
