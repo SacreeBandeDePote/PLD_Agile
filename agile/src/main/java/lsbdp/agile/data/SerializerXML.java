@@ -1,18 +1,18 @@
 package lsbdp.agile.data;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,14 +24,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+
 import javafx.util.Pair;
+import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
-import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
+
 /**
  * Classe permettant de désérialiser un fichier XML(une map ou un fichier de livraisons) en objet JAVA
  * @author Vincent
@@ -40,7 +41,39 @@ import lsbdp.agile.model.StreetMap;
 public class SerializerXML {
 	
 	static ArrayList<Long> idIdentifier;
+	
+	/**
+	 * Méthode permettant de sérialiser des objets Java en un document XML dans le but de faire une sauvegarde
+	 * @param deliveriesRequest
+	 * @param file
+	 */
+	public static void serializeDeliveryXML(DeliveriesRequest deliveriesRequest, File file) {
+		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+		try {
+			file.createNewFile();
+			FileWriter ffw=new FileWriter(file);
+			ffw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
+			ffw.write("<demandeDeLivraisons>\n");
+			ffw.write("<entrepot adresse=\"" + idIdentifier.get((int)(deliveriesRequest.getWarehouse().getId())) + "\" heureDepart=\"" + formater.format(deliveriesRequest.getStartingTime()) + "\"/>\n");
+			for(Delivery d: deliveriesRequest.getDeliveryList()) {
+				ffw.write("<livraison adresse=\"" + idIdentifier.get((int)d.getLocation().getId()));
+				if(d.getTimespanStart() != null) {
+					ffw.write("\" debutPlage=\"" + formater.format(d.getTimespanStart()));
+				}
+				ffw.write("\" duree=\"" + d.getDuration());
+				if(d.getTimespanStart() != null) {
+					ffw.write("\" finPlage=\"" + formater.format(d.getTimespanEnd()));
+				}
+				ffw.write("\"/>\n");							
+			}
+			ffw.write("</demandeDeLivraisons>\n");
+			ffw.close(); 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
+	}
+	
 	/**
 	 * Méthode permettant de désérialiser une map à partir d'un fichier XML
 	 * @param fileXML
@@ -75,7 +108,6 @@ public class SerializerXML {
 		StreetMap streetMap = new StreetMap();
 		idIdentifier = new ArrayList<Long>();
 		long mid = 0;
-		int count = 0;
 		for (int i = 0; i < nbRacineNoeuds; i++) {
 			if (racineNoeuds.item(i).getNodeType() == Node.ELEMENT_NODE) {
 				Element element = (Element) racineNoeuds.item(i);
@@ -86,12 +118,11 @@ public class SerializerXML {
 					int x = Integer.parseInt(element.getAttribute("x"));
 					int y = Integer.parseInt(element.getAttribute("y"));
 					mid += y;
-					count++;
 					streetMap.put((long) id, new Intersection(id, y, x));
 				}
 			}
 		}
-		mid = mid/count;
+		mid = mid/streetMap.size();
 		Set<Long> keys = streetMap.keySet();
 		Iterator<Long> iterator = keys.iterator();
 		while(iterator.hasNext()) {
@@ -99,8 +130,7 @@ public class SerializerXML {
 			long yCoord = streetMap.get(key).getY();
 			long dif = yCoord - mid;
 			if(dif>0) streetMap.get(key).setY((int) (mid+dif));
-			if(dif<0) streetMap.get(key).setY((int) (mid-dif));
-
+			if(dif<0) streetMap.get(key).setY((int) (mid-dif));		
 		}
 		
 		return streetMap;
