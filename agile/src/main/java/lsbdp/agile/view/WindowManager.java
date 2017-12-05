@@ -87,10 +87,7 @@ public class WindowManager{
 		Intersection warehouse = ds.get(0).getKey().getStartingPoint();
 		canvasDrawer.drawWarehouse(overlay, warehouse, Color.GREEN, 5d);
 		for (Pair<Route, Delivery> p : ds) {
-			System.out.println(p.getKey() +" " + p.getValue());
-			if(p.getKey() != null && p.getValue() != null) {
 				colorRoute(p.getKey(), p.getValue());
-			}
 		}
 	}
 
@@ -101,7 +98,9 @@ public class WindowManager{
 
 
 		for( Street street : streets) {
-			canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
+			if(delivery != null) {
+				canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
+			}
 			Intersection end = street.getEnd();
 			canvasDrawer.drawStreetOverlay(overlay, startingPoint, end, Color.RED);
 			startingPoint = end;
