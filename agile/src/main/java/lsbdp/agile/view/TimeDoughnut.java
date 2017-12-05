@@ -25,7 +25,7 @@ import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 
-public class TimeCheese extends Application {
+public class TimeDoughnut extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -75,7 +75,7 @@ public class TimeCheese extends Application {
         return arc;
 	}
 	
-	public static void fillTimeCheese(Pane overlay, DeliverySchedule schedule, Scene scene) throws ParseException {
+	public static void fillTimeDoughnut(Pane overlay, DeliverySchedule schedule, Scene scene) throws ParseException {
 		Date currentTime = null;
 		int odd = 0;
 		int seconds = 10*60*60;
@@ -83,7 +83,6 @@ public class TimeCheese extends Application {
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		currentTime = sdf.parse("8:0:0");
 		for (Pair<Route, Delivery> p : schedule) {
-			System.out.println(p.getKey() +" " + p.getValue());
 			if(p.getKey() != null && p.getValue() != null) {
 				Delivery del = p.getValue();
 				Date start = del.getTimespanStart();
