@@ -61,11 +61,8 @@ public class Controller {
 		}
 	}
 	public static void cmdAdd() {
-		/*Command c = new CommandAdd();
-		cmdList.addCommand(c);*/
 		WindowManager.highlightAll(map, schedule);
 	}
-	
 	public static void cmdAdd2(Delivery element) {
 		Command c = new CommandAdd(element);
 		cmdList.addCommand(c);
@@ -76,10 +73,12 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-	public static void cmdModify(Delivery element, Date startTime, Date endTime) {
-		Command c = new CommandModify(element, startTime, endTime);
+	
+	public static void cmdModify(Delivery element, Date startTime, Date endTime, int duration) {
+		Command c = new CommandModify(element, startTime, endTime, duration);
 		cmdList.addCommand(c);
 	}
+	
 	public static void undo() {
 		cmdList.undo();
 		try {
