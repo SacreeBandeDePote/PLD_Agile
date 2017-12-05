@@ -56,8 +56,10 @@ public class Controller {
 		cmdList.addCommand(c);
 		refreshIHM();
 	}
-	
-	public static void cmdAdd(Delivery element) {
+	public static void cmdAdd() {
+		WindowManager.highlightAll(map, schedule);
+	}
+	public static void cmdAdd2(Delivery element) {
 		Command c = new CommandAdd(element);
 		cmdList.addCommand(c);
 		refreshIHM();
