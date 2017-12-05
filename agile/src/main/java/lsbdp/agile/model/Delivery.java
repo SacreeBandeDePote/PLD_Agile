@@ -14,7 +14,7 @@ public class Delivery {
 		this.timespanStart = timespanStart;
 		this.timespanEnd = timespanEnd;
 		this.location = location;
-		this.setDeliveryTime(deliveryT);
+		this.deliveryTime = deliveryT;
 	}
 
 	public Intersection getLocation() {
