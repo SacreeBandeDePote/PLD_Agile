@@ -71,6 +71,7 @@ public class EventHandlers {
 					new FileChooser.ExtensionFilter("txt File", "*.txt")
 					);
 			File f = MainWindow.openFileChooserRoadmap(fileChooser);
+			Controller.generateRoadmapActionHandler(f);
 		} else {
 			MainWindow.openMessagePopup("Please load a delivery file");
 		}	

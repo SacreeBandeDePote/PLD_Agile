@@ -263,15 +263,20 @@ public class SerializerXML {
 	 * @param d
 	 * @throws FileNotFoundException
 	 */
-	public static void generateRoadMap(File f, DeliverySchedule d) throws FileNotFoundException {
-		PrintWriter out = new PrintWriter(f);
-		String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-		String entete = "-------------------------------------------------\r\n\r\n";
-		entete += "| FEUILLE DE ROUTE\r\n";
-		entete += "|\r\n";
-		entete += "| Date/Heure de génération: " + timeStamp + "\r\n";
-		entete += "-------------------------------------------------\r\n\r\n";
-		out.print(entete + d.toString());
-		out.close();
+	public static void generateRoadMap(File f, DeliverySchedule d) {
+		try {
+			PrintWriter out = new PrintWriter(f);
+			String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+			String entete = "-------------------------------------------------\r\n\r\n";
+			entete += "| FEUILLE DE ROUTE\r\n";
+			entete += "|\r\n";
+			entete += "| Date/Heure de génération: " + timeStamp + "\r\n";
+			entete += "-------------------------------------------------\r\n\r\n";
+			out.print(entete + d.toString());
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
