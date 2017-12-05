@@ -3,7 +3,7 @@ jdk:
   - oraclejdk9
 
 script:
-  - mvn install
+  - cd agile/ && mvn install
 
 # Upload coverage data to codecov.io
 after_success:
