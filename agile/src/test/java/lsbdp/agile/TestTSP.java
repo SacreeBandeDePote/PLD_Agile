@@ -19,10 +19,10 @@ public class TestTSP {
 		File f = new File("./Data/fichiersXML/planLyonGrand.xml");
 		map = SerializerXML.deserializeMapXML(f);
 
-		f = new File("./Data/fichiersXML/DLgrand20.xml");
+		f = new File("./Data/fichiersXML/DLgrand10TW2.xml");
 		req = SerializerXML.deserializeDeliveryXML(f, map);
 	}
-
+/*
 	@Test
 	public void testDijkstra() {
 		Dijkstra.performDijkstra(map, map.get(1L), map.get(20L));
@@ -62,10 +62,20 @@ public class TestTSP {
 		test.findSolution(s, map, req);
 		System.out.println(System.currentTimeMillis() - start);
 	}
-
+*/
 	@Test
 	public void testShortestLessCostTSP() {
 		TSP test = new ShortestLessCostTSP();
+		DeliverySchedule s = new DeliverySchedule();
+
+		long start = System.currentTimeMillis();
+		test.findSolution(s, map, req);
+		System.out.println(System.currentTimeMillis() - start);
+	}
+	
+	@Test
+	public void testNNHTimeTSP() {
+		TSP test = new NNHTimeTSP();
 		DeliverySchedule s = new DeliverySchedule();
 
 		long start = System.currentTimeMillis();

@@ -71,7 +71,7 @@ public abstract class TemplateTSP implements TSP {
 	}
 
 
-	protected abstract float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
+	protected abstract float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost);
 
 	protected abstract Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
 
@@ -92,7 +92,7 @@ public abstract class TemplateTSP implements TSP {
 				//System.out.println(Arrays.toString(bestSolution));
 			}
 		} else {
-			if (crtCost + bound(crtNode, nonView, timeCost, duration, timeWindows) < bestSolutionCost) { //there are still nodes to visit
+			if (crtCost + bound(crtNode, nonView, timeCost, duration, timeWindows, crtCost) < bestSolutionCost) { //there are still nodes to visit
 				Iterator<Integer> it = iterator(crtNode, nonView, timeCost, duration, timeWindows);
 				while (it.hasNext()) {
 					Integer nextNode = it.next();
