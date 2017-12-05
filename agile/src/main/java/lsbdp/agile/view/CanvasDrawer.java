@@ -48,7 +48,10 @@ public class CanvasDrawer {
 		Double dimension      = Double.min(ap.getHeight(), ap.getWidth());
 		canvas             = new Canvas(dimension-30, dimension-30);
 		Pane overlay       = new Pane();
-		Double canvasWidth = canvas.getWidth();
+	
+ 		//ZoomablePane zCanvas = WidgetBuilder.createZoomablePane(canvas);
+ 		//ZoomablePane zOverlay = WidgetBuilder.createZoomablePane(overlay);
+ 		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Set<Long> keys     = map.keySet();
 		Iterator iterator  = keys.iterator();
@@ -69,7 +72,7 @@ public class CanvasDrawer {
 		gc.strokeLine(canvasWidth, canvasWidth, canvasWidth, 0);
 		gc.strokeLine(canvasWidth, canvasWidth, 0, canvasWidth);
 		
-		Group mapGroup = new Group(canvas, overlay);
+		Group mapGroup = WidgetBuilder.createDrawGroup(canvas,overlay);
 		
 		ap.getChildren().clear();
 		ap.getChildren().add(mapGroup);

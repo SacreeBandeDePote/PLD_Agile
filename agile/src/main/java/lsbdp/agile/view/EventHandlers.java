@@ -3,11 +3,13 @@ package lsbdp.agile.view;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.HBox;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -249,6 +251,18 @@ public class EventHandlers {
 		Date end = new Date(11);
 		Delivery d = new Delivery(tmpDuration, start, end, intersection, null);
 		Controller.cmdAdd2(d);
+	}
+
+	public static void zoom(Group g, ScrollEvent e) {
+		double zoomIntensity = 0.01;
+		double scrollDelta = e.getDeltaY();
+		System.out.println("DELTA Y = "+ scrollDelta);
+		
+		double newScaleX = g.getScaleX() + zoomIntensity*scrollDelta;
+		double newScaleY = g.getScaleY() + zoomIntensity*scrollDelta;
+		
+		g.setScaleX(newScaleX);
+		g.setScaleY(newScaleY);
 	}
 
 }
