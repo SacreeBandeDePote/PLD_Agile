@@ -18,6 +18,7 @@ public class CommandHandler {
 		return null;
 	}
 	public boolean isOK(DeliverySchedule schedule, Delivery delivery) {
+		
 		return true;
 	}
 	
@@ -60,9 +61,6 @@ public class CommandHandler {
 		
 		schedule.add(index-1, new Pair<>(firstRoute, d));
 		schedule.add(index, new Pair<>(nextRoute,nextDelivery));
-		
-	}
-	public static void undoAdd() {
 		
 	}
 	

@@ -10,7 +10,7 @@ public class Delivery {
 	private Date deliveryTime;
 	
 	public Delivery(int duration, Date timespanStart, Date timespanEnd, Intersection location, Date deliveryT) {
-		this.duration = duration;
+		this.duration = duration; //temps en secondes
 		this.timespanStart = timespanStart;
 		this.timespanEnd = timespanEnd;
 		this.location = location;

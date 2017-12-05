@@ -62,10 +62,12 @@ public class Controller {
 		cmdList.addCommand(c);
 		refreshIHM();
 	}
+	
 	public static void cmdModify(Delivery element, Date startTime, Date endTime) {
 		Command c = new CommandModify(element, startTime, endTime);
 		cmdList.addCommand(c);
 	}
+	
 	public static void undo() {
 		cmdList.undo();
 		refreshIHM();
