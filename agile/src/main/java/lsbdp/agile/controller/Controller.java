@@ -26,10 +26,14 @@ public class Controller {
 	}
 	
 	//Gérer Map
-	public static void loadMap(File XML) throws ParseException {
-		map = SerializerXML.deserializeMapXML(XML);
+	public static void loadMap(File xml) throws ParseException {
+		map = SerializerXML.deserializeMapXML(xml);
 		WindowManager.drawMap(map);
 	}
+	public static void saveDeliveries(File xml) {
+		SerializerXML.serializeDeliveryXML(schedule, xml);
+	}
+	
 	public static void drawMap(){
 		WindowManager.drawMap(map);
 	}
@@ -38,8 +42,8 @@ public class Controller {
 	}
 	
 	//Gérer Schedule
-	public static DeliverySchedule loadDeliveryRequest(File XML) throws ParseException {
-		deliveries = SerializerXML.deserializeDeliveryXML(XML, map);
+	public static DeliverySchedule loadDeliveryRequest(File xml) throws ParseException {
+		deliveries = SerializerXML.deserializeDeliveryXML(xml, map);
 		algo.findSolution(schedule, map, deliveries);
 		WindowManager.colorDeliverySchedule(schedule);
 		WindowManager.loadListView(schedule);

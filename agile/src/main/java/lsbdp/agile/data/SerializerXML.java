@@ -30,6 +30,7 @@ import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
+import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
@@ -47,24 +48,26 @@ public class SerializerXML {
 	 * @param deliveriesRequest
 	 * @param file
 	 */
-	public static void serializeDeliveryXML(DeliveriesRequest deliveriesRequest, File file) {
+	public static void serializeDeliveryXML(DeliverySchedule deliveriesSchedule, File file) {
 		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 		try {
 			file.createNewFile();
 			FileWriter ffw=new FileWriter(file);
 			ffw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
 			ffw.write("<demandeDeLivraisons>\n");
-			ffw.write("<entrepot adresse=\"" + idIdentifier.get((int)(deliveriesRequest.getWarehouse().getId())) + "\" heureDepart=\"" + formater.format(deliveriesRequest.getStartingTime()) + "\"/>\n");
-			for(Delivery d: deliveriesRequest.getDeliveryList()) {
-				ffw.write("<livraison adresse=\"" + idIdentifier.get((int)d.getLocation().getId()));
-				if(d.getTimespanStart() != null) {
-					ffw.write("\" debutPlage=\"" + formater.format(d.getTimespanStart()));
+			ffw.write("<entrepot adresse=\"" + idIdentifier.get((int)(deliveriesSchedule.get(0).getKey().getStartingPoint().getId())) + "\" heureDepart=\"" + formater.format(deliveriesSchedule.getStartingTime()) + "\"/>\n");
+			for(Pair<Route,Delivery> d: deliveriesSchedule) {
+				if(d.getValue()!=null) {
+					ffw.write("<livraison adresse=\"" + idIdentifier.get((int)d.getValue().getLocation().getId()));
+					if(d.getValue().getTimespanStart() != null) {
+						ffw.write("\" debutPlage=\"" + formater.format(d.getValue().getTimespanStart()));
+					}
+					ffw.write("\" duree=\"" + d.getValue().getDuration());
+					if(d.getValue().getTimespanStart() != null) {
+						ffw.write("\" finPlage=\"" + formater.format(d.getValue().getTimespanEnd()));
+					}
+					ffw.write("\"/>\n");			
 				}
-				ffw.write("\" duree=\"" + d.getDuration());
-				if(d.getTimespanStart() != null) {
-					ffw.write("\" finPlage=\"" + formater.format(d.getTimespanEnd()));
-				}
-				ffw.write("\"/>\n");							
 			}
 			ffw.write("</demandeDeLivraisons>\n");
 			ffw.close(); 
