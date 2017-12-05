@@ -63,8 +63,8 @@ public class Controller {
 		refreshIHM();
 	}
 	
-	public static void cmdModify(Delivery element, Date startTime, Date endTime) {
-		Command c = new CommandModify(element, startTime, endTime);
+	public static void cmdModify(Delivery element, Date startTime, Date endTime, int duration) {
+		Command c = new CommandModify(element, startTime, endTime, duration);
 		cmdList.addCommand(c);
 	}
 	

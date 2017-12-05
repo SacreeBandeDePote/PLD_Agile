@@ -1,9 +1,12 @@
 package lsbdp.agile.controller;
 
+import java.util.Date;
+
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
+import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.Route;
 import lsbdp.agile.model.StreetMap;
 
@@ -37,7 +40,7 @@ public class CommandHandler {
 		schedule.remove(index);
 		return index;
 	}
-	public static void undoDelete(StreetMap map,DeliverySchedule schedule, Pair<Route, Delivery> element, int index) {
+	public static void undoDelete(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> element, int index) {
 		//Remet l'element de base
 		schedule.add(index, element);
 		
@@ -52,21 +55,22 @@ public class CommandHandler {
 	//Handler CommandAdd
 	public static void addDelivery(StreetMap map, DeliverySchedule schedule, Delivery d) {
 		int index = 2;
-		Delivery firstDelivery = schedule.get(index-1).getValue();
+		Delivery prevDelivery = schedule.get(index-1).getValue();
 		Delivery nextDelivery = schedule.get(index).getValue();
 		
-		Route firstRoute = Dijkstra.performDijkstra(map, firstDelivery.getLocation(), d.getLocation());
-		
+		Route route = Dijkstra.performDijkstra(map, prevDelivery.getLocation(), d.getLocation());
 		Route nextRoute = Dijkstra.performDijkstra(map, d.getLocation(), nextDelivery.getLocation());
 		
-		schedule.add(index-1, new Pair<>(firstRoute, d));
-		schedule.add(index, new Pair<>(nextRoute,nextDelivery));
+		schedule.set(index, new Pair<>(nextRoute, nextDelivery));
+		schedule.add(index, new Pair<>(route, d));
 		
 	}
 	
 	//Handler CommandModify
-	public static void modifyDelivery() {
-		
+	public static void modifyDelivery(StreetMap map, DeliverySchedule schedule, Delivery d, Date sT, Date eT, int duration) {
+		deleteDelivery(map, schedule, findByDelivery(schedule, d));
+		Delivery newDelivery = new Delivery(duration, sT, eT, d.getLocation(), null);
+		addDelivery(map, schedule, newDelivery);
 	}
 	public static void undoModify() {
 		
