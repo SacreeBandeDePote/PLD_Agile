@@ -22,7 +22,7 @@ public class TestTSP {
 		f = new File("./Data/fichiersXML/DLgrand10TW2.xml");
 		req = SerializerXML.deserializeDeliveryXML(f, map);
 	}
-/*
+
 	@Test
 	public void testDijkstra() {
 		Dijkstra.performDijkstra(map, map.get(1L), map.get(20L));
@@ -62,7 +62,7 @@ public class TestTSP {
 		test.findSolution(s, map, req);
 		System.out.println(System.currentTimeMillis() - start);
 	}
-*/
+
 	@Test
 	public void testShortestLessCostTSP() {
 		TSP test = new ShortestLessCostTSP();
