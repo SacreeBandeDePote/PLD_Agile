@@ -12,12 +12,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import lsbdp.agile.algorithm.Dijkstra;
 import lsbdp.agile.algorithm.Scheduler;
 import lsbdp.agile.controller.Controller;
@@ -31,14 +34,19 @@ import lsbdp.agile.model.StreetMap;
 public class EventHandlers {
 
 	@FXML
+	private void quitAdditionHandler(ActionEvent event) {
+		Controller.refreshIHM();
+	}
+
+	@FXML
 	private void addDelivery(ActionEvent event) {
 		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
-		Controller.cmdAdd();
+			Controller.cmdAdd();
 		} else {
-			MainWindow.openMessagePopup("Please load a map and a delivery request");
+			MainWindow.openMessagePopup("Please load a map and a delivery file");
 		}
 	}
-	
+
 	@FXML
 	private void saveDeliveries(ActionEvent event) {
 		if(WindowManager.deliveriesLoaded) {
@@ -52,7 +60,7 @@ public class EventHandlers {
 			MainWindow.openMessagePopup("Please load a delivery file");
 		}	
 	}
-	
+
 	@FXML
 	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		if(WindowManager.deliveriesLoaded) {
@@ -66,20 +74,20 @@ public class EventHandlers {
 			MainWindow.openMessagePopup("Please load a delivery file");
 		}	
 	}
-	
+
 	@FXML
 	private void UndoAction(ActionEvent event) {
 		Controller.undo();
 	}
-	
+
 	@FXML
 	private void RedoAction(ActionEvent event) {
 		Controller.redo();
 	}
-	
+
 	@FXML
 	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
-			if(WindowManager.mapLoaded) {
+		if(WindowManager.mapLoaded) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Choose your deliverires file");
 			fileChooser.getExtensionFilters().addAll(
@@ -88,9 +96,16 @@ public class EventHandlers {
 			File f = MainWindow.openFileChooserDeliveries(fileChooser);
 			Controller.loadDeliveryRequest(f);
 			WindowManager.deliveriesLoaded = true;
-			} else {
-				MainWindow.openMessagePopup("Please load a map");
-			}
+		} else {
+			MainWindow.openMessagePopup("Please load a map");
+		}
+	}
+
+	@FXML
+	private void switchViewHandler(ActionEvent event) {
+		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
+		HBox back = (HBox) stackPane.getChildren().get(0);
+		back.toFront();
 	}
 	
 	@FXML
@@ -104,63 +119,63 @@ public class EventHandlers {
 		Controller.loadMap(f);
 		WindowManager.mapLoaded = true;
 	}
-	
+
 	@FXML
 	private void calculateSchedule(ActionEvent event) {
 		// DeliverySchedule schedule = Controller.findDeliverySchedule();
 	}
-	
+
 	public static void highlightIntersection(Intersection intersection) {
-		
+
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.BLUE);
 		dropShadow.setOffsetX(0);
 		dropShadow.setOffsetY(0);
-		
+
 		circle.setEffect(dropShadow);
 		circle.setFill(Color.BLUE);
 		circle.setStroke(Color.BLUE);
 		circle.setStrokeWidth(8d);
 	}
-	
+
 	public static void highlightWarehouse(Intersection warehouse) {
-			
-			Scene scene = WindowManager.getScene();
-			Circle circle = (Circle) scene.lookup("#CircleWarehouse"+warehouse.getId());
-			
-			DropShadow dropShadow = new DropShadow();
-			dropShadow.setColor(Color.GREEN);
-			dropShadow.setOffsetX(0);
-			dropShadow.setOffsetY(0);
-			
-			circle.setEffect(dropShadow);
-			circle.setFill(Color.GREEN);
-			circle.setStroke(Color.GREEN);
-			circle.setStrokeWidth(8d);
-		}
-	
+
+		Scene scene = WindowManager.getScene();
+		Circle circle = (Circle) scene.lookup("#CircleWarehouse"+warehouse.getId());
+
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setColor(Color.GREEN);
+		dropShadow.setOffsetX(0);
+		dropShadow.setOffsetY(0);
+
+		circle.setEffect(dropShadow);
+		circle.setFill(Color.GREEN);
+		circle.setStroke(Color.GREEN);
+		circle.setStrokeWidth(8d);
+	}
+
 	public static void unhighlightIntersection(Intersection intersection) {
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Circle"+intersection.getId());
-		
+
 		circle.setEffect(null);
 		circle.setFill(Color.RED);
 		circle.setStroke(Color.RED);
 		circle.setStrokeWidth(1d);	
 	}
-	
+
 	public static void unhighlightWarehouse(Intersection warehouse) {
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#CircleWarehouse"+warehouse.getId());
-		
+
 		circle.setEffect(null);
 		circle.setFill(Color.GREEN);
 		circle.setStroke(Color.GREEN);
 		circle.setStrokeWidth(1d);	
 	}
-	
+
 	public static void highlightDeliveryListView(Delivery delivery) {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
@@ -176,13 +191,13 @@ public class EventHandlers {
 			}
 		}
 	}
-	
+
 	public static void highlightWarehouseListView() {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		listview.getSelectionModel().select(0);
 	}
-	
+
 	public static void unhighlightDeliveryListView(Delivery delivery) {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
@@ -199,36 +214,36 @@ public class EventHandlers {
 			}
 		}
 	}
-	
+
 	public static void unhighlightWarehouseListView () {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		listview.getSelectionModel().clearSelection();
 	}
-		
+
 	public static void highlightTemporaryIntersection(Intersection intersection) {
 
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Tmp"+intersection.getId());
-		
+
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setColor(Color.BLUE);
 		dropShadow.setOffsetX(0);
 		dropShadow.setOffsetY(0);
-		
+
 		circle.setEffect(dropShadow);
 		circle.setStrokeWidth(6d);
 	}
-	
+
 	public static void unhighlightTemporaryIntersection(Intersection intersection) {
 
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Tmp"+intersection.getId());
-		
+
 		circle.setEffect(null);
 		circle.setStrokeWidth(2d);
 	}
-	
+
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
 	}
@@ -244,5 +259,5 @@ public class EventHandlers {
 		Delivery d = new Delivery(tmpDuration, start, end, intersection);
 		Controller.cmdAdd2(d);
 	}
-	
+
 }
