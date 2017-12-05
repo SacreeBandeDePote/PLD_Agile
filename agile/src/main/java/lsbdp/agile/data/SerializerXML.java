@@ -42,17 +42,21 @@ public class SerializerXML {
 	
 	static ArrayList<Long> idIdentifier;
 	
+	/**
+	 * Méthode permettant de sérialiser des objets Java en un document XML dans le but de faire une sauvegarde
+	 * @param deliveriesRequest
+	 * @param file
+	 */
 	public static void serializeDeliveryXML(DeliveriesRequest deliveriesRequest, File file) {
-
 		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 		try {
 			file.createNewFile();
 			FileWriter ffw=new FileWriter(file);
 			ffw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
 			ffw.write("<demandeDeLivraisons>\n");
-			ffw.write("<entrepot adresse=\"" + deliveriesRequest.getWarehouse().getId() + "\" heureDepart=\"" + formater.format(deliveriesRequest.getStartingTime()) + "\"/>\n");
+			ffw.write("<entrepot adresse=\"" + idIdentifier.get((int)(deliveriesRequest.getWarehouse().getId())) + "\" heureDepart=\"" + formater.format(deliveriesRequest.getStartingTime()) + "\"/>\n");
 			for(Delivery d: deliveriesRequest.getDeliveryList()) {
-				ffw.write("<livraison adresse=\"" + d.getLocation().getId());
+				ffw.write("<livraison adresse=\"" + idIdentifier.get((int)d.getLocation().getId()));
 				if(d.getTimespanStart() != null) {
 					ffw.write("\" debutPlage=\"" + formater.format(d.getTimespanStart()));
 				}
