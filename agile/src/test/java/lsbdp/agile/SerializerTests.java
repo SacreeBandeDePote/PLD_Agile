@@ -3,6 +3,7 @@ package lsbdp.agile;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,8 +37,9 @@ public class SerializerTests {
 	@Test
 	public void testDeserializeDeliveryXML (){
 		DeliveriesRequest delivery = SerializerXML.deserializeDeliveryXML(deliveryFile,map);
+		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 		assertEquals(88, delivery.getWarehouse().getId());
-		//assertEquals("Thu Jan 01 08:00:00 CET 1970", delivery.getStartingTime());
+		assertEquals("08:00:00", formater.format(delivery.getStartingTime()));
 	}	
 
 }
