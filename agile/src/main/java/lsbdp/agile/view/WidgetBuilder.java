@@ -3,8 +3,8 @@ package lsbdp.agile.view;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import com.sun.deploy.jcp.controller.cacheviewer.DelAppInfo;
-
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -29,12 +29,14 @@ import lsbdp.agile.model.Intersection;
 
 public class WidgetBuilder {
 	
-	private static double deltaX = 0;
-	private static double deltaY = 0;
+	private static double sourceX = 0;
+	private static double sourceY = 0;
+	private static double anchorX = 0;
+	private static double anchorY = 0;
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 		
-		Label label = new Label("Livraison n�"+count + ", duration : " + delivery.getDuration()+"s");	
+		Label label = new Label("Livraison n"+count + ", duration : " + delivery.getDuration()+"s");	
 		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		
@@ -80,7 +82,8 @@ public class WidgetBuilder {
 		btn.setOnMouseClicked(new EventHandler<MouseEvent>(){	
 			public void handle(MouseEvent e) {
 				EventHandlers.deleteDelivery(delivery);		
-				}
+				}                            // disable mouse events for all children
+
 		});
 		
 		return btn;
@@ -206,35 +209,6 @@ public class WidgetBuilder {
 		return circle;
 	}
 
-	public static ZoomablePane createZoomablePane(Node node) {
-		ZoomablePane zp = new ZoomablePane(node);
-		zp.setOnScroll(new EventHandler<ScrollEvent>() {
-
-			@Override
-			public void handle(ScrollEvent event) {
-				double wheelDelta = event.getDeltaY();
-				zp.onScroll(wheelDelta, new Point2D(event.getX(), event.getY()));
-			}
-		});
-		
-		zp.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			
-			double deltaX = 0;
-			double deltaY = 0;
-
-			@Override
-			public void handle(MouseEvent e) {
-				System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				Scene scene = WindowManager.getScene();
-				//Group g = (Group) scene.lookup("#mapGroup");
-				System.out.println(e.getX() + "" + e.getY());
-				zp.setTranslateX(e.getX());
-				zp.setTranslateY(e.getY());
-			}
-		});
-		return zp;
-	}
-
 	public static Group createDrawGroup(Canvas canvas, Pane overlay) {
 		Group g = new Group(canvas, overlay);
 		g.setOnScroll(new EventHandler<ScrollEvent>() {
@@ -250,8 +224,10 @@ public class WidgetBuilder {
 
 			@Override
 			public void handle(MouseEvent e) {
-				deltaX = e.getSceneX();
-				deltaY = e.getSceneY();
+				sourceX = g.getTranslateX();
+				sourceY = g.getTranslateY();
+				anchorX = e.getX();
+				anchorY = e.getY();
 			}
 		});
 		
@@ -259,16 +235,10 @@ public class WidgetBuilder {
 
 			@Override
 			public void handle(MouseEvent e) {
-				try {
-					TimeUnit.MICROSECONDS.sleep(10);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-				deltaX = e.getX();
-				deltaY = e.getY();
+				// the getScale multiplicator is to adjust the translation to the level of zoom
+				double deltaX = (g.getScaleX()/2) * (sourceX + e.getX() - anchorX);
+				double deltaY = (g.getScaleX()/2) * (sourceY + e.getY() - anchorY);				
 				
-				System.out.println("DELTA X = " + deltaX);
-				System.out.println("DELTA Y = " + deltaY);
 				
 				g.setTranslateX(deltaX);
 				g.setTranslateY(deltaY);
@@ -277,4 +247,8 @@ public class WidgetBuilder {
 
 		return g;
 	}
+	
+	
+	
+	
 }

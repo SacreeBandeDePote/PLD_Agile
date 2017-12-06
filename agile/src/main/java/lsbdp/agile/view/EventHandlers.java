@@ -256,7 +256,6 @@ public class EventHandlers {
 	public static void zoom(Group g, ScrollEvent e) {
 		double zoomIntensity = 0.01;
 		double scrollDelta = e.getDeltaY();
-		System.out.println("DELTA Y = "+ scrollDelta);
 		
 		double newScaleX = g.getScaleX() + zoomIntensity*scrollDelta;
 		double newScaleY = g.getScaleY() + zoomIntensity*scrollDelta;

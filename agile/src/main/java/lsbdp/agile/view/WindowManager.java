@@ -54,14 +54,14 @@ public class WindowManager{
 		WindowManager.scene = scene;
 		
 		
-		HBox hb = new HBox();
+		/*HBox hb = new HBox();
 		hb.setAlignment(Pos.CENTER);
 		hb.setId("canvasHBox");
-		hb.setStyle("-fx-background-color: derive(#ececec,26.4%);");
+		hb.setStyle("-fx-background-color: derive(#ececec,26.4%);");*/
 		
 		
 		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
-		sPane.getChildren().add(hb);
+		//sPane.getChildren().add(hb);
 		
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);

@@ -9,8 +9,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -44,13 +46,11 @@ public class CanvasDrawer {
 	
 	public void drawMap(StreetMap map, Scene scene) {
 
-		HBox ap            = (HBox) scene.lookup("#canvasHBox");
-		Double dimension      = Double.min(ap.getHeight(), ap.getWidth());
+		//HBox ap            = (HBox) scene.lookup("#canvasHBox");
+		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
+		Double dimension      = Double.min(sPane.getHeight(), sPane.getWidth());
 		canvas             = new Canvas(dimension-30, dimension-30);
 		Pane overlay       = new Pane();
-	
- 		//ZoomablePane zCanvas = WidgetBuilder.createZoomablePane(canvas);
- 		//ZoomablePane zOverlay = WidgetBuilder.createZoomablePane(overlay);
  		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Set<Long> keys     = map.keySet();
@@ -74,8 +74,11 @@ public class CanvasDrawer {
 		
 		Group mapGroup = WidgetBuilder.createDrawGroup(canvas,overlay);
 		
-		ap.getChildren().clear();
-		ap.getChildren().add(mapGroup);
+		sPane.getChildren().clear();
+		sPane.getChildren().add(mapGroup);
+		
+		//ap.getChildren().clear();
+		//ap.getChildren().add(mapGroup);
 	}
 
 	/**
