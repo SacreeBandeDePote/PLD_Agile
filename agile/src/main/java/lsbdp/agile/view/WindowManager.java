@@ -87,7 +87,6 @@ public class WindowManager{
 		Intersection warehouse = ds.get(0).getKey().getStartingPoint();
 		canvasDrawer.drawWarehouse(overlay, warehouse, Color.GREEN, 5d);
 		for (Pair<Route, Delivery> p : ds) {
-			System.out.println(p.getKey() +" " + p.getValue());
 			if(p.getKey() != null && p.getValue() != null) {
 				colorRoute(p.getKey(), p.getValue());
 			}
