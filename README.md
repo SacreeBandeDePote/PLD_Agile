@@ -18,7 +18,7 @@ You can download the lastest realase [here](https://github.com/SacreeBandeDePote
 
 ### Launch
 
-Make sur of your configuration by excecuting the following command:
+Make sure of your configuration by excecuting the following command:
 `cd agile/ && mvn --version`
 
 Execute the follwing command inside the sources directory
