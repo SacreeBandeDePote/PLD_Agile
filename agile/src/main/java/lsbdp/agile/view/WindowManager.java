@@ -76,7 +76,8 @@ public class WindowManager{
 	public static void loadTimeDoughnut(DeliverySchedule schedule) {
 		HBox hbox = (HBox) scene.lookup("#timeCheeseHBox");
 		Pane overlay = new Pane();
-		
+		overlay.setPrefWidth(hbox.getWidth());
+		overlay.setPrefHeight(hbox.getHeight());
 		TimeDoughnut.fillTimeDoughnut(overlay, schedule, scene);
 		hbox.getChildren().add(overlay);
 	}
