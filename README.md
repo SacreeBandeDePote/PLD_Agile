@@ -18,9 +18,13 @@ You can download the latest release from [here](https://github.com/lhexanome/Opt
 
 ### Launch
 
+Make sur of your configuration by excecuting the following command:
+`cd agile/ && mvn --version`
+
 Execute the follwing command inside the sources directory
-`mvn exec:java`
+`cd agile/ && mvn exec:java`
 
 ## Testing
 
-
+Excute the following commant to perform tests with JUnit4:
+`mvn test`
