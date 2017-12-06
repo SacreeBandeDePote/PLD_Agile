@@ -14,7 +14,7 @@ To launch the project you will need:
 
 ### Getting the sources
 
-// TODO
+You can download the lastest realase [here](https://github.com/SacreeBandeDePote/PLD_Agile/releases/latest/)
 
 ### Launch
 
@@ -27,4 +27,4 @@ Execute the follwing command inside the sources directory
 ## Testing
 
 Excute the following commant to perform tests with JUnit4:
-`mvn test`
+`cd agile/ && mvn test`
