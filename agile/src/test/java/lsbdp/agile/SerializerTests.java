@@ -21,7 +21,7 @@ public class SerializerTests {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mapFile = new File("./Data/fichiersXML/planLyonPetit.xml");		
-		deliveryFile = new File("./Data/fichiersXML/DLPetit5.xml");
+		deliveryFile = new File("./Data/fichiersXML/DLpetit5.xml");
 		map = SerializerXML.deserializeMapXML(mapFile);
 	}
 	
