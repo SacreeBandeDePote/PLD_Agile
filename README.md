@@ -19,12 +19,24 @@ You can download the lastest realase [here](https://github.com/SacreeBandeDePote
 ### Launch
 
 Make sure of your configuration by excecuting the following command:
-`cd agile/ && mvn --version`
+`mvn --version`
 
-Execute the follwing command inside the sources directory
+First you need to compile the project, execute the following command:
+`cd agile/ && mvn compile`
+
+If you are inside the `agile` directory:
+`mvn compile`
+
+Execute the follwing command to launch the project
 `cd agile/ && mvn exec:java`
+
+If you are inside the `agile` directory:
+`mvn exec:java`
 
 ## Testing
 
 Excute the following commant to perform tests with JUnit4:
 `cd agile/ && mvn test`
+
+If you are inside the `agile` directory:
+`mvn test`
