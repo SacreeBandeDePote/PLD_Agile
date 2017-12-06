@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - cd agile/ && mvn clean test
+  - cd agile/ && mvn test
   - mvn cobertura:cobertura
 
 # Upload coverage data to codecov.io
