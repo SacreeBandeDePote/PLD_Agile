@@ -1,35 +1,24 @@
 package lsbdp.agile.view;
 
-import java.io.File;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import javafx.stage.Popup;
-import lsbdp.agile.algorithm.Dijkstra;
-import lsbdp.agile.algorithm.Scheduler;
 import lsbdp.agile.controller.Controller;
-import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.Delivery;
-import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
-import lsbdp.agile.model.StreetMap;
+
+import java.io.File;
+import java.text.ParseException;
+import java.util.Date;
 
 public class EventHandlers {
 

@@ -3,7 +3,6 @@ package lsbdp.agile.algorithm;
 import javafx.util.Pair;
 import lsbdp.agile.model.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public abstract class TemplateTSP implements TSP {
@@ -14,12 +13,9 @@ public abstract class TemplateTSP implements TSP {
 	protected float bestSolutionCost;
 	private boolean solutionFound;
 
-	private int count;
-
 	@Override
 	public void findSolution(DeliverySchedule schedule, StreetMap map, DeliveriesRequest req) {
 		schedule.setStartingTime(req.getStartingTime());
-		count = 0;
 		Intersection warehouse = req.getWarehouse();
 		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
@@ -65,7 +61,7 @@ public abstract class TemplateTSP implements TSP {
 	}
 
 
-	protected abstract float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost);
+	protected abstract boolean bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost);
 
 	protected abstract Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
 
@@ -73,7 +69,6 @@ public abstract class TemplateTSP implements TSP {
 	When i visit a node, it means that i manage to get to the node and that it is possible to get there. the crtCost has been increment by its duration
 	 */
 	private void branchAndBound(int crtNode, ArrayList<Integer> nonView, ArrayList<Integer> view, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		count++;
 		if (nonView.isEmpty()) { //this is the last node that has been visited
 			crtCost += timeCost[crtNode][timeCost.length - 1]; //we have to go back to the warehouse
 			if (crtCost < bestSolutionCost) { //we find a better solution
@@ -84,7 +79,7 @@ public abstract class TemplateTSP implements TSP {
 				solutionFound = true;
 			}
 		} else {
-			if (crtCost + bound(crtNode, nonView, timeCost, duration, timeWindows, crtCost) < bestSolutionCost) { //there are still nodes to visit
+			if (bound(crtNode, nonView, timeCost, duration, timeWindows, crtCost)) { //there are still nodes to visit
 				Iterator<Integer> it = iterator(crtNode, nonView, timeCost, duration, timeWindows);
 				while (it.hasNext()) {
 					Integer nextNode = it.next();
@@ -153,5 +148,15 @@ public abstract class TemplateTSP implements TSP {
 		timeWindows[timeWindows.length - 1] = null;
 
 		return timeWindows;
+	}
+
+	protected boolean checkTimePossible(ArrayList<Integer> nonView, Pair<Float, Float>[] timeWindows, float crtCost) {
+		for (Integer s : nonView) {
+			if(timeWindows[s] == null){}
+			else if (timeWindows[s].getValue() < crtCost) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -1,7 +1,6 @@
 package lsbdp.agile.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -23,7 +22,7 @@ public class Controller {
 	public Controller() {
 		Controller.schedule = new DeliverySchedule();
 		Controller.cmdList = new CommandList();
-		Controller.algo = new ShortestLessCostTSP();
+		Controller.algo = new NNHTimeTSP();
 	}
 	
 	//Gérer Map
