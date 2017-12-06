@@ -3,6 +3,8 @@ package lsbdp.agile.view;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -15,6 +17,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
@@ -49,6 +52,17 @@ public class WindowManager{
 
 	public static void initializer (Scene scene) {
 		WindowManager.scene = scene;
+		
+		
+		/*HBox hb = new HBox();
+		hb.setAlignment(Pos.CENTER);
+		hb.setId("canvasHBox");
+		hb.setStyle("-fx-background-color: derive(#ececec,26.4%);");*/
+		
+		
+		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
+		//sPane.getChildren().add(hb);
+		
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);
 		Controller controller = new Controller();
