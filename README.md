@@ -8,13 +8,13 @@
 ### Pre-Requisites
 
 To launch the project you will need:
-- [Java JRE](http://www.oracle.com/technetwork/java/javase/downloads/jre9-downloads-3848532.html) version 9.
-- [Maven](https://maven.apache.org/install.html)
+- [Java SE Development Kit 8u152](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [Apache Maven 3.3.9](https://maven.apache.org/install.html)
 
 
 ### Getting the sources
 
-You can download the latest release from [here](https://github.com/lhexanome/Optimod-release).
+// TODO
 
 ### Launch
 
