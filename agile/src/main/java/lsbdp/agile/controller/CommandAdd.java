@@ -2,8 +2,8 @@ package lsbdp.agile.controller;
 
 
 import javafx.util.Pair;
-import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Route;
+import lsbdp.agile.model.Delivery;
 
 public class CommandAdd implements Command {
 	private Delivery delivery;
