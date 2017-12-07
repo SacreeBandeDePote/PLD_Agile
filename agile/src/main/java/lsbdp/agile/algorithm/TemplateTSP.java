@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import lsbdp.agile.model.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public abstract class TemplateTSP implements TSP {
 
@@ -51,10 +52,19 @@ public abstract class TemplateTSP implements TSP {
 				
 				Date timeMin = d.getTimespanStart();
 				Date timeMax = d.getTimespanEnd();
-				Date timeStart = new Date(delTime.getTime() - 30*60000); // -30min
-				Date timeEnd = new Date(delTime.getTime() + 30*60000); // +30min
+				
+				Date delTimeRounded = new Date( delTime.getTime());
+				long decaMinute =(delTimeRounded.getTime())/(1000*60*10);
+				decaMinute = Math.round(decaMinute);
+				long millisec = decaMinute*(1000*60*10);
+				delTimeRounded.setTime(millisec);
+				
+				Date timeStart = new Date(delTimeRounded.getTime() - 30*60000); // -30min
+				Date timeEnd = new Date(delTimeRounded.getTime() + 30*60000); // +30min
+				
 				d.setTimespanStart(timeStart);
 				d.setTimespanEnd(timeEnd);
+				
 				if(timeMin != null){
 					if(timeStart.compareTo(timeMin) <0){
 						d.setTimespanStart(timeMin);
