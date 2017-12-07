@@ -73,7 +73,6 @@ public class CommandHandler {
 			d.setDeliveryTime(arrival);
 			schedule.add(index, new Pair<>(route, d));
 		}
-		System.out.println(index);
 	}
 
 	//Handler CommandModify
