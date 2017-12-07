@@ -10,6 +10,15 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 	private Date startingTime;
 	private Date endingTime;
 	
+	public DeliverySchedule() {
+		this.startingTime = null;
+		this.endingTime = null;
+		for(Pair<Route, Delivery> p: this) {
+			if(p == null) {
+				this.remove(p);
+			}
+		}
+	}
 	public Intersection getWarehouse() {
 		return this.get(0).getKey().getStartingPoint();
 	}
@@ -22,13 +31,12 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 		s += "Localisation : Coordonnées X " + entrepot.getX() + " | Y " + entrepot.getY() + "\r\n";
 		s += "Heure de départ : " + formater.format(this.startingTime) +"\r\n";
 		
-		for(int i = 0; i < this.size() ; i++) {
-			Pair<Route, Delivery> pair = this.get(i);
-			
-			if(i == 0) {
+		for(Pair<Route, Delivery> pair : this) {
+			int pairIndex = this.indexOf(pair);
+			if(pairIndex == 0) {
 				s += "---------  Itinéraire Entrepôt -> Livraison 1  ---------\r\n";
 			} else {
-				s += "---------  Itinéraire Livraison " + i + " -> Livraison " + (i+1) + "  ---------\r\n";
+				s += "---------  Itinéraire Livraison " + pairIndex  + " -> Livraison " + (pairIndex+1) + "  ---------\r\n";
 			}
 			s += pair.getKey().toString();
 			s += "\r\n";
@@ -36,16 +44,16 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 			s += "------------------------------------------------------------------------------------------------\r\n";
 			s += "------------------------------------------------------------------------------------------------\r\n\r\n";
 			
-			if(i == this.size()-1) {
+			if(pairIndex  == this.size()-1) {
 				s += "Entrepôt\r\n";
 				s += "Localisation : Coordonnées X " + entrepot.getX() + " | Y " + entrepot.getY() + "\r\n";
 				s += "Heure d'arrivée estimée : " + formater.format(this.endingTime) + "\r\n";	
 			} else {
-				s += "LIVRAISON " + (i+1) + "\r\n";
+				s += "LIVRAISON " + (pairIndex+1) + "\r\n";
 				s += "Localisation : Coordonnées X  " + pair.getValue().getLocation().getX() + "| Y " + pair.getValue().getLocation().getY() + "\r\n";
-				s += "Heure d'arrivée sur place : " + formater.format(pair.getValue().getTimespanStart()) + "\r\n";
+				s += "Heure d'arrivée sur place : " + formater.format(pair.getValue().getDeliveryTime()) + "\r\n";
 				s += "      |\r\n";
-				s += "Heure de départ : " + formater.format(pair.getValue().getTimespanEnd()) + "\r\n\r\n";
+				s += "Heure de départ : " + formater.format(pair.getValue().getDateAfterDuration()) + "\r\n\r\n";
 			}
 		}
 		return s;

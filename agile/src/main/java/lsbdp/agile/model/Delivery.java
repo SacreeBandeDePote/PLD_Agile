@@ -1,6 +1,8 @@
 package lsbdp.agile.model;
 
+import java.sql.Time;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Delivery {
 	private int duration;
@@ -37,7 +39,16 @@ public class Delivery {
 		return timespanStart;
 	}
 
+	public Date getDateAfterDuration() {
+		Date end = null;
+        long duration = TimeUnit.SECONDS.toMillis((long)this.getDuration());
+        long newDate = (long)(this.getDeliveryTime().getTime() + duration);
+        end = new Date(newDate);
+        return end;
+	}
+	
 	public void setTimespanStart(Date timespanStart) {
+		this.timespanStart = timespanStart;
 	}
 
 	public Date getTimespanEnd() {

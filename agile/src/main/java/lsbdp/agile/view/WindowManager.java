@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
@@ -47,7 +48,7 @@ public class WindowManager{
 	private static DeliveriesRequest deliveriesRequest;
 	private static Canvas cv;
 	private static Button computeButton;
-
+	
 	private static ArrayList<Delivery> selectedDeliveries;
 
 	public static void initializer (Scene scene) {
@@ -61,8 +62,10 @@ public class WindowManager{
 		
 		
 		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
+
+
+		sPane.setStyle("-fx-background-color: derive(#ececec,26.4%)");
 		//sPane.getChildren().add(hb);
-		
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);
 		Controller controller = new Controller();
@@ -83,23 +86,23 @@ public class WindowManager{
 		});
 	}
 	
-	public static void loadTimeDoughnut(DeliverySchedule schedule) throws ParseException {
-		HBox hbox = (HBox) scene.lookup("#timeCheeseHBox");
+	public static void loadTimeDoughnut(DeliverySchedule schedule) {
+		HBox hboxTimeDgnt = (HBox) scene.lookup("#timeDoughnutHBox");
 		Pane overlay = new Pane();
-		
-		TimeDoughnut.fillTimeDoughnut(overlay, schedule, scene);
-		hbox.getChildren().add(overlay);
+		overlay.setPrefWidth(hboxTimeDgnt.getWidth());
+		overlay.setPrefHeight(hboxTimeDgnt.getHeight());
+		CanvasDrawer.fillTimeDoughnut(overlay, schedule, scene);
+		hboxTimeDgnt.getChildren().add(overlay);
 	}
 	
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
 		Pane overlay = (Pane) scene.lookup("#overlay");
+		
 		overlay.getChildren().clear();
 		Intersection warehouse = ds.get(0).getKey().getStartingPoint();
 		canvasDrawer.drawWarehouse(overlay, warehouse, Color.GREEN, 5d);
 		for (Pair<Route, Delivery> p : ds) {
-			if(p.getKey() != null && p.getValue() != null) {
 				colorRoute(p.getKey(), p.getValue());
-			}
 		}
 	}
 
@@ -110,7 +113,9 @@ public class WindowManager{
 
 
 		for( Street street : streets) {
-			canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
+			if(delivery != null) {
+				canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
+			}
 			Intersection end = street.getEnd();
 			canvasDrawer.drawStreetOverlay(overlay, startingPoint, end, Color.RED);
 			startingPoint = end;

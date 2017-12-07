@@ -1,25 +1,34 @@
 package lsbdp.agile.view;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
+import javafx.util.Duration;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +38,12 @@ public class EventHandlers {
 
 	@FXML
 	private void quitAdditionHandler(ActionEvent event) {
-		Controller.refreshIHM();
+		try {
+			Controller.refreshIHM();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -57,7 +71,7 @@ public class EventHandlers {
 	}
 
 	@FXML
-	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException {
+	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException, IOException {
 		if(WindowManager.deliveriesLoaded) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Save your roadMap");
@@ -100,7 +114,8 @@ public class EventHandlers {
 	@FXML
 	private void switchViewHandler(ActionEvent event) {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
-		HBox back = (HBox) stackPane.getChildren().get(0);
+		Node back = (Node) stackPane.getChildren().get(0);
+		System.out.println(back.getClass());
 		back.toFront();
 	}
 	
@@ -209,6 +224,41 @@ public class EventHandlers {
 				}
 			}
 		}
+	}
+	
+	public static void showArcInformations(Pane overlay, Delivery delivery) {
+		VBox vbox = WidgetBuilder.createVBoxDelvieryInformation(overlay, delivery);
+		overlay.getChildren().add(vbox);
+	}
+
+	public static void hideArcInformations(Pane overlay) {
+		overlay.getChildren().remove(overlay.getChildren().size()-1);
+	}
+	
+	public static void highlightArc(Arc arc) {
+		Timeline timeline = new Timeline();
+
+		timeline.getKeyFrames().addAll(
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusXProperty(), arc.getRadiusX())),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusXProperty(), 275)),
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusYProperty(), arc.getRadiusY()	)),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusYProperty(), 275))
+				);
+		timeline.setAutoReverse(false);
+		timeline.play();
+	}
+
+	public static void unhighlightArc(Arc arc) {
+		Timeline timeline = new Timeline();
+
+		timeline.getKeyFrames().addAll(
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusXProperty(), arc.getRadiusX())),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusXProperty(), 250)),
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusYProperty(), arc.getRadiusY())),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusYProperty(), 250))
+				);
+		timeline.setAutoReverse(false);
+		timeline.play();
 	}
 
 	public static void unhighlightWarehouseListView () {
