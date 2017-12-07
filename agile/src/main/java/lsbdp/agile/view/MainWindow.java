@@ -66,6 +66,11 @@ public class MainWindow extends Application {
 		pop.show(stage);
 	}
 	
+	public static void openAddPopUp() {
+		Popup pop = PopupWindowManager.createAddPopup();
+		pop.show(stage);
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

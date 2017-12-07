@@ -91,7 +91,7 @@ public class WindowManager{
 		Pane overlay = new Pane();
 		overlay.setPrefWidth(hboxTimeDgnt.getWidth());
 		overlay.setPrefHeight(hboxTimeDgnt.getHeight());
-		TimeDoughnut.fillTimeDoughnut(overlay, schedule, scene);
+		CanvasDrawer.fillTimeDoughnut(overlay, schedule, scene);
 		hboxTimeDgnt.getChildren().add(overlay);
 	}
 	

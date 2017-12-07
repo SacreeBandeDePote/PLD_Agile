@@ -1,5 +1,8 @@
 package lsbdp.agile.view;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,10 +14,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
@@ -213,6 +220,41 @@ public class EventHandlers {
 				}
 			}
 		}
+	}
+	
+	public static void showArcInformations(Pane overlay, Delivery delivery) {
+		VBox vbox = WidgetBuilder.createVBoxDelvieryInformation(overlay, delivery);
+		overlay.getChildren().add(vbox);
+	}
+
+	public static void hideArcInformations(Pane overlay) {
+		overlay.getChildren().remove(overlay.getChildren().size()-1);
+	}
+	
+	public static void highlightArc(Arc arc) {
+		Timeline timeline = new Timeline();
+
+		timeline.getKeyFrames().addAll(
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusXProperty(), arc.getRadiusX())),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusXProperty(), 275)),
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusYProperty(), arc.getRadiusY()	)),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusYProperty(), 275))
+				);
+		timeline.setAutoReverse(false);
+		timeline.play();
+	}
+
+	public static void unhighlightArc(Arc arc) {
+		Timeline timeline = new Timeline();
+
+		timeline.getKeyFrames().addAll(
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusXProperty(), arc.getRadiusX())),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusXProperty(), 250)),
+				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusYProperty(), arc.getRadiusY())),
+				new KeyFrame(new Duration(500), new KeyValue(arc.radiusYProperty(), 250))
+				);
+		timeline.setAutoReverse(false);
+		timeline.play();
 	}
 
 	public static void unhighlightWarehouseListView () {
