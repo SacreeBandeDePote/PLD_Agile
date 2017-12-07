@@ -43,9 +43,11 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 			} else {
 				s += "LIVRAISON " + (i+1) + "\r\n";
 				s += "Localisation : Coordonnées X  " + pair.getValue().getLocation().getX() + "| Y " + pair.getValue().getLocation().getY() + "\r\n";
-				s += "Heure d'arrivée sur place : " + formater.format(pair.getValue().getTimespanStart()) + "\r\n";
-				s += "      |\r\n";
-				s += "Heure de départ : " + formater.format(pair.getValue().getTimespanEnd()) + "\r\n\r\n";
+				if(pair.getValue().getTimespanStart() != null && pair.getValue().getTimespanEnd()!=null ) {
+					s += "Heure d'arrivée sur place : " + formater.format(pair.getValue().getTimespanStart()) + "\r\n";
+					s += "      |\r\n";
+					s += "Heure de départ : " + formater.format(pair.getValue().getTimespanEnd()) + "\r\n\r\n";
+				}
 			}
 		}
 		return s;
