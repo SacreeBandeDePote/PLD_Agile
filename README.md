@@ -1,6 +1,6 @@
 # PLD_Agile
 
-[![Build Status](https://travis-ci.org/SacreeBandeDePote/PLD_Agile.svg?branch=BranchSaveTest)](https://travis-ci.org/SacreeBandeDePote/PLD_Agile)
+[![Build Status](https://travis-ci.org/SacreeBandeDePote/PLD_Agile.svg?branch=testIntegration)](https://travis-ci.org/SacreeBandeDePote/PLD_Agile)
 [![codecov](https://codecov.io/gh/SacreeBandeDePote/PLD_Agile/branch/master/graph/badge.svg)](https://codecov.io/gh/SacreeBandeDePote/PLD_Agile)
 
 ## Usage
