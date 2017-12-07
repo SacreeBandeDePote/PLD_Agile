@@ -31,7 +31,7 @@ public class CommandHandler {
 		int index = schedule.indexOf(element);
 		
 		//Calcule la nouvelle route
-		if(index < schedule.size() - 1) {
+		if(index < schedule.size() - 2) {
 			Delivery endDelivery = schedule.get(index+1).getValue();
 			Route newRoute = Dijkstra.performDijkstra(map, element.getKey().getStartingPoint() , endDelivery.getLocation());
 			schedule.set(index+1, new Pair<>(newRoute, endDelivery));
@@ -43,13 +43,13 @@ public class CommandHandler {
 	public static void undoDelete(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> element, int index) {
 		//Remet l'element de base
 		schedule.add(index, element);
-		
 		//Recalcule la delivery suivante
-		Delivery startDelivery = schedule.get(index).getValue();
-		Delivery endDelivery = schedule.get(index+1).getValue();
-		Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation() , endDelivery.getLocation());
-		
-		schedule.set(index+1, new Pair<>(newRoute, endDelivery));
+		if(index < schedule.size() - 2) {
+			Delivery startDelivery = schedule.get(index).getValue();
+			Delivery endDelivery = schedule.get(index+1).getValue();
+			Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation() , endDelivery.getLocation());
+			schedule.set(index+1, new Pair<>(newRoute, endDelivery));
+		}
 	}
 	
 	//Handler CommandAdd
@@ -62,18 +62,20 @@ public class CommandHandler {
 		Route nextRoute = Dijkstra.performDijkstra(map, d.getLocation(), nextDelivery.getLocation());
 		
 		schedule.set(index, new Pair<>(nextRoute, nextDelivery));
-		d.setDeliveryTime(prevDelivery.getDeliveryTime().getTime() + prevDelivery.getDuration() + (long) route.getTotalTime());
+		//d.setDeliveryTime(prevDelivery.getDeliveryTime().getTime() + (long) prevDelivery.getDuration() + (long) route.getTotalTime());
 		schedule.add(index, new Pair<>(route, d));
 	}
 	
 	//Handler CommandModify
-	public static void modifyDelivery(StreetMap map, DeliverySchedule schedule, Delivery d, Date sT, Date eT, int duration) {
-		deleteDelivery(map, schedule, findByDelivery(schedule, d));
-		Delivery newDelivery = new Delivery(duration, sT, eT, d.getLocation(), null);
+	public static int modifyDelivery(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> oldDelivery, Delivery newDelivery, Date sT, Date eT, int duration) {
+		int index = deleteDelivery(map, schedule, oldDelivery);
+		newDelivery = new Delivery(duration, sT, eT, oldDelivery.getValue().getLocation(), null);
 		addDelivery(map, schedule, newDelivery);
+		return index;
 	}
-	public static void undoModify() {
-		
+	public static void undoModify(StreetMap map, DeliverySchedule schedule, Delivery newDelivery, Pair<Route, Delivery> oldDelivery, int index) {
+		deleteDelivery(map, schedule, findByDelivery(schedule, newDelivery));
+		undoDelete(map, schedule, oldDelivery, index);
 	}
 
 }

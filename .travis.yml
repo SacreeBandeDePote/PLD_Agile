@@ -1,0 +1,14 @@
+language: java
+jdk:
+  - oraclejdk8
+
+script:
+  - cd agile/ && mvn test
+  - mvn cobertura:cobertura
+
+# Upload coverage data to codecov.io
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email: false

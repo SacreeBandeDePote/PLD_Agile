@@ -42,9 +42,33 @@ public class Route {
 	}
 
 	public String toString() {
-		String s = "Point de d√©part: " + startingPoint.getX() + " | " + startingPoint.getY() + "\r\n";
+		String s = "Point de d√©part : X " + startingPoint.getX() + " | Y " + startingPoint.getY() + "\r\n";
+		s+= "DEBUT DU TRAJET\r\n";
+		String previousStreet = null;		
+		float length = 0;
 		for(Street street: streets) {
-			s += street.toString();
+			if(streets.indexOf(street)==0) {
+				previousStreet = street.getName();
+				length = street.getLength();
+			}else if(streets.indexOf(street)==streets.size()-1){
+				length += street.getLength();
+				s+= "Prendre la route " + street.getName() + " sur une longueur de " + ((int)(length/10)*10) + "m et vous Ítes arrivÈ.";
+				s+= "\r\n";
+				s+="FIN DU TRAJET";
+			}else {
+				if(street.getName().compareTo(previousStreet)==0) {	
+					length += street.getLength();
+				}else{
+					if(length==0) length = street.getLength();
+					s+= "Prendre la route " + previousStreet + " sur une longueur de " + ((int)(length/10)*10) + "m jusqu'√† l'intersection avec " + street.getName();
+					s+= "\r\n";
+					previousStreet = street.getName();
+					length = 0;
+//					int index = streets.indexOf(street);
+//					if(index<2) CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
+//					else CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
+				}
+			}
 		}
 		return s;
 	}
@@ -52,4 +76,18 @@ public class Route {
 	public float getTotalTime() {
 		return getTotalLength()/MEAN_SPEED;
 	}
+	
+//	public static String CalculeAngle(Intersection first, Intersection second, Intersection third) {
+//		//Calcule sens d'arrivÈe
+//		int deltaFromX = second.getX() - first.getX();
+//		int deltaFromY = second.getY() - first.getY();
+//		int deltaToX = third.getX() - second.getX();
+//		int deltaToY = third.getY() - third.getY();
+//		double angle = (-deltaFromX)*(deltaToX)+(-deltaFromY)*(deltaToY);
+//		angle /= Math.sqrt( Math.pow(deltaFromX, 2) + Math.pow(deltaFromY, 2));
+//		angle /= Math.sqrt( Math.pow(deltaToX  , 2) + Math.pow(deltaToY  , 2));
+//		angle = Math.acos(angle) * 180 / Math.PI;
+//		System.out.println(angle);
+//		return "calcul ANgle = " + angle;
+//	}
 }

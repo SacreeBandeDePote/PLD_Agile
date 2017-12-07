@@ -5,14 +5,9 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class NaiveTSP extends TemplateTSP {
-	@Override
-	protected boolean bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost) {
-		return true;
-	}
-
+public class NNHTimeLessCostTSP extends NNHTimeTSP {
 	@Override
 	protected Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		return new SeqIterator(nonView);
+		return new LessCostIterator(crtNode, nonView, timeCost);
 	}
 }

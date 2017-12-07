@@ -19,7 +19,7 @@ public class TestTSP {
 		File f = new File("./Data/fichiersXML/planLyonGrand.xml");
 		map = SerializerXML.deserializeMapXML(f);
 
-		f = new File("./Data/fichiersXML/DLgrand20.xml");
+		f = new File("./Data/fichiersXML/DLmoyen5.xml");
 		req = SerializerXML.deserializeDeliveryXML(f, map);
 	}
 
@@ -40,7 +40,6 @@ public class TestTSP {
 
 		long start = System.currentTimeMillis();
 		test.findSolution(s, map, req);
-		System.out.println(System.currentTimeMillis() - start);
 	}
 
 	@Test
@@ -50,26 +49,41 @@ public class TestTSP {
 
 		long start = System.currentTimeMillis();
 		test.findSolution(s, map, req);
-		System.out.println(System.currentTimeMillis() - start);
 	}
 
 	@Test
-	public void testShortestTSP() {
-		TSP test = new ShortestTSP();
+	public void testNNHTSP() {
+		TSP test = new NNHTSP();
 		DeliverySchedule s = new DeliverySchedule();
 
 		long start = System.currentTimeMillis();
 		test.findSolution(s, map, req);
-		System.out.println(System.currentTimeMillis() - start);
 	}
 
 	@Test
-	public void testShortestLessCostTSP() {
-		TSP test = new ShortestLessCostTSP();
+	public void testNNHLessCostTSP() {
+		TSP test = new NNHLessCostTSP();
 		DeliverySchedule s = new DeliverySchedule();
 
 		long start = System.currentTimeMillis();
 		test.findSolution(s, map, req);
-		System.out.println(System.currentTimeMillis() - start);
+	}
+
+	@Test
+	public void testNNHTimeTSP() {
+		TSP test = new NNHTimeTSP();
+		DeliverySchedule s = new DeliverySchedule();
+
+		long start = System.currentTimeMillis();
+		test.findSolution(s, map, req);
+	}
+
+	@Test
+	public void testNNHTimeLessCostTSP() {
+		TSP test = new NNHTimeLessCostTSP();
+		DeliverySchedule s = new DeliverySchedule();
+
+		long start = System.currentTimeMillis();
+		test.findSolution(s, map, req);
 	}
 }

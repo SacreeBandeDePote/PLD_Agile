@@ -3,7 +3,6 @@ package lsbdp.agile.algorithm;
 import javafx.util.Pair;
 import lsbdp.agile.model.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public abstract class TemplateTSP implements TSP {
@@ -14,11 +13,9 @@ public abstract class TemplateTSP implements TSP {
 	protected float bestSolutionCost;
 	private boolean solutionFound;
 
-	private int count;
-
 	@Override
 	public void findSolution(DeliverySchedule schedule, StreetMap map, DeliveriesRequest req) {
-		count = 0;
+		schedule.setStartingTime(req.getStartingTime());
 		Intersection warehouse = req.getWarehouse();
 		List<Delivery> deliveries = req.getDeliveryList();
 		Route[][] graphTSP = Dijkstra.createTSPGraph(map, warehouse, deliveries);
@@ -45,27 +42,26 @@ public abstract class TemplateTSP implements TSP {
 
 		branchAndBound(timeCost.length - 1, nonView, view, 0f, timeCost, duration, timeWindows);
 		if (solutionFound) {
-			System.out.println("Best Solution found : cost : " + bestSolutionCost);
-			System.out.println(Arrays.toString(bestSolution));
-			System.out.println(Arrays.toString(timeOfArrival));
-
 			for (int i = 0; i < bestSolution.length - 1; i++) {
 				Delivery d = deliveries.get(bestSolution[i + 1]);
 				Route r = graphTSP[bestSolution[i]][bestSolution[i + 1]];
+				long diffTime = start.getTime() + (long)(timeOfArrival[bestSolution[i + 1]]*60f*1000f);
+				Date delTime = new Date(diffTime);
+				d.setDeliveryTime(delTime);
 				schedule.add(new Pair<>(r, d));
 			}
+			long diffTime = start.getTime() + (long)(timeOfArrival[graphTSP.length - 1]*60f*1000f);
+			Date delTime = new Date(diffTime);
+			schedule.setEndingTime(delTime);
 			Route r = graphTSP[bestSolution[bestSolution.length - 1]][graphTSP.length - 1];
 			schedule.add(new Pair<>(r, null));
-		} else {
-			System.out.println("No Solution Found");
 		}
 
-		System.out.println("Number of call : " + count);
 		//TODO : What to do with the come back to the warehouse ??
 	}
 
 
-	protected abstract float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
+	protected abstract boolean bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost);
 
 	protected abstract Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows);
 
@@ -73,7 +69,6 @@ public abstract class TemplateTSP implements TSP {
 	When i visit a node, it means that i manage to get to the node and that it is possible to get there. the crtCost has been increment by its duration
 	 */
 	private void branchAndBound(int crtNode, ArrayList<Integer> nonView, ArrayList<Integer> view, float crtCost, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		count++;
 		if (nonView.isEmpty()) { //this is the last node that has been visited
 			crtCost += timeCost[crtNode][timeCost.length - 1]; //we have to go back to the warehouse
 			if (crtCost < bestSolutionCost) { //we find a better solution
@@ -82,11 +77,9 @@ public abstract class TemplateTSP implements TSP {
 				timeOfArrival = tempTimeOfArrival.clone();
 				timeOfArrival[timeOfArrival.length - 1] = bestSolutionCost;
 				solutionFound = true;
-				//System.out.println("New Best Solution found : cost : " + bestSolutionCost);
-				//System.out.println(Arrays.toString(bestSolution));
 			}
 		} else {
-			if (crtCost + bound(crtNode, nonView, timeCost, duration, timeWindows) < bestSolutionCost) { //there are still nodes to visit
+			if (bound(crtNode, nonView, timeCost, duration, timeWindows, crtCost)) { //there are still nodes to visit
 				Iterator<Integer> it = iterator(crtNode, nonView, timeCost, duration, timeWindows);
 				while (it.hasNext()) {
 					Integer nextNode = it.next();
@@ -155,5 +148,15 @@ public abstract class TemplateTSP implements TSP {
 		timeWindows[timeWindows.length - 1] = null;
 
 		return timeWindows;
+	}
+
+	protected boolean checkTimePossible(ArrayList<Integer> nonView, Pair<Float, Float>[] timeWindows, float crtCost) {
+		for (Integer s : nonView) {
+			if(timeWindows[s] == null){}
+			else if (timeWindows[s].getValue() < crtCost) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

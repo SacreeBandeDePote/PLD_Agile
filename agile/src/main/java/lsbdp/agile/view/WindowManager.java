@@ -2,34 +2,33 @@ package lsbdp.agile.view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.FileChooser;
 import javafx.util.Pair;
-import lsbdp.agile.algorithm.Dijkstra;
-import lsbdp.agile.algorithm.Scheduler;
 import lsbdp.agile.controller.Controller;
-import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.*;
 
-import java.io.File;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class WindowManager{
 
@@ -53,6 +52,17 @@ public class WindowManager{
 
 	public static void initializer (Scene scene) {
 		WindowManager.scene = scene;
+		
+		
+		/*HBox hb = new HBox();
+		hb.setAlignment(Pos.CENTER);
+		hb.setId("canvasHBox");
+		hb.setStyle("-fx-background-color: derive(#ececec,26.4%);");*/
+		
+		
+		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
+		//sPane.getChildren().add(hb);
+		
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);
 		Controller controller = new Controller();

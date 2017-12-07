@@ -2,16 +2,20 @@ package lsbdp.agile.controller;
 
 import java.util.Date;
 
+import javafx.util.Pair;
 import lsbdp.agile.model.Delivery;
+import lsbdp.agile.model.Route;
 
 public class CommandModify implements Command {
-	private Delivery delivery;
+	private Pair<Route, Delivery> oldDelivery;
+	private Delivery newDelivery;
 	private Date startTime;
 	private Date endTime;
 	private int duration;
+	private int index;
 	
 	public CommandModify(Delivery d, Date sT, Date eT, int duration) {
-		this.delivery = d;
+		this.oldDelivery = CommandHandler.findByDelivery(Controller.getSchedule(), d);
 		this.startTime = sT;
 		this.endTime = eT;
 		if(duration == 0)
@@ -22,12 +26,15 @@ public class CommandModify implements Command {
 	
 	@Override
 	public boolean doCommand() {
-		CommandHandler.modifyDelivery(Controller.getMap(), Controller.getSchedule(), delivery, startTime, endTime, duration);
+		index = CommandHandler.modifyDelivery(Controller.getMap(), Controller.getSchedule(), oldDelivery, newDelivery, startTime, endTime, duration);
+		if(index == -1)
+			return false;
 		return true;
 	}
 	
 	@Override
 	public boolean undoCommand() {
+		CommandHandler.undoModify(Controller.getMap(), Controller.getSchedule(), newDelivery, oldDelivery, index);
 		return true;
 	}
 

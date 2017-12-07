@@ -30,8 +30,7 @@ public class MainWindow extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-				
-		Parent mainNode = FXMLLoader.load(MainWindow.class.getResource("MainWindow.fxml"));
+		Parent mainNode = FXMLLoader.load(getClass().getResource("/MainWindow.fxml"));
 		
 		mainScene = new Scene(mainNode);
 		primaryStage.setScene(mainScene);

@@ -30,11 +30,12 @@ import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
+import lsbdp.agile.model.Route;
 import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
 /**
- * Classe permettant de désérialiser un fichier XML(une map ou un fichier de livraisons) en objet JAVA
+ * Classe permettant de deserialiser un fichier XML(une map ou un fichier de livraisons) en objet JAVA
  * @author Vincent
  *
  */
@@ -43,28 +44,30 @@ public class SerializerXML {
 	static ArrayList<Long> idIdentifier;
 	
 	/**
-	 * Méthode permettant de sérialiser des objets Java en un document XML dans le but de faire une sauvegarde
+	 * Methode permettant de serialiser des objets Java en un document XML dans le but de faire une sauvegarde
 	 * @param deliveriesRequest
 	 * @param file
 	 */
-	public static void serializeDeliveryXML(DeliveriesRequest deliveriesRequest, File file) {
-		SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+	public static void serializeDeliveryXML(DeliverySchedule deliveriesSchedule, File file) {
+		SimpleDateFormat formater = new SimpleDateFormat("H:m:s");
 		try {
 			file.createNewFile();
 			FileWriter ffw=new FileWriter(file);
 			ffw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
 			ffw.write("<demandeDeLivraisons>\n");
-			ffw.write("<entrepot adresse=\"" + idIdentifier.get((int)(deliveriesRequest.getWarehouse().getId())) + "\" heureDepart=\"" + formater.format(deliveriesRequest.getStartingTime()) + "\"/>\n");
-			for(Delivery d: deliveriesRequest.getDeliveryList()) {
-				ffw.write("<livraison adresse=\"" + idIdentifier.get((int)d.getLocation().getId()));
-				if(d.getTimespanStart() != null) {
-					ffw.write("\" debutPlage=\"" + formater.format(d.getTimespanStart()));
+			ffw.write("<entrepot adresse=\"" + idIdentifier.get((int)(deliveriesSchedule.get(0).getKey().getStartingPoint().getId())) + "\" heureDepart=\"" + formater.format(deliveriesSchedule.getStartingTime()) + "\"/>\n");
+			for(Pair<Route,Delivery> d: deliveriesSchedule) {
+				if(d.getValue()!=null) {
+					ffw.write("<livraison adresse=\"" + idIdentifier.get((int)d.getValue().getLocation().getId()));
+					if(d.getValue().getTimespanStart() != null) {
+						ffw.write("\" debutPlage=\"" + formater.format(d.getValue().getTimespanStart()));
+					}
+					ffw.write("\" duree=\"" + d.getValue().getDuration());
+					if(d.getValue().getTimespanStart() != null) {
+						ffw.write("\" finPlage=\"" + formater.format(d.getValue().getTimespanEnd()));
+					}
+					ffw.write("\"/>\n");			
 				}
-				ffw.write("\" duree=\"" + d.getDuration());
-				if(d.getTimespanStart() != null) {
-					ffw.write("\" finPlage=\"" + formater.format(d.getTimespanEnd()));
-				}
-				ffw.write("\"/>\n");							
 			}
 			ffw.write("</demandeDeLivraisons>\n");
 			ffw.close(); 
@@ -75,7 +78,7 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de désérialiser une map à partir d'un fichier XML
+	 * Methode permettant de deserialiser une map a partir d'un fichier XML
 	 * @param fileXML
 	 * @return
 	 */
@@ -98,7 +101,7 @@ public class SerializerXML {
 		return streetMap;
 	}
 	/**
-	 * Méthode permettant de lire et de créer toutes les intersections à partir d'un fichier XML
+	 * Methode permettant de lire et de creer toutes les intersections a partir d'un fichier XML
 	 * @param root
 	 * @return
 	 */
@@ -137,7 +140,7 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de lire et de créer toutes les rues à partir d'un fichier XML
+	 * Methode permettant de lire et de creer toutes les rues a partir d'un fichier XML
 	 * @param root
 	 * @param streetMap
 	 */
@@ -163,7 +166,7 @@ public class SerializerXML {
 	}
 
 	/**
-	 * Méthode permettant de lire un fichier de livraisons et de créer un parcours de livraisons à partir d'un fichier XML
+	 * Methode permettant de lire un fichier de livraisons et de creer un parcours de livraisons a partir d'un fichier XML
 	 * @param fileXML
 	 * @param streetMap
 	 * @return
@@ -189,7 +192,7 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de lire un entrepôt et une heure de départ de livraison à partir d'un fichier XML
+	 * Methode permettant de lire un entrepot et une heure de depart de livraison a partir d'un fichier XML
 	 * @param root
 	 * @param streetMap
 	 * @return
@@ -219,7 +222,7 @@ public class SerializerXML {
 	} 
 	
 	/**
-	 * Méthode permettant de lire et de créer un lieu de livraison à partir d'un fichier XML
+	 * Methode permettant de lire et de creer un lieu de livraison a partir d'un fichier XML
 	 * @param root
 	 * @param streetMap
 	 * @return
@@ -255,20 +258,25 @@ public class SerializerXML {
 	}
 	
 	/**
-	 * Méthode permettant de générer une feuille de route
+	 * Methode permettant de generer une feuille de route
 	 * @param f
 	 * @param d
 	 * @throws FileNotFoundException
 	 */
-	public static void generateRoadMap(File f, DeliverySchedule d) throws FileNotFoundException {
-		PrintWriter out = new PrintWriter(f);
-		String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-		String entete = "-------------------------------------------------\r\n\r\n";
-		entete += "| FEUILLE DE ROUTE\r\n";
-		entete += "|\r\n";
-		entete += "| Date/Heure de gÃ©nÃ©ration: " + timeStamp + "\r\n";
-		entete += "-------------------------------------------------\r\n\r\n";
-		out.print(entete + d.toString());
-		out.close();
+	public static void generateRoadMap(File f, DeliverySchedule d) {
+		try {
+			PrintWriter out = new PrintWriter(f);
+			String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+			String entete = "-------------------------------------------------\r\n\r\n";
+			entete += "| FEUILLE DE ROUTE\r\n";
+			entete += "|\r\n";
+			entete += "| Date/Heure de gÃ©nÃ©ration: " + timeStamp + "\r\n";
+			entete += "-------------------------------------------------\r\n\r\n";
+			out.print(entete + d.toString());
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

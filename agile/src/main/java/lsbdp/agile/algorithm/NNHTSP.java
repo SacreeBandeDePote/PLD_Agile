@@ -4,23 +4,23 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 
-public class ShortestTSP extends NaiveTSP{
+public class NNHTSP extends NaiveTSP {
 
 	@Override
-	protected float bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
+	protected boolean bound(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows, float crtCost) {
 		ArrayList<Integer> toVisit = new ArrayList<>(nonView);
 		int nextIndex;
 		int index = crtNode;
 		float sum = 0.f;
 		for (int i = 0; i < nonView.size(); i++) {
 			nextIndex = getShortestRoute(timeCost[index], toVisit);
-			sum += timeCost[index][nextIndex];
+			sum += timeCost[index][nextIndex] + duration[nextIndex];
 			index = nextIndex;
 		}
 		//ajout du chemin le plus court vers le warehouse
-		sum += timeCost[index][timeCost.length - 1];
+		sum += shortestToWarehouse(nonView, timeCost);
 
-		return sum;
+		return (sum + crtCost) < bestSolutionCost;
 	}
 
 	protected int getShortestRoute(float[] timeCostCrtNode, ArrayList<Integer> nonView) {
@@ -39,5 +39,14 @@ public class ShortestTSP extends NaiveTSP{
 		}
 		nonView.remove(indexNonView);
 		return index;
+	}
+
+	protected float shortestToWarehouse(ArrayList<Integer> nonView, float[][] timeCost) {
+		float min = Float.MAX_VALUE;
+		for (Integer i : nonView) {
+			if(min > timeCost[i][timeCost.length - 1])
+				min = timeCost[i][timeCost.length - 1];
+		}
+		return min;
 	}
 }
