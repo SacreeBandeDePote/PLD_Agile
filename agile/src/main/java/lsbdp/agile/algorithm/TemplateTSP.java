@@ -48,6 +48,32 @@ public abstract class TemplateTSP implements TSP {
 				long diffTime = start.getTime() + (long)(timeOfArrival[bestSolution[i + 1]]*60f*1000f);
 				Date delTime = new Date(diffTime);
 				d.setDeliveryTime(delTime);
+				
+				Date timeMin = d.getTimespanStart();
+				Date timeMax = d.getTimespanEnd();
+				Date timeStart = new Date(delTime.getTime() - 30*60000); // -30min
+				Date timeEnd = new Date(delTime.getTime() + 30*60000); // +30min
+				d.setTimespanStart(timeStart);
+				d.setTimespanEnd(timeEnd);
+				if(timeMin != null){
+					if(timeStart.compareTo(timeMin) <0){
+						d.setTimespanStart(timeMin);
+						Date newTime = new Date(timeMin.getTime() + 60*60000);
+						d.setTimespanEnd(newTime); // on garde un créneau d'1h
+				 	}
+					
+					if(timeEnd.compareTo(timeMax) >0){
+						d.setTimespanEnd(timeMax);
+						Date newTime = new Date(timeMax.getTime() - 60*60000);
+						d.setTimespanStart(newTime); // on garde un créneau d'1h
+				 	}	
+				 }
+			 	if(timeStart.compareTo(start) <0){
+					d.setTimespanStart(start);
+					Date newTime = new Date(start.getTime() + 60*60000);
+					d.setTimespanEnd(newTime); // on garde un créneau d'1h
+				}
+				
 				schedule.add(new Pair<>(r, d));
 			}
 			long diffTime = start.getTime() + (long)(timeOfArrival[graphTSP.length - 1]*60f*1000f);
