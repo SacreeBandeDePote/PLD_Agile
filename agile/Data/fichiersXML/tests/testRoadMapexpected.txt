@@ -2,7 +2,7 @@
 
 | FEUILLE DE ROUTE
 |
-| Date/Heure de génération: 2017/12/07 17:40:13
+| Date/Heure de génération: 2017/12/07 19:40:30
 -------------------------------------------------
 
 Entrepôt
@@ -11,12 +11,13 @@ Heure de départ : 08:00:00
 ---------  Itinéraire Entrepôt -> Livraison 1  ---------
 Point de départ : X 19873 | Y 38309
 DEBUT DU TRAJET
-Prendre la route Rue Guilloud sur une longueur de 120m jusqu'à l'intersection avec Rue du Docteur Rebatel
-Prendre la route Rue du Docteur Rebatel sur une longueur de 80m jusqu'à l'intersection avec Place Ambroise Courtois
-Prendre la route Place Ambroise Courtois sur une longueur de 90m jusqu'à l'intersection avec Avenue des Frères Lumière
-Prendre la route Avenue des Frères Lumière sur une longueur de 240m jusqu'à l'intersection avec Rue Maryse Bastié
-Prendre la route Rue Maryse Bastié sur une longueur de 160m jusqu'à l'intersection avec Rue Feuillat
-Prendre la route Impasse Gazagnon sur une longueur de 270m et vous �tes arriv�.
+Prendre la route Rue Guilloud sur 120m puis tournez � droite sur Rue du Docteur Rebatel
+Prendre la route Rue du Docteur Rebatel sur 80m puis continuez sur Place Ambroise Courtois
+Prendre la route Place Ambroise Courtois sur 90m puis tournez � gauche sur Avenue des Frères Lumière
+Prendre la route Avenue des Frères Lumière sur 240m puis tournez � gauche sur Rue Maryse Bastié
+Prendre la route Rue Maryse Bastié sur 160m puis continuez sur Rue Feuillat
+Prendre la route Rue Feuillat sur 190m puis tournez � gauche sur Impasse Gazagnon
+Prendre la route Impasse Gazagnon sur 80m et vous �tes arriv�.
 FIN DU TRAJET
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -30,9 +31,9 @@ Heure de départ : 08:20:19
 ---------  Itinéraire Livraison 1 -> Livraison 2  ---------
 Point de départ : X 23772 | Y 37775
 DEBUT DU TRAJET
-Prendre la route Impasse Gazagnon sur une longueur de 80m jusqu'à l'intersection avec Rue Feuillat
-Prendre la route Rue Feuillat sur une longueur de 150m jusqu'à l'intersection avec Avenue Lacassagne
-Prendre la route Avenue Lacassagne sur une longueur de 540m et vous �tes arriv�.
+Prendre la route Impasse Gazagnon sur 80m puis tournez � gauche sur Rue Feuillat
+Prendre la route Rue Feuillat sur 150m puis tournez � droite sur Avenue Lacassagne
+Prendre la route Avenue Lacassagne sur 540m et vous �tes arriv�.
 FIN DU TRAJET
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -46,7 +47,7 @@ Heure de départ : 08:29:11
 ---------  Itinéraire Livraison 2 -> Livraison 3  ---------
 Point de départ : X 32576 | Y 38279
 DEBUT DU TRAJET
-Prendre la route Avenue Lacassagne sur une longueur de 160m et vous �tes arriv�.
+Prendre la route Avenue Lacassagne sur 160m et vous �tes arriv�.
 FIN DU TRAJET
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -60,10 +61,10 @@ Heure de départ : 08:44:49
 ---------  Itinéraire Livraison 3 -> Livraison 4  ---------
 Point de départ : X 34460 | Y 38880
 DEBUT DU TRAJET
-Prendre la route Avenue Lacassagne sur une longueur de 230m jusqu'à l'intersection avec Cours Eugénie
-Prendre la route Cours Eugénie sur une longueur de 140m jusqu'à l'intersection avec Rue Trarieux
-Prendre la route Rue Trarieux sur une longueur de 20m jusqu'à l'intersection avec Rue Viala
-Prendre la route Rue Viala sur une longueur de 50m et vous �tes arriv�.
+Prendre la route Avenue Lacassagne sur 230m puis tournez � droite sur Cours Eugénie
+Prendre la route Cours Eugénie sur 140m puis tournez � droite sur Rue Trarieux
+Prendre la route Rue Trarieux sur 20m puis tournez � gauche sur Rue Viala
+Prendre la route Rue Viala sur 50m et vous �tes arriv�.
 FIN DU TRAJET
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -77,11 +78,12 @@ Heure de départ : 09:01:49
 ---------  Itinéraire Livraison 4 -> Livraison 5  ---------
 Point de départ : X 35522 | Y 40845
 DEBUT DU TRAJET
-Prendre la route Rue Coignet sur une longueur de 20m jusqu'à l'intersection avec Rue Viala
-Prendre la route Rue Viala sur une longueur de 20m jusqu'à l'intersection avec Rue Trarieux
-Prendre la route Rue Trarieux sur une longueur de 470m jusqu'à l'intersection avec Rue du Professeur Florence
-Prendre la route Rue du Professeur Florence sur une longueur de 80m jusqu'à l'intersection avec Cours Albert Thomas
-Prendre la route Rue Jeanne Koehler sur une longueur de 810m et vous �tes arriv�.
+Prendre la route Rue Coignet sur 20m puis tournez � droite sur Rue Viala
+Prendre la route Rue Viala sur 20m puis tournez � gauche sur Rue Trarieux
+Prendre la route Rue Trarieux sur 470m puis tournez � gauche sur Rue du Professeur Florence
+Prendre la route Rue du Professeur Florence sur 80m puis tournez � droite sur Cours Albert Thomas
+Prendre la route Cours Albert Thomas sur 670m puis tournez � droite sur Rue Jeanne Koehler
+Prendre la route Rue Jeanne Koehler sur 130m et vous �tes arriv�.
 FIN DU TRAJET
 ------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------

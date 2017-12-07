@@ -10,6 +10,15 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 	private Date startingTime;
 	private Date endingTime;
 	
+	public DeliverySchedule() {
+		this.startingTime = null;
+		this.endingTime = null;
+		for(Pair<Route, Delivery> p: this) {
+			if(p == null) {
+				this.remove(p);
+			}
+		}
+	}
 	public Intersection getWarehouse() {
 		return this.get(0).getKey().getStartingPoint();
 	}
