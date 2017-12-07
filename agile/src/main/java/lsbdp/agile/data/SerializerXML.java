@@ -45,9 +45,9 @@ import lsbdp.agile.model.StreetMap;
  *
  */
 public class SerializerXML {
-	
+
 	static ArrayList<Long> idIdentifier;
-	
+
 	/**
 	 * Methode permettant de serialiser des objets Java en un document XML dans le but de faire une sauvegarde
 	 * @param deliveriesRequest
@@ -81,7 +81,7 @@ public class SerializerXML {
 		}
 
 	}
-	
+
 	/**
 	 * Methode permettant de deserialiser une map a partir d'un fichier XML
 	 * @param fileXML
@@ -130,20 +130,23 @@ public class SerializerXML {
 				}
 			}
 		}
-		mid = mid/streetMap.size();
-		Set<Long> keys = streetMap.keySet();
-		Iterator<Long> iterator = keys.iterator();
-		while(iterator.hasNext()) {
-			Long key = (Long) iterator.next();
-			long yCoord = streetMap.get(key).getY();
-			long dif = yCoord - mid;
-			if(dif>0) streetMap.get(key).setY((int) (mid+dif));
-			if(dif<0) streetMap.get(key).setY((int) (mid-dif));		
+		if(streetMap.size() != 0) {
+			mid = mid/streetMap.size();
+			Set<Long> keys = streetMap.keySet();
+			Iterator<Long> iterator = keys.iterator();
+			while(iterator.hasNext()) {
+				Long key = (Long) iterator.next();
+				long yCoord = streetMap.get(key).getY();
+				long dif = yCoord - mid;
+				if(dif>0) streetMap.get(key).setY((int) (mid+dif));
+				if(dif<0) streetMap.get(key).setY((int) (mid-dif));		
+			}
+			return streetMap;
+		}else {
+			return null;
 		}
-		
-		return streetMap;
 	}
-	
+
 	/**
 	 * Methode permettant de lire et de creer toutes les rues a partir d'un fichier XML
 	 * @param root
@@ -195,7 +198,7 @@ public class SerializerXML {
 		}
 		return deliveriesRequest;
 	}
-	
+
 	/**
 	 * Methode permettant de lire un entrepot et une heure de depart de livraison a partir d'un fichier XML
 	 * @param root
@@ -225,7 +228,7 @@ public class SerializerXML {
 		}
 		return new Pair <Intersection, Date> (warehouse,startingTime);
 	} 
-	
+
 	/**
 	 * Methode permettant de lire et de creer un lieu de livraison a partir d'un fichier XML
 	 * @param root
@@ -261,7 +264,7 @@ public class SerializerXML {
 		}
 		return deliveryList;
 	}
-	
+
 	/**
 	 * Methode permettant de generer une feuille de route
 	 * @param f
@@ -284,6 +287,6 @@ public class SerializerXML {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }

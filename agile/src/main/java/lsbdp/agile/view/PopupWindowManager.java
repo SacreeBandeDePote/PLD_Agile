@@ -1,5 +1,9 @@
 package lsbdp.agile.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -174,7 +178,8 @@ public class PopupWindowManager {
 		return pop;
 	}
 
-	public static Popup createAddPopup() {
+	public static Popup createAddPopup(Date start, Date end) {
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		Popup pop = new Popup();
 		Label l = new Label("Create Delivery ");
 
@@ -193,7 +198,7 @@ public class PopupWindowManager {
 
 		Label startLabel = new Label("Starting time : ");
 		TextField startField = new TextField();
-		startField.setText("HH:MM:SS");
+		startField.setText(sdf.format(start));
 
 
 		HBox startBox = new HBox(startLabel, startField);
@@ -201,7 +206,7 @@ public class PopupWindowManager {
 
 		Label endLabel = new Label("End time : ");
 		TextField endField = new TextField();
-		endField.setText("HH:MM:SS");
+		endField.setText(sdf.format(end));
 
 		HBox endBox = new HBox(endLabel, endField);
 		endBox.setAlignment(Pos.CENTER_LEFT);
@@ -215,7 +220,6 @@ public class PopupWindowManager {
 				if(isInteger(durationField.getText())) {
 					long id = Long.parseLong(intersectionField.getText());
 					Intersection intersection = Controller.getMap().get(id);
-					System.out.println(intersectionField.getText());
 					if(intersection != null) {
 						EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
 					} else {

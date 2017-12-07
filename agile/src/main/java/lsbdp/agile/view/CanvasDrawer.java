@@ -228,7 +228,7 @@ public class CanvasDrawer {
 			duration = TimeUnit.MILLISECONDS.toSeconds((long) duration);
 			duration = duration/(10*60*60);
 			duration *= -360;
-			Arc arc = WidgetBuilder.createArcFreeTime(angle, duration);
+			Arc arc = WidgetBuilder.createArcFreeTime(angle, duration, endOfLastDelivery, maxDate);
 			overlay.getChildren().add(arc);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -257,7 +257,7 @@ public class CanvasDrawer {
 			duration = duration/(10*60*60);
 			duration *= -360;
 			if(duration != 0) {
-				Arc arc = WidgetBuilder.createArcFreeTime(angle, duration);
+				Arc arc = WidgetBuilder.createArcFreeTime(angle, duration, startingTime, freeTimeEnd);
 				overlay.getChildren().add(arc);
 			}
 		} catch (ParseException e) {

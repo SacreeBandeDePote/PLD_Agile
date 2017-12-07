@@ -1,5 +1,6 @@
 package lsbdp.agile.view;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -201,7 +202,7 @@ public class WidgetBuilder {
 		return arc;
 	}
 
-	public static Arc createArcFreeTime(double start, double duration) {
+	public static Arc createArcFreeTime(double angle, double duration, Date start, Date end) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
@@ -212,7 +213,7 @@ public class WidgetBuilder {
 		arc.setCenterY(centerY);
 		arc.setRadiusX(250f);
 		arc.setRadiusY(250f);
-		arc.setStartAngle(start);
+		arc.setStartAngle(angle);
 		arc.setLength(duration);
 		arc.setType(ArcType.ROUND);
 		arc.setFill(Color.LIGHTBLUE);
@@ -237,7 +238,7 @@ public class WidgetBuilder {
 		arc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				MainWindow.openAddPopUp();
+				MainWindow.openAddPopUp(start, end);
 			}
 		});
 		return arc;
@@ -322,10 +323,14 @@ public class WidgetBuilder {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
 
 		Label idLabel = new Label("Delivery on intersection " + 12457);
 		Label durationLabel = new Label("Duration : " + delivery.getDuration());
-		VBox vbox = new VBox(idLabel, durationLabel);
+		Label timeStartWindowLabel = new Label("Start of time window : " + sdf.format(delivery.getTimespanStart()));
+		Label timeEndWindowLabel = new Label("End of time window : " + sdf.format(delivery.getTimespanEnd()));
+		VBox vbox = new VBox(idLabel, durationLabel, timeStartWindowLabel, timeEndWindowLabel);
 		vbox.setId("InformationBox");
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPrefHeight(50);

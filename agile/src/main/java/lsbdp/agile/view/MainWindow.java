@@ -3,6 +3,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -70,8 +71,8 @@ public class MainWindow extends Application {
 		pop.show(stage);
 	}
 	
-	public static void openAddPopUp() {
-		Popup pop = PopupWindowManager.createAddPopup();
+	public static void openAddPopUp(Date start, Date end) {
+		Popup pop = PopupWindowManager.createAddPopup(start, end);
 		pop.show(stage);
 	}
 	
