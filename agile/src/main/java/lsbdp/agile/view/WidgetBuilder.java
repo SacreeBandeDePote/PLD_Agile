@@ -17,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -33,7 +35,7 @@ import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 
 public class WidgetBuilder {
-	
+
 	private static double sourceX = 0;
 	private static double sourceY = 0;
 	private static double anchorX = 0;
@@ -42,9 +44,9 @@ public class WidgetBuilder {
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 
 		Label label = new Label("Livraison #"+count);	
-		
+
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
-		
+
 		return label;
 	}
 
@@ -94,7 +96,42 @@ public class WidgetBuilder {
 
 		return arc;
 	}
-	
+
+	public static VBox createLegend(Pane overlay) {
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
+		double centerX = hbox.getWidth()/2;
+		double centerY = hbox.getHeight()-50;
+
+		Label captionLabel = new Label("Caption");
+		Label freeTimeLabel = new Label("Free Time");
+		Rectangle ftRect = new Rectangle(25, 10);
+		ftRect.setFill(Color.LIGHTBLUE);
+		freeTimeLabel.setGraphic(ftRect);
+
+		Label travelLabel = new Label("Travel time");
+		Rectangle tRect = new Rectangle(25, 10);
+		tRect.setFill(Color.LIGHTGREEN);
+		travelLabel.setGraphic(tRect);
+
+		Label deliveryLabel = new Label("Delivery time");
+		Rectangle dRect = new Rectangle(25, 10);
+		dRect.setFill(Color.RED);
+		deliveryLabel.setGraphic(dRect);
+
+		VBox vbox = new VBox(captionLabel, freeTimeLabel, travelLabel, deliveryLabel);
+		vbox.setId("CaptionBox");
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setPrefHeight(50);
+		vbox.setPrefWidth(300);
+		vbox.setLayoutX(centerX-150);
+		vbox.setLayoutY(centerY-100);
+		vbox.setStyle("-fx-background-color : F0F0F0;"
+				+ "-fx-border-radius : 15;"
+				+ "-fx-border-color : silver;"
+				+ "-fx-background-radius : 15;");
+		return vbox;
+	}
+
 	public static HBox createListViewHBoxWarehouse(Intersection warehouse) {
 		HBox hbox = new HBox();
 		hbox.setSpacing(5);
@@ -122,7 +159,7 @@ public class WidgetBuilder {
 
 		return hbox;
 	}
-	
+
 	public static Arc createArcDelivery(Pane overlay, Delivery delivery, double start, double duration) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -154,7 +191,7 @@ public class WidgetBuilder {
 				EventHandlers.unhighlightArc(arc);
 			}
 		});
-		
+
 		arc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -196,7 +233,7 @@ public class WidgetBuilder {
 			}
 
 		});
-		
+
 		arc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -205,24 +242,45 @@ public class WidgetBuilder {
 		});
 		return arc;
 	}
-	
-	
-	
+
+
+
 	public static Button createListViewDeleteButton(Delivery delivery) {
 		Button btn = new Button();
 		btn.setText("X");
 		btn.setStyle("-fx-background-radius : 40");
 		btn.setMaxHeight(4);
 		btn.setMaxWidth(4);
-		
-		
+
+
 		btn.setOnMouseClicked(new EventHandler<MouseEvent>(){	
 			public void handle(MouseEvent e) {
 				EventHandlers.deleteDelivery(delivery);		
-				}                            // disable mouse events for all children
+			}                            // disable mouse events for all children
 
 		});
-		
+
+		return btn;
+	}
+
+	private static Button createListViewModifyButton(Delivery delivery) {
+		ImageView iv = new ImageView(new Image(WidgetBuilder.class.getResourceAsStream("/gearIcon.png")));
+		iv.setFitWidth(15);
+		iv.setFitHeight(15);
+		iv.setPreserveRatio(true);
+		iv.setSmooth(true);
+		iv.setCache(true);
+		Button btn = new Button();
+		btn.setStyle("-fx-background-radius : 40");
+		btn.setGraphic(iv);
+
+		btn.setOnMouseClicked(new EventHandler<MouseEvent>(){	
+			public void handle(MouseEvent e) {
+				EventHandlers.openModifyPopUp(delivery);		
+			}                            // disable mouse events for all children
+
+		});
+
 		return btn;
 	}
 
@@ -233,19 +291,20 @@ public class WidgetBuilder {
 
 		Label label = createDeliveryLabel(delivery, count);
 
-		Button btn = WidgetBuilder.createListViewDeleteButton(delivery);
-		hbox.getChildren().addAll(btn, label);
+		Button deleteBtn = WidgetBuilder.createListViewDeleteButton(delivery);
+		Button modifyBtn = WidgetBuilder.createListViewModifyButton(delivery);
+		hbox.getChildren().addAll(deleteBtn, modifyBtn, label);
 
 		hbox.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent e) {
 				EventHandlers.highlightIntersection(delivery.getLocation());
 			}
 		});
-		
+
 		hbox.setOnMouseClicked(new EventHandler<MouseEvent>(){	
 			public void handle(MouseEvent e) {
 				EventHandlers.highlightIntersection(delivery.getLocation());
-				
+
 			}
 		});
 
@@ -257,6 +316,7 @@ public class WidgetBuilder {
 
 		return hbox;
 	}
+
 
 	public static VBox createVBoxDelvieryInformation(Pane overlay, Delivery delivery) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
@@ -278,7 +338,7 @@ public class WidgetBuilder {
 				+ "-fx-background-radius : 15;");
 		return vbox;
 	}
-	
+
 	public static Circle createDeliveryCircle(Delivery delivery, Color color,Double radius) {
 		Circle circle = new Circle(radius);
 
@@ -287,7 +347,7 @@ public class WidgetBuilder {
 		circle.setId("Circle"+delivery.getLocation().getId());
 
 		Tooltip tooltip = new Tooltip("Delivery on Intersection number : " + delivery.getLocation().getId()
-									+ "\nDuration : " + delivery.getDuration());
+				+ "\nDuration : " + delivery.getDuration());
 		tooltip.setAutoHide(false);
 		tooltip.install(circle, tooltip);
 		circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -342,12 +402,12 @@ public class WidgetBuilder {
 
 	public static Circle createWarehouseCircle(Intersection warehouse, Color color,Double radius) {
 		Circle circle = new Circle(radius);
-		
-        circle.setStroke(color);
-        circle.setFill(color);
-        circle.setId("CircleWarehouse"+warehouse.getId());
-        
-        circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+		circle.setStroke(color);
+		circle.setFill(color);
+		circle.setId("CircleWarehouse"+warehouse.getId());
+
+		circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -375,9 +435,9 @@ public class WidgetBuilder {
 			public void handle(ScrollEvent e) {
 				EventHandlers.zoom(g,e);
 			}
-			
+
 		});
-		
+
 		g.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -388,7 +448,7 @@ public class WidgetBuilder {
 				anchorY = e.getY();
 			}
 		});
-		
+
 		g.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -396,8 +456,8 @@ public class WidgetBuilder {
 				// the getScale multiplicator is to adjust the translation to the level of zoom
 				double deltaX = (g.getScaleX()/2) * (sourceX + e.getX() - anchorX);
 				double deltaY = (g.getScaleX()/2) * (sourceY + e.getY() - anchorY);				
-				
-				
+
+
 				g.setTranslateX(deltaX);
 				g.setTranslateY(deltaY);
 			}
@@ -405,8 +465,8 @@ public class WidgetBuilder {
 
 		return g;
 	}
-	
-	
-	
-	
+
+
+
+
 }
