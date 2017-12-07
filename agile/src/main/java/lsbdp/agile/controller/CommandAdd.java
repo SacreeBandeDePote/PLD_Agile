@@ -14,8 +14,7 @@ public class CommandAdd implements Command {
 	
 	@Override
 	public boolean doCommand() {
-		CommandHandler.addDelivery(Controller.getMap(), Controller.getSchedule(), delivery);
-		return true;
+		return CommandHandler.addDelivery(Controller.getMap(), Controller.getSchedule(), delivery);
 	}
 	
 	@Override
