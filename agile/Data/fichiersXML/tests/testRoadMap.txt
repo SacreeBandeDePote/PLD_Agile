@@ -1,0 +1,91 @@
+-------------------------------------------------
+
+| FEUILLE DE ROUTE
+|
+| Date/Heure de génération: 2017/12/07 17:40:13
+-------------------------------------------------
+
+Entrepôt
+Localisation : Coordonnées X 19873 | Y 38309
+Heure de départ : 08:00:00
+---------  Itinéraire Entrepôt -> Livraison 1  ---------
+Point de départ : X 19873 | Y 38309
+DEBUT DU TRAJET
+Prendre la route Rue Guilloud sur une longueur de 120m jusqu'à l'intersection avec Rue du Docteur Rebatel
+Prendre la route Rue du Docteur Rebatel sur une longueur de 80m jusqu'à l'intersection avec Place Ambroise Courtois
+Prendre la route Place Ambroise Courtois sur une longueur de 90m jusqu'à l'intersection avec Avenue des Frères Lumière
+Prendre la route Avenue des Frères Lumière sur une longueur de 240m jusqu'à l'intersection avec Rue Maryse Bastié
+Prendre la route Rue Maryse Bastié sur une longueur de 160m jusqu'à l'intersection avec Rue Feuillat
+Prendre la route Impasse Gazagnon sur une longueur de 270m et vous �tes arriv�.
+FIN DU TRAJET
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+LIVRAISON 1
+Localisation : Coordonnées X  23772| Y 37775
+Heure d'arrivée sur place : 08:05:19
+      |
+Heure de départ : 08:20:19
+
+---------  Itinéraire Livraison 1 -> Livraison 2  ---------
+Point de départ : X 23772 | Y 37775
+DEBUT DU TRAJET
+Prendre la route Impasse Gazagnon sur une longueur de 80m jusqu'à l'intersection avec Rue Feuillat
+Prendre la route Rue Feuillat sur une longueur de 150m jusqu'à l'intersection avec Avenue Lacassagne
+Prendre la route Avenue Lacassagne sur une longueur de 540m et vous �tes arriv�.
+FIN DU TRAJET
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+LIVRAISON 2
+Localisation : Coordonnées X  32576| Y 38279
+Heure d'arrivée sur place : 08:24:11
+      |
+Heure de départ : 08:29:11
+
+---------  Itinéraire Livraison 2 -> Livraison 3  ---------
+Point de départ : X 32576 | Y 38279
+DEBUT DU TRAJET
+Prendre la route Avenue Lacassagne sur une longueur de 160m et vous �tes arriv�.
+FIN DU TRAJET
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+LIVRAISON 3
+Localisation : Coordonnées X  34460| Y 38880
+Heure d'arrivée sur place : 08:29:49
+      |
+Heure de départ : 08:44:49
+
+---------  Itinéraire Livraison 3 -> Livraison 4  ---------
+Point de départ : X 34460 | Y 38880
+DEBUT DU TRAJET
+Prendre la route Avenue Lacassagne sur une longueur de 230m jusqu'à l'intersection avec Cours Eugénie
+Prendre la route Cours Eugénie sur une longueur de 140m jusqu'à l'intersection avec Rue Trarieux
+Prendre la route Rue Trarieux sur une longueur de 20m jusqu'à l'intersection avec Rue Viala
+Prendre la route Rue Viala sur une longueur de 50m et vous �tes arriv�.
+FIN DU TRAJET
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+LIVRAISON 4
+Localisation : Coordonnées X  35522| Y 40845
+Heure d'arrivée sur place : 08:46:49
+      |
+Heure de départ : 09:01:49
+
+---------  Itinéraire Livraison 4 -> Livraison 5  ---------
+Point de départ : X 35522 | Y 40845
+DEBUT DU TRAJET
+Prendre la route Rue Coignet sur une longueur de 20m jusqu'à l'intersection avec Rue Viala
+Prendre la route Rue Viala sur une longueur de 20m jusqu'à l'intersection avec Rue Trarieux
+Prendre la route Rue Trarieux sur une longueur de 470m jusqu'à l'intersection avec Rue du Professeur Florence
+Prendre la route Rue du Professeur Florence sur une longueur de 80m jusqu'à l'intersection avec Cours Albert Thomas
+Prendre la route Rue Jeanne Koehler sur une longueur de 810m et vous �tes arriv�.
+FIN DU TRAJET
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+Entrepôt
+Localisation : Coordonnées X 19873 | Y 38309
+Heure d'arrivée estimée : 09:08:40

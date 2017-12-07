@@ -11,10 +11,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import lsbdp.agile.algorithm.NNHTimeLessCostTSP;
+import lsbdp.agile.algorithm.NNHTimeTSP;
 import lsbdp.agile.algorithm.TSP;
 import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
-import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.StreetMap;
@@ -25,13 +25,30 @@ public class TestSerializer {
 	static File mapFile; 
 	static File deliveryFile;
 	static File deliveryFileExpected;
-
+	static File deliveryFileTest;
+	static File roadMapFileExpected;
+	static File roadMapFileTest;
+	static TSP tsp;
+	static DeliverySchedule deliverySchedule;
+	static DeliveriesRequest deliveriesRequest;
+	
+	
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mapFile = new File("./Data/fichiersXML/planLyonPetit.xml");		
 		deliveryFile = new File("./Data/fichiersXML/DLpetit5.xml");
-		deliveryFileExpected = new File("./Data/fichiersXML/tests/testDLpetit5expected.xml");
+		deliveryFileExpected = new File("./Data/fichiersXML/tests/testDL.xml");
+		deliveryFileTest = new File("./Data/fichiersXML/tests/test.xml");
+		deliveryFileTest.deleteOnExit();
+		roadMapFileExpected = new File("./Data/fichiersXML/tests/testRoadMap.txt");
+		roadMapFileTest = new File("./Data/fichiersXML/tests/test.txt");
+		roadMapFileTest.deleteOnExit();
+		
 		map = SerializerXML.deserializeMapXML(mapFile);
+		tsp = new NNHTimeTSP();
+		deliverySchedule = new DeliverySchedule();
+		deliveriesRequest = SerializerXML.deserializeDeliveryXML(deliveryFile,map);
 	}
 	
 	@Test
@@ -53,16 +70,17 @@ public class TestSerializer {
 	
 	@Test
 	public void testSerializeDeliveryXML () throws IOException{
-		TSP test = new NNHTimeLessCostTSP();
-		DeliverySchedule s = new DeliverySchedule();
-		DeliveriesRequest deliveries = SerializerXML.deserializeDeliveryXML(deliveryFile,map);
-		File file = new File("./Data/fichiersXML/tests/test.xml");
-		file.deleteOnExit();
-		test.findSolution(s, map, deliveries);
-		SerializerXML.serializeDeliveryXML(s, file);
-		assertTrue(file.exists());
-		assertTrue("The files differ!", FileUtils.contentEquals(file,deliveryFileExpected));
-		file.deleteOnExit();
+		tsp.findSolution(deliverySchedule, map, deliveriesRequest);
+		SerializerXML.serializeDeliveryXML(deliverySchedule, deliveryFileTest);
+		assertTrue(deliveryFileTest.exists());
+		assertTrue("The files differ!", FileUtils.contentEquals(deliveryFileTest,deliveryFileExpected));
 	}
 	
+	@Test
+	public void testGenerateRoadMap() throws IOException{
+		tsp.findSolution(deliverySchedule, map, deliveriesRequest);
+		SerializerXML.generateRoadMap(roadMapFileTest, deliverySchedule);
+		assertTrue(deliveryFileTest.exists());
+		assertTrue("The files differ!", FileUtils.contentEquals(deliveryFileTest, deliveryFileExpected));
+	}
 }
