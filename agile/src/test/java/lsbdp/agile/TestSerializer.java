@@ -3,11 +3,12 @@ package lsbdp.agile;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import junitx.framework.FileAssert;
 
 import lsbdp.agile.algorithm.NNHTimeLessCostTSP;
 import lsbdp.agile.algorithm.TSP;
@@ -29,7 +30,7 @@ public class TestSerializer {
 	public static void setUpBeforeClass() throws Exception {
 		mapFile = new File("./Data/fichiersXML/planLyonPetit.xml");		
 		deliveryFile = new File("./Data/fichiersXML/DLpetit5.xml");
-		deliveryFileExpected = new File("./Data/tests/testDLpetit5expected.xml");
+		deliveryFileExpected = new File("./Data/fichiersXML/tests/testDLpetit5expected.xml");
 		map = SerializerXML.deserializeMapXML(mapFile);
 	}
 	
@@ -51,16 +52,17 @@ public class TestSerializer {
 	}
 	
 	@Test
-	public void testSerializeDeliveryXML (){
+	public void testSerializeDeliveryXML () throws IOException{
 		TSP test = new NNHTimeLessCostTSP();
 		DeliverySchedule s = new DeliverySchedule();
 		DeliveriesRequest deliveries = SerializerXML.deserializeDeliveryXML(deliveryFile,map);
-		File file = new File("./Data/testSerialize.xml");
+		File file = new File("./Data/fichiersXML/tests/test.xml");
 		file.deleteOnExit();
 		test.findSolution(s, map, deliveries);
 		SerializerXML.serializeDeliveryXML(s, file);
 		assertTrue(file.exists());
-		assertEquals(file,deliveryFileExpected);
+		assertTrue("The files differ!", FileUtils.contentEquals(file,deliveryFileExpected));
+		file.deleteOnExit();
 	}
 	
 }
