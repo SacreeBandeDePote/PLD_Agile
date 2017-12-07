@@ -48,10 +48,11 @@ public class PopupWindowManager {
 		validButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent arg0) {
-				if(isInteger(durationField.getText())) {
-					EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
-				}else {
+				if(!isInteger(durationField.getText())) {
 					MainWindow.openMessagePopup("Please enter a correct duration");
+				}
+				else {
+					EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
 				}
 				pop.hide();
 			}

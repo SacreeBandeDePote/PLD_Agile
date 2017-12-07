@@ -20,6 +20,9 @@ public class CommandList {
 			else
 				commandList.add(index, c);
 		} else {
+			if (c.getClass() == CommandAdd.class) {
+				Controller.openErrorPopUp("An error occured");
+			}
 			index --;
 			indexMax = index;
 		}

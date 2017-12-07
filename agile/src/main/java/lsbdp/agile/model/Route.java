@@ -62,22 +62,43 @@ public class Route {
 				previousStreet = street.getName();
 				length = street.getLength();
 			}else if(streets.indexOf(street)==streets.size()-1){
-				length += street.getLength();
-				s+= "Prendre la route " + street.getName() + " sur une longueur de " + ((int)(length/10)*10) + "m et vous êtes arrivé.";
-				s+= "\r\n";
+				if(street.getName().compareTo(previousStreet)==0) {
+					length+= street.getLength();
+					s+= "Prendre la route " + street.getName() + " sur " + ((int)(length/10)*10) + "m et vous êtes arrivé.\r\n";
+				}else {
+					s+= "Prendre la route " + previousStreet + " sur " + ((int)(length/10)*10) + "m puis ";		
+					double angleSin;
+					Intersection firstIntersection;
+					int index = streets.indexOf(street);
+					if(index<2) firstIntersection = startingPoint;
+					else firstIntersection = streets.get(index-2).getEnd();
+					angleSin = CalculeSin(firstIntersection, streets.get(index-1).getEnd(), street.getEnd());
+
+					if(Math.abs(angleSin)< 0.2) s+= "continuez sur " + street.getName() + "\r\n";
+					else if(angleSin<0) s+= "tournez Ã gauche sur " + street.getName() + "\r\n";
+					else s+= "tournez Ã droite sur " + street.getName() + "\r\n";
+					
+					s+= "Prendre la route " + street.getName() + " sur " + ((int)(street.getLength()/10)*10) + "m et vous êtes arrivé.\r\n";
+				}
 				s+="FIN DU TRAJET";
 			}else {
 				if(street.getName().compareTo(previousStreet)==0) {	
 					length += street.getLength();
 				}else{
 					if(length==0) length = street.getLength();
-					s+= "Prendre la route " + previousStreet + " sur une longueur de " + ((int)(length/10)*10) + "m jusqu'Ã  l'intersection avec " + street.getName();
-					s+= "\r\n";
+					s+= "Prendre la route " + previousStreet + " sur " + ((int)(length/10)*10) + "m puis ";
 					previousStreet = street.getName();
 					length = 0;
-//					int index = streets.indexOf(street);
-//					if(index<2) CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
-//					else CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
+					int index = streets.indexOf(street);
+					double angleSin;
+					Intersection firstIntersection;
+					if(index<2) firstIntersection = startingPoint;
+					else firstIntersection = streets.get(index-2).getEnd();
+					angleSin = CalculeSin(firstIntersection, streets.get(index-1).getEnd(), street.getEnd());
+
+					if(Math.abs(angleSin)< 0.2) s+= "continuez sur " + street.getName() + "\r\n";
+					else if(angleSin<0) s+= "tournez Ã gauche sur " + street.getName() + "\r\n";
+					else s+= "tournez Ã droite sur " + street.getName() + "\r\n";
 				}
 			}
 		}
@@ -88,17 +109,15 @@ public class Route {
 		return getTotalLength()/MEAN_SPEED;
 	}
 	
-//	public static String CalculeAngle(Intersection first, Intersection second, Intersection third) {
-//		//Calcule sens d'arrivée
-//		int deltaFromX = second.getX() - first.getX();
-//		int deltaFromY = second.getY() - first.getY();
-//		int deltaToX = third.getX() - second.getX();
-//		int deltaToY = third.getY() - third.getY();
-//		double angle = (-deltaFromX)*(deltaToX)+(-deltaFromY)*(deltaToY);
-//		angle /= Math.sqrt( Math.pow(deltaFromX, 2) + Math.pow(deltaFromY, 2));
-//		angle /= Math.sqrt( Math.pow(deltaToX  , 2) + Math.pow(deltaToY  , 2));
-//		angle = Math.acos(angle) * 180 / Math.PI;
-//		System.out.println(angle);
-//		return "calcul ANgle = " + angle;
-//	}
+	public static double CalculeSin(Intersection first, Intersection second, Intersection third) {
+		//Calcule sens d'arrivée
+		int deltaFromX = second.getX() - first.getX();
+		int deltaFromY = second.getY() - first.getY();
+		int deltaToX = third.getX() - second.getX();
+		int deltaToY = third.getY() - second.getY();
+		
+		double angleSin = deltaFromX * deltaToY - deltaFromY * deltaToX;
+		angleSin = angleSin/ ( Math.sqrt(Math.pow(deltaFromX, 2) + Math.pow(deltaToX, 2)) * Math.sqrt(Math.pow(deltaFromY, 2) + Math.pow(deltaToY, 2)));
+		return angleSin;
+	}
 }

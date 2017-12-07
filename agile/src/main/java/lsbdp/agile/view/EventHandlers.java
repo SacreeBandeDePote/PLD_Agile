@@ -27,7 +27,9 @@ import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EventHandlers {
@@ -296,8 +298,16 @@ public class EventHandlers {
 
 	public static void addDelivery(Intersection intersection, String duration, String startingTime, String endTime) {
 		int tmpDuration = Integer.parseInt(duration);
-		Date start = new Date(10);
-		Date end = new Date(11);
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		Date start = null;
+		Date end = null;
+		try {
+			start = sdf.parse(startingTime);
+			end = sdf.parse(endTime);
+		} catch (ParseException e) {
+			start = null;
+			end = null;
+		}
 		Delivery d = new Delivery(tmpDuration, start, end, intersection, null);
 		Controller.cmdAdd2(d);
 	}

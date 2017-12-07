@@ -105,11 +105,15 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void refreshIHM() throws ParseException {
+		
+	public static void refreshIHM() {
 		WindowManager.loadListView(schedule);
 		WindowManager.colorDeliverySchedule(schedule);
 		WindowManager.loadTimeDoughnut(schedule);
+	}
+
+	public static void openErrorPopUp(String msg) {
+		WindowManager.openErrorPopUp(msg);		
 	}
 	
 }
