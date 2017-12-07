@@ -7,11 +7,13 @@ import java.text.SimpleDateFormat;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import junitx.framework.FileAssert;
 
 import lsbdp.agile.algorithm.NNHTimeLessCostTSP;
 import lsbdp.agile.algorithm.TSP;
 import lsbdp.agile.data.SerializerXML;
 import lsbdp.agile.model.DeliveriesRequest;
+import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Intersection;
 import lsbdp.agile.model.StreetMap;
@@ -20,12 +22,14 @@ public class TestSerializer {
 
 	static StreetMap map;
 	static File mapFile; 
-	static File deliveryFile; 
+	static File deliveryFile;
+	static File deliveryFileExpected;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mapFile = new File("./Data/fichiersXML/planLyonPetit.xml");		
 		deliveryFile = new File("./Data/fichiersXML/DLpetit5.xml");
+		deliveryFileExpected = new File("./Data/tests/testDLpetit5expected.xml");
 		map = SerializerXML.deserializeMapXML(mapFile);
 	}
 	
@@ -56,6 +60,7 @@ public class TestSerializer {
 		test.findSolution(s, map, deliveries);
 		SerializerXML.serializeDeliveryXML(s, file);
 		assertTrue(file.exists());
+		assertEquals(file,deliveryFileExpected);
 	}
 	
 }
