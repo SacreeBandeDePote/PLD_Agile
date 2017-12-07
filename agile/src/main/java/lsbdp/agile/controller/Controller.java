@@ -86,10 +86,14 @@ public class Controller {
 		cmdList.redo();
 		refreshIHM();
 	}
-	
+		
 	public static void refreshIHM() {
 		WindowManager.loadListView(schedule);
 		WindowManager.colorDeliverySchedule(schedule);
+	}
+
+	public static void openErrorPopUp(String msg) {
+		WindowManager.openErrorPopUp(msg);		
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -46,11 +47,11 @@ public class CanvasDrawer {
 	
 	public void drawMap(StreetMap map, Scene scene) {
 
-		//HBox ap            = (HBox) scene.lookup("#canvasHBox");
 		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
 		Double dimension      = Double.min(sPane.getHeight(), sPane.getWidth());
 		canvas             = new Canvas(dimension-30, dimension-30);
 		Pane overlay       = new Pane();
+		sPane.setStyle("-fx-background-color: derive(#ececec,26.4%);");
  		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		Set<Long> keys     = map.keySet();
@@ -72,13 +73,11 @@ public class CanvasDrawer {
 		gc.strokeLine(canvasWidth, canvasWidth, canvasWidth, 0);
 		gc.strokeLine(canvasWidth, canvasWidth, 0, canvasWidth);
 		
-		Group mapGroup = WidgetBuilder.createDrawGroup(canvas,overlay);
+		Group drawGroup = WidgetBuilder.createDrawGroup(canvas,overlay);
+		
 		
 		sPane.getChildren().clear();
-		sPane.getChildren().add(mapGroup);
-		
-		//ap.getChildren().clear();
-		//ap.getChildren().add(mapGroup);
+		sPane.getChildren().add(drawGroup);
 	}
 
 	/**

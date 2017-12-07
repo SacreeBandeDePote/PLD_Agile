@@ -191,4 +191,8 @@ public class WindowManager{
 	public static Scene getScene() {
 		return scene;
 	}
+
+	public static void openErrorPopUp(String msg) {
+		MainWindow.openMessagePopup(msg);
+	}
 }

@@ -2,8 +2,8 @@ package lsbdp.agile.controller;
 
 
 import javafx.util.Pair;
-import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Route;
+import lsbdp.agile.model.Delivery;
 
 public class CommandAdd implements Command {
 	private Delivery delivery;
@@ -14,8 +14,7 @@ public class CommandAdd implements Command {
 	
 	@Override
 	public boolean doCommand() {
-		CommandHandler.addDelivery(Controller.getMap(), Controller.getSchedule(), delivery);
-		return true;
+		return CommandHandler.addDelivery(Controller.getMap(), Controller.getSchedule(), delivery);
 	}
 	
 	@Override
