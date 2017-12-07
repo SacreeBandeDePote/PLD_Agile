@@ -3,12 +3,7 @@ package lsbdp.agile.view;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
@@ -25,7 +20,6 @@ import javafx.util.Pair;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.*;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,10 +27,6 @@ import java.util.Set;
 
 public class WindowManager{
 
-	private static int MIN_X;
-	private static int MIN_Y;
-	private static int MAX_X;
-	private static int MAX_Y;
 	private static Scene scene;
 
 	public static boolean mapLoaded = false;
@@ -44,11 +34,6 @@ public class WindowManager{
 
 	public static CanvasDrawer canvasDrawer = null;
 
-	private static StreetMap streetMap;
-	private static DeliveriesRequest deliveriesRequest;
-	private static Canvas cv;
-	private static Button computeButton;
-	
 	private static ArrayList<Delivery> selectedDeliveries;
 
 	public static void initializer (Scene scene) {
@@ -68,7 +53,7 @@ public class WindowManager{
 		//sPane.getChildren().add(hb);
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
 		sp.getDividers().get(0).setPosition(0.85);
-		Controller controller = new Controller();
+		new Controller();
 		KeyCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
 		KeyCombination ctrlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_ANY);
 
@@ -124,7 +109,6 @@ public class WindowManager{
 	}
 
 	public static void colorDeliveryRequest(DeliveriesRequest r) {
-		deliveriesRequest        = r;
 		Pane overlay             = (Pane) scene.lookup("#overlay");
 		ArrayList<Delivery> list = new ArrayList<Delivery>();
 		list                     = r.getDeliveryList();
@@ -175,7 +159,7 @@ public class WindowManager{
 	public static void highlightAll(StreetMap map, DeliverySchedule schedule) {
 		Pane overlay = (Pane) scene.lookup("#overlay");
 		Set<Long> keys     = map.keySet();
-		Iterator iterator  = keys.iterator();
+		Iterator<Long> iterator  = keys.iterator();
 
 		while(iterator.hasNext()) {
 			Long key = (Long) iterator.next();

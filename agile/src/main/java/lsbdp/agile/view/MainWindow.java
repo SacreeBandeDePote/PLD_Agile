@@ -14,10 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lsbdp.agile.data.SerializerXML;
-import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.StreetMap;
 
 public class MainWindow extends Application {
 

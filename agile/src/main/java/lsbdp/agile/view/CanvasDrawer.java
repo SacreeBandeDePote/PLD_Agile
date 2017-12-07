@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -15,11 +14,9 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -70,7 +67,7 @@ public class CanvasDrawer {
  		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();		
 		Set<Long> keys     = map.keySet();
-		Iterator iterator  = keys.iterator();
+		Iterator<Long> iterator  = keys.iterator();
 
 		gc.setFill(new Color(0.957, 0.957, 0.957, 1));
 		gc.fillRect(0, 0, canvasWidth, canvasWidth);

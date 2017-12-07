@@ -3,24 +3,15 @@ package lsbdp.agile.view;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
@@ -31,7 +22,6 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 
@@ -354,7 +344,7 @@ public class WidgetBuilder {
 		Tooltip tooltip = new Tooltip("Delivery on Intersection number : " + delivery.getLocation().getId()
 				+ "\nDuration : " + delivery.getDuration());
 		tooltip.setAutoHide(false);
-		tooltip.install(circle, tooltip);
+		Tooltip.install(circle, tooltip);
 		circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
