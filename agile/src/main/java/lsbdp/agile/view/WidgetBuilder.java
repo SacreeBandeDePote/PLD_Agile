@@ -36,9 +36,7 @@ public class WidgetBuilder {
 	private static double anchorY = 0;
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
-		SimpleDateFormat formaterHeure = new SimpleDateFormat("H");
-		SimpleDateFormat formaterMin = new SimpleDateFormat("m");
-		Label label = new Label("Livraison #"+count + ");	
+		Label label = new Label("Livraison #"+count);	
 		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		
