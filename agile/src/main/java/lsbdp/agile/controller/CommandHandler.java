@@ -55,7 +55,7 @@ public class CommandHandler {
 	}
 
 	//Handler CommandAdd
-	public static void addDelivery(StreetMap map, DeliverySchedule schedule, Delivery d) {
+	public static boolean addDelivery(StreetMap map, DeliverySchedule schedule, Delivery d) {
 		int index = indexAdd(map, schedule, d);
 		if (index >= 0) {
 			Delivery nextDelivery = schedule.get(index).getValue();
@@ -72,7 +72,9 @@ public class CommandHandler {
 					((prevDelivery != null) ? (prevDelivery.getDeliveryTime().getTime() + prevDelivery.getDuration() * 1000) : 0));
 			d.setDeliveryTime(arrival);
 			schedule.add(index, new Pair<>(route, d));
+			return true;
 		}
+		return false;
 	}
 
 	//Handler CommandModify
