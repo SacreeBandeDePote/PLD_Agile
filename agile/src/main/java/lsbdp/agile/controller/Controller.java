@@ -51,8 +51,12 @@ public class Controller {
 	//Gérer Schedule
 	public static DeliverySchedule loadDeliveryRequest(File xml) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(xml, map);
-		algo.findSolution(schedule, map, deliveries);
-		refreshIHM();
+		if(deliveries.getDeliveryList().size() == 0) {
+			MainWindow.openMessagePopup("Invalid delivery file");
+		}else {
+			algo.findSolution(schedule, map, deliveries);
+			refreshIHM();
+		}
 		return schedule;
 	}
 
