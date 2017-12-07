@@ -1,6 +1,7 @@
 package lsbdp.agile.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -53,7 +54,7 @@ public class Controller {
 		return schedule;
 	}
 	
-	public static void generateRoadmapActionHandler(File xml) {
+	public static void generateRoadmapActionHandler(File xml) throws IOException {
 		SerializerXML.generateRoadMap(xml, schedule);
 	}
 	
