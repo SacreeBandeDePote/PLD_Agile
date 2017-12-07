@@ -1,5 +1,6 @@
 package lsbdp.agile.view;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -35,8 +36,7 @@ public class WidgetBuilder {
 	private static double anchorY = 0;
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
-		
-		Label label = new Label("Livraison n"+count + ", duration : " + delivery.getDuration()+"s");	
+		Label label = new Label("Livraison #"+count);	
 		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		
