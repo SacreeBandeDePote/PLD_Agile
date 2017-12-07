@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import lsbdp.agile.controller.Controller;
+import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 
 public class PopupWindowManager {
@@ -51,6 +52,73 @@ public class PopupWindowManager {
 				}
 				else {
 					EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
+				}
+				pop.hide();
+			}
+		});
+		
+		Button returnButton = new Button("Return");
+		returnButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				pop.hide();
+			}
+		});
+		
+		HBox buttonBox = new HBox(validButton, returnButton);
+		buttonBox.setAlignment(Pos.CENTER);
+		buttonBox.setSpacing(15);
+		
+		VBox vbox = new VBox(l, durationBox, startBox, endBox, mandatoryLabel, buttonBox);
+		vbox.setSpacing(5);
+		vbox.setPadding(new Insets(10));
+		vbox.setStyle("-fx-background-color : FFFFFF;"
+					+ "-fx-background-radius : 5;"
+				    + "-fx-border-color : C0C0C0;"
+				    + "-fx-border-width : 3;"
+				    + "-fx-border-radius : 5");
+		
+		pop.getContent().add(vbox);
+		
+		return pop;
+	}
+	
+	public static Popup createModifyPopup(Delivery delivery, String duration, String start, String end) {
+		Popup pop = new Popup();
+		Label l = new Label("Modify Delivery on intersection " + delivery.getLocation().getId());
+		
+		Label durationLabel = new Label("Duration* : ");
+		TextField durationField = new TextField();
+		durationField.setText(duration);
+		
+		HBox durationBox =  new HBox(durationLabel, durationField);
+		durationBox.setAlignment(Pos.CENTER_LEFT);
+		
+		Label startLabel = new Label("Starting time : ");
+		TextField startField = new TextField();
+		startField.setText(start);
+		
+		HBox startBox = new HBox(startLabel, startField);
+		startBox.setAlignment(Pos.CENTER_LEFT);
+		
+		Label endLabel = new Label("End time : ");
+		TextField endField = new TextField();
+		endField.setText(end);
+		
+		HBox endBox = new HBox(endLabel, endField);
+		endBox.setAlignment(Pos.CENTER_LEFT);
+		
+		Label mandatoryLabel = new Label("Items with * are mandatory");
+		
+		Button validButton = new Button("Confirm");
+		validButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent arg0) {
+				if(!isInteger(durationField.getText())) {
+					MainWindow.openMessagePopup("Please enter a correct duration");
+				}
+				else {
+					EventHandlers.modifyDelivery(delivery,durationField.getText(),startField.getText(),endField.getText());
 				}
 				pop.hide();
 			}

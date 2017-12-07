@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -89,6 +91,27 @@ public class WidgetBuilder {
 		return btn;
 	}
 
+	private static Button createListViewModifyButton(Delivery delivery) {
+		ImageView iv = new ImageView(new Image(WidgetBuilder.class.getResourceAsStream("/gearIcon.png")));
+		iv.setFitWidth(15);
+		iv.setFitHeight(15);
+        iv.setPreserveRatio(true);
+        iv.setSmooth(true);
+        iv.setCache(true);
+		Button btn = new Button();
+		btn.setStyle("-fx-background-radius : 40");
+		btn.setGraphic(iv);
+		
+		btn.setOnMouseClicked(new EventHandler<MouseEvent>(){	
+			public void handle(MouseEvent e) {
+				EventHandlers.openModifyPopUp(delivery);		
+				}                            // disable mouse events for all children
+
+		});
+		
+		return btn;
+	}
+
 	public static HBox createListViewHBox(Delivery delivery, int count) {
 		HBox hbox = new HBox();
 		hbox.setSpacing(5);
@@ -96,8 +119,9 @@ public class WidgetBuilder {
 
 		Label label = createDeliveryLabel(delivery, count);
 
-		Button btn = WidgetBuilder.createListViewDeleteButton(delivery);
-		hbox.getChildren().addAll(btn, label);
+		Button deleteBtn = WidgetBuilder.createListViewDeleteButton(delivery);
+		Button modifyBtn = WidgetBuilder.createListViewModifyButton(delivery);
+		hbox.getChildren().addAll(deleteBtn, modifyBtn, label);
 
 		hbox.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent e) {
@@ -120,6 +144,7 @@ public class WidgetBuilder {
 
 		return hbox;
 	}
+
 
 	public static Circle createDeliveryCircle(Delivery delivery, Color color,Double radius) {
 		Circle circle = new Circle(radius);

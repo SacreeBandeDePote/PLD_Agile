@@ -76,6 +76,7 @@ public class Controller {
 	public static void cmdModify(Delivery element, Date startTime, Date endTime, int duration) {
 		Command c = new CommandModify(element, startTime, endTime, duration);
 		cmdList.addCommand(c);
+		refreshIHM();
 	}
 	
 	public static void undo() {
