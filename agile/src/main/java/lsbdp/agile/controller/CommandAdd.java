@@ -14,7 +14,9 @@ public class CommandAdd implements Command {
 	
 	@Override
 	public boolean doCommand() {
-		return CommandHandler.addDelivery(Controller.getMap(), Controller.getSchedule(), delivery);
+		boolean ret = CommandHandler.addDelivery(Controller.getMap(), Controller.getSchedule(), delivery);
+		if (!ret) Controller.openErrorPopUp("Invalid delivery time");
+		return ret;
 	}
 	
 	@Override

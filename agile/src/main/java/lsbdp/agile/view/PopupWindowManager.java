@@ -20,30 +20,30 @@ public class PopupWindowManager {
 	public static Popup createAddPopup(Intersection intersection) {
 		Popup pop = new Popup();
 		Label l = new Label("Create Delivery on intersection " + intersection.getId());
-		
+
 		Label durationLabel = new Label("Duration* : ");
 		TextField durationField = new TextField();
 		durationField.setText("in seconds");
-		
+
 		HBox durationBox =  new HBox(durationLabel, durationField);
 		durationBox.setAlignment(Pos.CENTER_LEFT);
-		
+
 		Label startLabel = new Label("Starting time : ");
 		TextField startField = new TextField();
 		startField.setText("HH:MM:SS");
-		
+
 		HBox startBox = new HBox(startLabel, startField);
 		startBox.setAlignment(Pos.CENTER_LEFT);
-		
+
 		Label endLabel = new Label("End time : ");
 		TextField endField = new TextField();
 		endField.setText("HH:MM:SS");
-		
+
 		HBox endBox = new HBox(endLabel, endField);
 		endBox.setAlignment(Pos.CENTER_LEFT);
-		
+
 		Label mandatoryLabel = new Label("Items with * are mandatory");
-		
+
 		Button validButton = new Button("Confirm");
 		validButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -57,7 +57,7 @@ public class PopupWindowManager {
 				pop.hide();
 			}
 		});
-		
+
 		Button returnButton = new Button("Return");
 		returnButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -65,25 +65,24 @@ public class PopupWindowManager {
 				pop.hide();
 			}
 		});
-		
+
 		HBox buttonBox = new HBox(validButton, returnButton);
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.setSpacing(15);
-		
+
 		VBox vbox = new VBox(l, durationBox, startBox, endBox, mandatoryLabel, buttonBox);
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
 		vbox.setStyle("-fx-background-color : FFFFFF;"
-					+ "-fx-background-radius : 5;"
-				    + "-fx-border-color : C0C0C0;"
-				    + "-fx-border-width : 3;"
-				    + "-fx-border-radius : 5");
-		
+				+ "-fx-background-radius : 5;"
+				+ "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;"
+				+ "-fx-border-radius : 5");
+
 		pop.getContent().add(vbox);
-		
+
 		return pop;
 	}
-	
 	public static VBox createVBoxDelvieryInformation(Pane overlay, Delivery delivery) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -104,40 +103,111 @@ public class PopupWindowManager {
 				+ "-fx-background-radius : 15;");
 		return vbox;
 	}
-	
+
+
+	public static Popup createModifyPopup(Delivery delivery, String duration, String start, String end) {
+		Popup pop = new Popup();
+		Label l = new Label("Modify Delivery on intersection " + delivery.getLocation().getId());
+
+		Label durationLabel = new Label("Duration* : ");
+		TextField durationField = new TextField();
+		durationField.setText(duration);
+
+		HBox durationBox =  new HBox(durationLabel, durationField);
+		durationBox.setAlignment(Pos.CENTER_LEFT);
+
+		Label startLabel = new Label("Starting time : ");
+		TextField startField = new TextField();
+		startField.setText(start);
+
+
+		HBox startBox = new HBox(startLabel, startField);
+		startBox.setAlignment(Pos.CENTER_LEFT);
+
+		Label endLabel = new Label("End time : ");
+		TextField endField = new TextField();
+		endField.setText(end);
+
+		HBox endBox = new HBox(endLabel, endField);
+		endBox.setAlignment(Pos.CENTER_LEFT);
+
+		Label mandatoryLabel = new Label("Items with * are mandatory");
+
+		Button validButton = new Button("Confirm");
+		validButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent arg0) {
+				if(!isInteger(durationField.getText())) {
+					MainWindow.openMessagePopup("Please enter a correct duration");
+				}
+				else {
+					EventHandlers.modifyDelivery(delivery,durationField.getText(),startField.getText(),endField.getText());
+				}
+				pop.hide();
+			}
+		});
+
+		Button returnButton = new Button("Return");
+		returnButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				pop.hide();
+			}
+		});
+
+		HBox buttonBox = new HBox(validButton, returnButton);
+		buttonBox.setAlignment(Pos.CENTER);
+		buttonBox.setSpacing(15);
+
+		VBox vbox = new VBox(l, durationBox, startBox, endBox, mandatoryLabel, buttonBox);
+
+		vbox.setSpacing(5);
+		vbox.setPadding(new Insets(10));
+		vbox.setStyle("-fx-background-color : FFFFFF;"
+				+ "-fx-background-radius : 5;"
+				+ "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;"
+				+ "-fx-border-radius : 5");
+
+		pop.getContent().add(vbox);
+
+		return pop;
+	}
+
 	public static Popup createAddPopup() {
 		Popup pop = new Popup();
 		Label l = new Label("Create Delivery ");
-		
+
 		Label intersectionLabel = new Label("Intersection : ");
 		TextField intersectionField = new TextField();
-		
+
 		HBox intersectionBox = new HBox(intersectionLabel, intersectionField);
 		intersectionBox.setAlignment(Pos.CENTER_LEFT);
-		
+
 		Label durationLabel = new Label("Duration* : ");
 		TextField durationField = new TextField();
 		durationField.setText("in seconds");
-		
+
 		HBox durationBox =  new HBox(durationLabel, durationField);
 		durationBox.setAlignment(Pos.CENTER_LEFT);
-		
+
 		Label startLabel = new Label("Starting time : ");
 		TextField startField = new TextField();
 		startField.setText("HH:MM:SS");
-		
+
+
 		HBox startBox = new HBox(startLabel, startField);
 		startBox.setAlignment(Pos.CENTER_LEFT);
-		
+
 		Label endLabel = new Label("End time : ");
 		TextField endField = new TextField();
 		endField.setText("HH:MM:SS");
-		
+
 		HBox endBox = new HBox(endLabel, endField);
 		endBox.setAlignment(Pos.CENTER_LEFT);
-		
+
 		Label mandatoryLabel = new Label("Items with * are mandatory");
-		
+
 		Button validButton = new Button("Confirm");
 		validButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -157,7 +227,7 @@ public class PopupWindowManager {
 				pop.hide();
 			}
 		});
-		
+
 		Button returnButton = new Button("Return");
 		returnButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -165,92 +235,93 @@ public class PopupWindowManager {
 				pop.hide();
 			}
 		});
-		
+
 		HBox buttonBox = new HBox(validButton, returnButton);
 		buttonBox.setAlignment(Pos.CENTER);
 		buttonBox.setSpacing(15);
-		
+
 		VBox vbox = new VBox(l, intersectionBox, durationBox, startBox, endBox, mandatoryLabel, buttonBox);
+
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
 		vbox.setStyle("-fx-background-color : FFFFFF;"
-					+ "-fx-background-radius : 5;"
-				    + "-fx-border-color : C0C0C0;"
-				    + "-fx-border-width : 3;"
-				    + "-fx-border-radius : 5");
-		
+				+ "-fx-background-radius : 5;"
+				+ "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;"
+				+ "-fx-border-radius : 5");
+
 		pop.getContent().add(vbox);
-		
+
 		return pop;
 	}
-	
+
 	public static boolean isInteger(String str) {
-	    if (str == null) {
-	        return false;
-	    }
-	    int length = str.length();
-	    if (length == 0) {
-	        return false;
-	    }
-	    int i = 0;
-	    if (str.charAt(0) == '-') {
-	        if (length == 1) {
-	            return false;
-	        }
-	        i = 1;
-	    }
-	    for (; i < length; i++) {
-	        char c = str.charAt(i);
-	        if (c < '0' || c > '9') {
-	            return false;
-	        }
-	    }
-	    return true;
+		if (str == null) {
+			return false;
+		}
+		int length = str.length();
+		if (length == 0) {
+			return false;
+		}
+		int i = 0;
+		if (str.charAt(0) == '-') {
+			if (length == 1) {
+				return false;
+			}
+			i = 1;
+		}
+		for (; i < length; i++) {
+			char c = str.charAt(i);
+			if (c < '0' || c > '9') {
+				return false;
+			}
+		}
+		return true;
 	}
-	
+
 	public static Popup createMessagePopup(String message) {
 		Popup pop = new Popup();
 		Label mess = new Label(message);
 		mess.setPadding(new Insets(15));
 		Button returnButton = new Button("Return");
-		
+
 		returnButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				pop.hide();
 			}		
 		});
-		
+
 		VBox vbox = new VBox(mess, returnButton);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
 		vbox.setStyle("-fx-background-color : FFFFFF;"
-					+ "-fx-background-radius : 5;"
-				    + "-fx-border-color : C0C0C0;"
-				    + "-fx-border-width : 3;"
-				    + "-fx-border-radius : 5");
-		
+				+ "-fx-background-radius : 5;"
+				+ "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;"
+				+ "-fx-border-radius : 5");
+
 		pop.getContent().add(vbox);
-		
+
 		return pop;
 	}
-	
+
 	public static Popup createWaitingPopup() {
 		Popup pop = new Popup();
 		Label mess = new Label("Please wait");
 		mess.setPadding(new Insets(15));
-		
+
 		VBox vbox = new VBox(mess);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
 		vbox.setStyle("-fx-background-color : FFFFFF;"
-					+ "-fx-background-radius : 5;"
-				    + "-fx-border-color : C0C0C0;"
-				    + "-fx-border-width : 3;"
-				    + "-fx-border-radius : 5");
-		
+				+ "-fx-background-radius : 5;"
+				+ "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;"
+				+ "-fx-border-radius : 5");
+
 		pop.getContent().add(vbox);
 		return pop;
 	}

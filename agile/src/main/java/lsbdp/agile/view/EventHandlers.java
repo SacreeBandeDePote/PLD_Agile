@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.Delivery;
@@ -188,7 +189,7 @@ public class EventHandlers {
 		String id = "Delivery-"+delivery.getLocation().getId();
 		for(HBox hbox : list) {
 			if (hbox.getChildren().size() > 1) {
-				Label l = (Label) hbox.getChildren().get(1);
+				Label l = (Label) hbox.getChildren().get(2);
 				if(l.getId().compareTo(id) == 0) {
 					//hbox.setStyle("-fx-background-color : d21919");
 					listview.getSelectionModel().select(hbox);
@@ -210,7 +211,7 @@ public class EventHandlers {
 		String id = ""+delivery.getLocation().getId();
 		for(HBox hbox : list) {
 			if (hbox.getChildren().size() > 1) {
-				Label l = (Label) hbox.getChildren().get(1);
+				Label l = (Label) hbox.getChildren().get(2);
 				String labelId = l.getId().substring(l.getId().lastIndexOf("-")+1);
 				if(labelId.compareTo(id) == 0) {
 					//hbox.setStyle("-fx-background-color : transparent");
@@ -287,6 +288,7 @@ public class EventHandlers {
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
 	}
+	
 
 	public static void temporaryIntersectionClicked(Intersection intersection) {
 		MainWindow.openAddPopUp(intersection);
@@ -318,5 +320,41 @@ public class EventHandlers {
 		g.setScaleX(newScaleX);
 		g.setScaleY(newScaleY);
 	}
+
+	public static void openModifyPopUp(Delivery delivery) {
+		String duration = Integer.toString(delivery.getDuration());
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		String start = "HH:mm:ss";
+		String end = "HH:mm:ss";
+		try {
+			if (delivery.getTimespanStart() != null) {
+				start = sdf.format(delivery.getTimespanStart());
+			} 
+			if (delivery.getTimespanEnd() != null) {
+				end = sdf.format(delivery.getTimespanEnd());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Popup pop = PopupWindowManager.createModifyPopup(delivery, duration, start, end);
+		MainWindow.openModifyPopUp(pop);
+	}
+
+	public static void modifyDelivery(Delivery delivery, String duration, String start, String end) {
+		int d = Integer.parseInt(duration);
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			if (start.compareTo("HH:mm:ss") != 0) startDate = sdf.parse(start);
+			if (end.compareTo("HH:mm:ss") != 0) endDate = sdf.parse(end);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Controller.cmdModify(delivery, startDate, endDate, d);
+		
+	}
+
 
 }
