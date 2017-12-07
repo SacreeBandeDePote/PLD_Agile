@@ -41,6 +41,17 @@ public class Route {
 		return sum;
 	}
 
+	public double getRouteDuration() {
+		double time = 0;
+		double totalLenght = 0;
+		List<Street> streets = getStreets();
+		for(Street street : streets) {
+			totalLenght += street.getLength();
+		}
+		time =  (totalLenght/4.16667);
+		return time;
+	}
+	
 	public String toString() {
 		String s = "Point de départ : X " + startingPoint.getX() + " | Y " + startingPoint.getY() + "\r\n";
 		s+= "DEBUT DU TRAJET\r\n";

@@ -45,8 +45,7 @@ public class Controller {
 	public static DeliverySchedule loadDeliveryRequest(File xml) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(xml, map);
 		algo.findSolution(schedule, map, deliveries);
-		WindowManager.colorDeliverySchedule(schedule);
-		WindowManager.loadListView(schedule);
+		refreshIHM();
 		return schedule;
 	}
 	
@@ -62,7 +61,12 @@ public class Controller {
 	public static void cmdDelete(Delivery element) {
 		Command c = new CommandDelete(element);
 		cmdList.addCommand(c);
-		refreshIHM();
+		try {
+			refreshIHM();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public static void cmdAdd() {
 		WindowManager.highlightAll(map, schedule);
@@ -70,7 +74,12 @@ public class Controller {
 	public static void cmdAdd2(Delivery element) {
 		Command c = new CommandAdd(element);
 		cmdList.addCommand(c);
-		refreshIHM();
+		try {
+			refreshIHM();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void cmdModify(Delivery element, Date startTime, Date endTime, int duration) {
@@ -80,16 +89,27 @@ public class Controller {
 	
 	public static void undo() {
 		cmdList.undo();
-		refreshIHM();
+		try {
+			refreshIHM();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public static void redo() {
 		cmdList.redo();
-		refreshIHM();
+		try {
+			refreshIHM();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 		
 	public static void refreshIHM() {
 		WindowManager.loadListView(schedule);
 		WindowManager.colorDeliverySchedule(schedule);
+		WindowManager.loadTimeDoughnut(schedule);
 	}
 
 	public static void openErrorPopUp(String msg) {

@@ -22,7 +22,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.Delivery;
@@ -36,6 +39,7 @@ public class WidgetBuilder {
 	private static double anchorY = 0;
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
+
 		Label label = new Label("Livraison #"+count);	
 		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
@@ -43,6 +47,53 @@ public class WidgetBuilder {
 		return label;
 	}
 
+	public static Circle createFakeHole() {
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
+		double centerX = hbox.getWidth()/2;
+		double centerY = hbox.getHeight()/2;
+		Circle circle = new Circle(200);
+		circle.setCenterX(centerX);
+		circle.setCenterY(centerY);
+		Color color = Color.rgb(244, 244, 244);
+		circle.setFill(color);
+
+
+		return circle;
+	}
+
+	public static Arc createArcTravel(double start, double duration) {
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
+		double centerX = hbox.getWidth()/2;
+		double centerY = hbox.getHeight()/2;
+
+		Arc arc = new Arc();
+
+		arc.setCenterX(centerX);
+		arc.setCenterY(centerY);
+		arc.setRadiusX(250f);
+		arc.setRadiusY(250f);
+		arc.setStartAngle(start);
+		arc.setLength(duration);
+		arc.setType(ArcType.ROUND);
+		arc.setFill(Color.LIGHTGREEN);
+
+		arc.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				EventHandlers.highlightArc(arc);
+			}
+		});
+
+		arc.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				EventHandlers.unhighlightArc(arc);
+			}
+		});
+
+		return arc;
+	}
+	
 	public static HBox createListViewHBoxWarehouse(Intersection warehouse) {
 		HBox hbox = new HBox();
 		hbox.setSpacing(5);
@@ -70,7 +121,92 @@ public class WidgetBuilder {
 
 		return hbox;
 	}
+	
+	public static Arc createArcDelivery(Pane overlay, Delivery delivery, double start, double duration) {
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
+		double centerX = hbox.getWidth()/2;
+		double centerY = hbox.getHeight()/2;
+		Arc arc = new Arc();
+		arc.setCenterX(centerX);
+		arc.setCenterY(centerY);
+		arc.setRadiusX(250f);
+		arc.setRadiusY(250f);
+		arc.setStartAngle(start);
+		arc.setLength(duration);
+		arc.setType(ArcType.ROUND);
+		arc.setFill(Color.RED);
 
+		arc.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				EventHandlers.highlightDeliveryListView(delivery);
+				EventHandlers.showArcInformations(overlay, delivery);
+				EventHandlers.highlightArc(arc);
+			}
+		});
+
+		arc.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				EventHandlers.highlightDeliveryListView(delivery);
+				EventHandlers.hideArcInformations(overlay);
+				EventHandlers.unhighlightArc(arc);
+			}
+		});
+		
+		arc.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+			}
+		});
+
+		return arc;
+	}
+
+	public static Arc createArcFreeTime(double start, double duration) {
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
+		double centerX = hbox.getWidth()/2;
+		double centerY = hbox.getHeight()/2;
+
+		Arc arc = new Arc();
+
+		arc.setCenterX(centerX);
+		arc.setCenterY(centerY);
+		arc.setRadiusX(250f);
+		arc.setRadiusY(250f);
+		arc.setStartAngle(start);
+		arc.setLength(duration);
+		arc.setType(ArcType.ROUND);
+		arc.setFill(Color.LIGHTBLUE);
+
+		arc.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				EventHandlers.highlightArc(arc);
+			}
+
+		});
+		arc.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				EventHandlers.unhighlightArc(arc);
+			}
+
+		});
+		
+		arc.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				MainWindow.openAddPopUp();
+			}
+		});
+		return arc;
+	}
+	
+	
+	
 	public static Button createListViewDeleteButton(Delivery delivery) {
 		Button btn = new Button();
 		btn.setText("X");
@@ -121,6 +257,27 @@ public class WidgetBuilder {
 		return hbox;
 	}
 
+	public static VBox createVBoxDelvieryInformation(Pane overlay, Delivery delivery) {
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
+		double centerX = hbox.getWidth()/2;
+		double centerY = hbox.getHeight()/2;
+
+		Label idLabel = new Label("Delivery on intersection " + 12457);
+		Label durationLabel = new Label("Duration : " + delivery.getDuration());
+		VBox vbox = new VBox(idLabel, durationLabel);
+		vbox.setId("InformationBox");
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setPrefHeight(50);
+		vbox.setPrefWidth(300);
+		vbox.setLayoutX(centerX-150);
+		vbox.setLayoutY(centerY-100);
+		vbox.setStyle("-fx-background-color : F0F0F0;"
+				+ "-fx-border-radius : 15;"
+				+ "-fx-border-color : silver;"
+				+ "-fx-background-radius : 15;");
+		return vbox;
+	}
+	
 	public static Circle createDeliveryCircle(Delivery delivery, Color color,Double radius) {
 		Circle circle = new Circle(radius);
 
