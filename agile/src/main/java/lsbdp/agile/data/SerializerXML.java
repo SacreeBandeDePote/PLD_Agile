@@ -1,10 +1,15 @@
 package lsbdp.agile.data;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -261,18 +266,20 @@ public class SerializerXML {
 	 * Methode permettant de generer une feuille de route
 	 * @param f
 	 * @param d
+	 * @throws IOException 
 	 * @throws FileNotFoundException
 	 */
-	public static void generateRoadMap(File f, DeliverySchedule d) {
+	public static void generateRoadMap(File f, DeliverySchedule d) throws IOException {
 		try {
-			PrintWriter out = new PrintWriter(f);
+			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
 			String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
 			String entete = "-------------------------------------------------\r\n\r\n";
 			entete += "| FEUILLE DE ROUTE\r\n";
 			entete += "|\r\n";
 			entete += "| Date/Heure de génération: " + timeStamp + "\r\n";
 			entete += "-------------------------------------------------\r\n\r\n";
-			out.print(entete + d.toString());
+			out.append(entete + d.toString());
+			out.flush();
 			out.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

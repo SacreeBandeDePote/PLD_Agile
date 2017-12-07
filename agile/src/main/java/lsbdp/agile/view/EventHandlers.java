@@ -27,6 +27,7 @@ import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,7 +70,7 @@ public class EventHandlers {
 	}
 
 	@FXML
-	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException {
+	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException, IOException {
 		if(WindowManager.deliveriesLoaded) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Save your roadMap");
