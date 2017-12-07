@@ -57,7 +57,7 @@
                      <children>
                         <StackPane fx:id="mainStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox fx:id="timeCheeseHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: derive(#ececec,26.4%);" />
+                              <HBox fx:id="timeDoughnutHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: derive(#ececec,26.4%);" />
                            </children>
                         </StackPane>
                      </children></AnchorPane>

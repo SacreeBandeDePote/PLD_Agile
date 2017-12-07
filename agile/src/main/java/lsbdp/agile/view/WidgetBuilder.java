@@ -36,7 +36,7 @@ public class WidgetBuilder {
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 		
-		Label label = new Label("Livraison n"+count + ", duration : " + delivery.getDuration()+"s");	
+		Label label = new Label("Livraison n"+count + ", time : " + delivery.getDeliveryTime().getHours() + ":" + delivery.getDeliveryTime().getMinutes());	
 		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		

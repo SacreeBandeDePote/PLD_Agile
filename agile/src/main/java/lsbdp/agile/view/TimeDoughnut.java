@@ -45,7 +45,7 @@ public class TimeDoughnut extends Application {
 	}
 
 	public static Circle createFakeHole() {
-		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeCheeseHBox");
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
 		Circle circle = new Circle(200);
@@ -59,7 +59,7 @@ public class TimeDoughnut extends Application {
 	}
 
 	public static Arc createArcTravel(double start, double duration) {
-		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeCheeseHBox");
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
 
@@ -95,12 +95,12 @@ public class TimeDoughnut extends Application {
 		VBox vbox = createVBoxDelvieryInformation(overlay, delivery);
 		overlay.getChildren().add(vbox);
 	}
-	
+
 	public static void hideArcInformations(Pane overlay) {
 		//VBox vbox = (VBox) WindowManager.getScene().lookup("#InformationBox");
 		overlay.getChildren().remove(overlay.getChildren().size()-1);
 	}
-	
+
 	public static void highlightArc(Arc arc) {
 		Timeline timeline = new Timeline();
 
@@ -128,7 +128,7 @@ public class TimeDoughnut extends Application {
 	}
 
 	public static Arc createArcFreeTime(double start, double duration) {
-		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeCheeseHBox");
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
 
@@ -163,10 +163,10 @@ public class TimeDoughnut extends Application {
 	}
 
 	public static VBox createVBoxDelvieryInformation(Pane overlay, Delivery delivery) {
-		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeCheeseHBox");
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
-		
+
 		Label idLabel = new Label("Delivery on intersection " + 12457);
 		Label durationLabel = new Label("Duration : " + delivery.getDuration());
 		VBox vbox = new VBox(idLabel, durationLabel);
@@ -177,14 +177,14 @@ public class TimeDoughnut extends Application {
 		vbox.setLayoutX(centerX-150);
 		vbox.setLayoutY(centerY-100);
 		vbox.setStyle("-fx-background-color : F0F0F0;"
-				    + "-fx-border-radius : 15;"
-				    + "-fx-border-color : silver;"
-				    + "-fx-background-radius : 15;");
+				+ "-fx-border-radius : 15;"
+				+ "-fx-border-color : silver;"
+				+ "-fx-background-radius : 15;");
 		return vbox;
 	}
 
 	public static Arc createArcDelivery(Pane overlay, Delivery delivery, double start, double duration) {
-		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeCheeseHBox");
+		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
 		Arc arc = new Arc();
@@ -214,53 +214,57 @@ public class TimeDoughnut extends Application {
 				unhighlightArc(arc);
 			}
 		});
+		
+		arc.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+			}
+		});
 
 		return arc;
 	}
 
 	public static void fillTimeDoughnut(Pane overlay, DeliverySchedule schedule, Scene scene) {
-		Date currentTime = null;
 		Date endOfLastDelivery = null;
-		int odd = 0;
-		int seconds = 10*60*60;
-		double startT = 0d;
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		try {
-			currentTime = sdf.parse("9:0:0");
 			endOfLastDelivery = sdf.parse("8:0:0");
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int hours = 8;
 		for (Pair<Route, Delivery> p : schedule) {
 			if(p.getKey() != null && p.getValue() != null) {
 				Delivery delivery = p.getValue();
-				Date deliveryTime = null;
-				try {
-					deliveryTime = sdf.parse(hours + ":0:0");
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				drawDeliveryArc(overlay, delivery, deliveryTime);
-				drawTravelArc(overlay, delivery, p.getKey(), deliveryTime);
-				//drawFreeTimeArc(endOfLastDelivery, delivery, p.getKey());
-
-				//endOfLastDelivery = getDateAfterDuration(delivery.getDeliveryTime(), delivery.getDuration());
-				System.out.println("-----------------------");
-				currentTime = deliveryTime;
-				endOfLastDelivery = getDateAfterDuration(deliveryTime, delivery.getDuration());
-				hours += 1;
+				drawDeliveryArc(overlay, delivery);
+				drawTravelArc(overlay, delivery, p.getKey());
+				drawFreeTimeArc(overlay, endOfLastDelivery, delivery, p.getKey());
+				endOfLastDelivery = getDateAfterDuration(delivery.getDeliveryTime(), delivery.getDuration());
 			}
 		}
+		drawEndofDayArc(overlay, endOfLastDelivery);
+
 		overlay.getChildren().add(createFakeHole());
 	}
 
-	public static void drawDeliveryArc(Pane overlay, Delivery delivery, Date d) {
+	public static void drawEndofDayArc(Pane overlay, Date endOfLastDelivery) {
 		try {
-			double angle = normalize(d);
+			DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			Date maxDate = sdf.parse("18:0:0");
+			double angle = normalize(endOfLastDelivery);
+			double duration = maxDate.getTime() - endOfLastDelivery.getTime();
+			duration = TimeUnit.MILLISECONDS.toSeconds((long) duration);
+			duration = duration/(10*60*60);
+			duration *= -360;
+			Arc arc = createArcFreeTime(angle, duration);
+			overlay.getChildren().add(arc);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void drawDeliveryArc(Pane overlay, Delivery delivery) {
+		try {
+			double angle = normalize(delivery.getDeliveryTime());
 			double duration = ((double)delivery.getDuration())/(10*60*60);
 			duration *= 360;
 			Arc arc = createArcDelivery(overlay, delivery, angle, -1*duration);
@@ -272,7 +276,6 @@ public class TimeDoughnut extends Application {
 
 	public static Date getDateAfterDuration( Date start, double duration) {
 		Date end = null;
-		System.out.println("Time begin : "  + start.toString() + ", Duration " + duration +"s");
 		duration = TimeUnit.SECONDS.toMillis((long) duration);
 		long newDate = (long) (start.getTime() + duration);
 		end = new Date(newDate);
@@ -281,18 +284,16 @@ public class TimeDoughnut extends Application {
 
 	public static Date getDateBeforeDuration( Date start, double duration) {
 		Date end = null;
-		System.out.println("Time begin : "  + start.toString() + ", Duration " + duration +"s");
 		duration = TimeUnit.SECONDS.toMillis((long) duration);
 		long newDate = (long) (start.getTime() - duration);
 		end = new Date(newDate);
 		return end;
 	}
 
-	public static void drawTravelArc(Pane overlay, Delivery delivery, Route route, Date d) {
+	public static void drawTravelArc(Pane overlay, Delivery delivery, Route route) {
 		try {
-			double angle = normalize(d);
+			double angle = normalize(delivery.getDeliveryTime());
 			double duration = getRouteDuration(route)/(10*60*60);
-			System.out.println("Duration in seconds : "+ getRouteDuration(route));
 			duration *= 360;
 			Arc arc = createArcTravel(angle, duration);
 			overlay.getChildren().add(arc);
@@ -301,10 +302,22 @@ public class TimeDoughnut extends Application {
 		}
 	}
 
-	public static void drawFreeTimeArc(Date startingTime, Delivery delivery, Route route) {
+	public static void drawFreeTimeArc(Pane overlay, Date startingTime, Delivery delivery, Route route) {
 		Date deliveryTime = delivery.getDeliveryTime();
-
 		Date freeTimeEnd = getDateBeforeDuration(deliveryTime, getRouteDuration(route));
+		try {
+			double angle = normalize(startingTime);
+			double duration = (freeTimeEnd.getTime()) - startingTime.getTime();
+			duration = TimeUnit.MILLISECONDS.toSeconds((long) duration);
+			duration = duration/(10*60*60);
+			duration *= -360;
+			if(duration != 0) {
+				Arc arc = createArcFreeTime(angle, duration);
+				overlay.getChildren().add(arc);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
 
 	}

@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -102,7 +103,8 @@ public class EventHandlers {
 	@FXML
 	private void switchViewHandler(ActionEvent event) {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
-		HBox back = (HBox) stackPane.getChildren().get(0);
+		Node back = (Node) stackPane.getChildren().get(0);
+		System.out.println(back.getClass());
 		back.toFront();
 	}
 	
