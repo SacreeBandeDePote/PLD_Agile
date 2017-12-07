@@ -1,5 +1,6 @@
 package lsbdp.agile.view;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.event.EventHandler;
@@ -20,8 +21,10 @@ import lsbdp.agile.model.Intersection;
 public class WidgetBuilder {
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
+		SimpleDateFormat formaterHeure = new SimpleDateFormat("H");
+		SimpleDateFormat formaterMin = new SimpleDateFormat("m");
 		
-		Label label = new Label("Livraison n�"+count + ", duration : " + delivery.getDuration()+"s");	
+		Label label = new Label("Livraison n�"+count + ", Créneau de " + formaterHeure.format(delivery.getTimespanStart())+"h"+formaterMin.format(delivery.getTimespanStart())+"min à "+formaterHeure.format(delivery.getTimespanEnd())+"h"+formaterMin.format(delivery.getTimespanStart())+"min, pour "+delivery.getDuration()/60+"min");	
 		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		

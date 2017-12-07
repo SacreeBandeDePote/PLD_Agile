@@ -38,6 +38,7 @@ public class Delivery {
 	}
 
 	public void setTimespanStart(Date timespanStart) {
+		this.timespanStart=timespanStart;
 	}
 
 	public Date getTimespanEnd() {
