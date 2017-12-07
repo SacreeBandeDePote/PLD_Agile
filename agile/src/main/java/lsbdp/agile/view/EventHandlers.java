@@ -36,12 +36,7 @@ public class EventHandlers {
 
 	@FXML
 	private void quitAdditionHandler(ActionEvent event) {
-		try {
-			Controller.refreshIHM();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Controller.refreshIHM();
 	}
 
 	@FXML
