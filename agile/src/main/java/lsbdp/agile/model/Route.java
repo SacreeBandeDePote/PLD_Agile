@@ -51,9 +51,22 @@ public class Route {
 				previousStreet = street.getName();
 				length = street.getLength();
 			}else if(streets.indexOf(street)==streets.size()-1){
-				length += street.getLength();
-				s+= "Prendre la route " + street.getName() + " sur une longueur de " + ((int)(length/10)*10) + "m et vous êtes arrivé.";
-				s+= "\r\n";
+				if(street.getName().compareTo(previousStreet)==0) {
+					length+= street.getLength();
+					s+= "Prendre la route " + street.getName() + " sur une longueur de " + ((int)(length/10)*10) + "m et vous êtes arrivé.";
+					s+= "\r\n";
+				}else {
+					s+= "Prendre la route " + previousStreet + " sur une longueur de " + ((int)(length/10)*10) + "m jusqu'Ã  l'intersection avec " + street.getName();
+					s+= "\r\n";
+					double angle;
+					int index = streets.indexOf(street);
+					if(index<2)angle = CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
+					else angle = CalculeAngle(streets.get(index-2).getEnd(), streets.get(index-1).getEnd(), street.getEnd());
+					if(angle>0) s+= "Tournez Ã droite sur " + street.getName() + "\r\n";
+					else s+= "Tournez Ã gauche sur " + street.getName() + "\r\n";
+					s+= "Prendre la route " + street.getName() + " sur une longueur de " + ((int)(street.getLength()/10)*10) + "m et vous êtes arrivé.";
+					s+= "\r\n";
+				}
 				s+="FIN DU TRAJET";
 			}else {
 				if(street.getName().compareTo(previousStreet)==0) {	
@@ -64,9 +77,18 @@ public class Route {
 					s+= "\r\n";
 					previousStreet = street.getName();
 					length = 0;
-//					int index = streets.indexOf(street);
-//					if(index<2) CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
-//					else CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
+					int index = streets.indexOf(street);
+					double angle;
+					if(index<2)angle = CalculeAngle(startingPoint, streets.get(index-1).getEnd(), street.getEnd());
+					else angle = CalculeAngle(streets.get(index-2).getEnd(), streets.get(index-1).getEnd(), street.getEnd());
+					
+					
+//					if(angle<(2*Math.PI/3)) s+= "Tournez Ã droite sur " + street.getName() + "\r\n";
+//					else if(angle>(4*Math.PI/3)) s+= "Tournez Ã gauche sur " + street.getName() + "\r\n";
+//					else s+= "Continuez sur " + street.getName() + "\r\n";
+					
+					 if(angle>0) s+= "Tournez Ã droite sur " + street.getName() + "\r\n";
+					else s+= "Tournez Ã gauche sur " + street.getName() + "\r\n";
 				}
 			}
 		}
@@ -77,17 +99,23 @@ public class Route {
 		return getTotalLength()/MEAN_SPEED;
 	}
 	
-//	public static String CalculeAngle(Intersection first, Intersection second, Intersection third) {
-//		//Calcule sens d'arrivée
-//		int deltaFromX = second.getX() - first.getX();
-//		int deltaFromY = second.getY() - first.getY();
-//		int deltaToX = third.getX() - second.getX();
-//		int deltaToY = third.getY() - third.getY();
+	public static double CalculeAngle(Intersection first, Intersection second, Intersection third) {
+		//Calcule sens d'arrivée
+		int deltaFromX = second.getX() - first.getX();
+		int deltaFromY = second.getY() - first.getY();
+		int deltaToX = third.getX() - second.getX();
+		int deltaToY = third.getY() - second.getY();
 //		double angle = (-deltaFromX)*(deltaToX)+(-deltaFromY)*(deltaToY);
-//		angle /= Math.sqrt( Math.pow(deltaFromX, 2) + Math.pow(deltaFromY, 2));
-//		angle /= Math.sqrt( Math.pow(deltaToX  , 2) + Math.pow(deltaToY  , 2));
-//		angle = Math.acos(angle) * 180 / Math.PI;
-//		System.out.println(angle);
-//		return "calcul ANgle = " + angle;
-//	}
+//		angle /= Math.sqrt( Math.pow(deltaFromX, 2) + Math.pow(deltaFromY, 2)) *  Math.sqrt( Math.pow(deltaToX  , 2) + Math.pow(deltaToY  , 2));
+		//angle = Math.acos(angle);
+//		System.out.print(Math.acos(angle) + "| Conversion en sinus : ");
+//		System.out.println(Math.sqrt(1-Math.pow(angle, 2)));
+//		angle = Math.sqrt(1-Math.pow(angle, 2)); //On sort un sin(angle) ici
+//		System.out.print(angle + "| Conversion en degré : ");
+//		System.out.println(Math.asin(angle)*360/Math.PI);
+		
+		double angle = deltaFromX * deltaToY - deltaFromY * deltaToX;
+		
+		return angle;
+	}
 }
