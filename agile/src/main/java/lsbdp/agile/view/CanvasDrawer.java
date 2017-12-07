@@ -122,6 +122,7 @@ public class CanvasDrawer {
 		drawEndofDayArc(overlay, endOfLastDelivery);
 
 		overlay.getChildren().add(WidgetBuilder.createFakeHole());
+		overlay.getChildren().add(WidgetBuilder.createLegend(overlay));
 	}
 	
 	/**

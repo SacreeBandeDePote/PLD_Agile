@@ -267,27 +267,6 @@ public class WidgetBuilder {
 		ImageView iv = new ImageView(new Image(WidgetBuilder.class.getResourceAsStream("/gearIcon.png")));
 		iv.setFitWidth(15);
 		iv.setFitHeight(15);
-		iv.setPreserveRatio(true);
-		iv.setSmooth(true);
-		iv.setCache(true);
-		Button btn = new Button();
-		btn.setStyle("-fx-background-radius : 40");
-		btn.setGraphic(iv);
-
-		btn.setOnMouseClicked(new EventHandler<MouseEvent>(){	
-			public void handle(MouseEvent e) {
-				EventHandlers.openModifyPopUp(delivery);		
-			}                            // disable mouse events for all children
-
-		});
-
-		return btn;
-	}
-
-	private static Button createListViewModifyButton(Delivery delivery) {
-		ImageView iv = new ImageView(new Image(WidgetBuilder.class.getResourceAsStream("/gearIcon.png")));
-		iv.setFitWidth(15);
-		iv.setFitHeight(15);
         iv.setPreserveRatio(true);
         iv.setSmooth(true);
         iv.setCache(true);
