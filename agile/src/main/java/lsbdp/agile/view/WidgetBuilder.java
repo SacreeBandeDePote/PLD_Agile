@@ -38,7 +38,7 @@ public class WidgetBuilder {
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 		SimpleDateFormat formaterHeure = new SimpleDateFormat("H");
 		SimpleDateFormat formaterMin = new SimpleDateFormat("m");
-		Label label = new Label("Livraison n�"+count + ", Créneau de " + formaterHeure.format(delivery.getTimespanStart())+"h"+formaterMin.format(delivery.getTimespanStart())+"min à "+formaterHeure.format(delivery.getTimespanEnd())+"h"+formaterMin.format(delivery.getTimespanStart())+"min, pour "+delivery.getDuration()/60+"min");	
+		Label label = new Label("Livraison n�"+count + ", Créneau de " + formaterHeure.format(delivery.getTimespanStart())+"h"+formaterMin.format(delivery.getTimespanStart())+"min à "+formaterHeure.format(delivery.getTimespanEnd())+"h"+formaterMin.format(delivery.getTimespanStart())+"min, pour "+delivery.getDuration()/60+"min, Précis :"+formaterHeure.format(delivery.getDeliveryTime())+"h"+formaterMin.format(delivery.getDeliveryTime())+"min");	
 		
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 		
