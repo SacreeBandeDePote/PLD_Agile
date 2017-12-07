@@ -233,7 +233,7 @@ public class WidgetBuilder {
 			}
 		});
 		
-		g.setOnMouseDragged(new EventHandler<MouseEvent>() {
+		g.setOnMouseReleased(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent e) {

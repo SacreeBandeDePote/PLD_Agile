@@ -68,11 +68,11 @@ public class CommandHandler {
 			Route nextRoute = Dijkstra.performDijkstra(map, d.getLocation(), end);
 
 			schedule.set(index, new Pair<>(nextRoute, nextDelivery));
-			Date arrival = new Date(((long) route.getTotalTime()) * 60000 + 
+			Date arrival = new Date(((long) route.getTotalTime()) * 60000 +
 					((prevDelivery != null)
 					? (prevDelivery.getDeliveryTime().getTime() + prevDelivery.getDuration() * 1000) : schedule.getStartingTime().getTime()));
 			d.setDeliveryTime(arrival);
-			
+
 			Date timeMin = d.getTimespanStart();
 			Date timeMax = d.getTimespanEnd();
 			Date delTimeRounded = new Date( arrival.getTime());
@@ -80,7 +80,7 @@ public class CommandHandler {
 			decaMinute = Math.round(decaMinute);
 			long millisec = decaMinute*(1000*60*10);
 			delTimeRounded.setTime(millisec);
-			
+
 			Date timeStart = new Date(delTimeRounded.getTime() - 30*60000); // -30min
 			Date timeEnd = new Date(delTimeRounded.getTime() + 30*60000); // +30min
 			d.setTimespanStart(timeStart);
@@ -91,19 +91,19 @@ public class CommandHandler {
 					Date newTime = new Date(timeMin.getTime() + 60*60000);
 					d.setTimespanEnd(newTime); // on garde un créneau d'1h
 			 	}
-				
+
 				if(timeEnd.compareTo(timeMax) >0){
 					d.setTimespanEnd(timeMax);
 					Date newTime = new Date(timeMax.getTime() - 60*60000);
 					d.setTimespanStart(newTime); // on garde un créneau d'1h
-			 	}	
+			 	}
 			 }
 		 	if(timeStart.compareTo(schedule.getStartingTime()) <0){
 				d.setTimespanStart(schedule.getStartingTime());
 				Date newTime = new Date(schedule.getStartingTime().getTime() + 60*60000);
 				d.setTimespanEnd(newTime); // on garde un créneau d'1h
 			}
-			
+
 			schedule.add(index, new Pair<>(route, d));
 			return true;
 		}
@@ -167,7 +167,7 @@ public class CommandHandler {
 				schedule.setEndingTime(new Date(newTime));
 				return true;
 			}
-			
+
 			return false;
 
 		}

@@ -256,7 +256,6 @@ public class EventHandlers {
 			start = sdf.parse(startingTime);
 			end = sdf.parse(endTime);
 		} catch (ParseException e) {
-			System.out.println("no time windows given");
 			start = null;
 			end = null;
 		}
