@@ -65,6 +65,10 @@ public class MainWindow extends Application {
 		Popup pop = PopupWindowManager.createAddPopup(intersection);
 		pop.show(stage);
 	}
+
+	public static void openModifyPopUp(Popup pop) {
+		pop.show(stage);
+	}
 	
 	public static void openAddPopUp() {
 		Popup pop = PopupWindowManager.createAddPopup();

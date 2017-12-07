@@ -12,7 +12,8 @@ import lsbdp.agile.model.StreetMap;
 
 public class CommandHandler {
 
-	// General Handler
+	public static int lastDeletedIndex;
+
 	public static Pair<Route, Delivery> findByDelivery(DeliverySchedule schedule, Delivery d) {
 		for (Pair<Route, Delivery> p : schedule) {
 			if (p.getValue() == d)
@@ -114,9 +115,14 @@ public class CommandHandler {
 	public static int modifyDelivery(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> oldDelivery,
 			Delivery newDelivery, Date sT, Date eT, int duration) {
 		int index = deleteDelivery(map, schedule, oldDelivery);
+		lastDeletedIndex = index;
 		newDelivery = new Delivery(duration, sT, eT, oldDelivery.getValue().getLocation(), null);
-		addDelivery(map, schedule, newDelivery);
-		return index;
+		boolean addIsOk = addDelivery(map, schedule, newDelivery);
+		if (!addIsOk) {
+			return -1;
+		} else {
+			return index;
+		}
 	}
 
 	public static void undoModify(StreetMap map, DeliverySchedule schedule, Delivery newDelivery,
