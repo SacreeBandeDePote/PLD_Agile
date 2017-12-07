@@ -62,12 +62,7 @@ public class Controller {
 	public static void cmdDelete(Delivery element) {
 		Command c = new CommandDelete(element);
 		cmdList.addCommand(c);
-		try {
-			refreshIHM();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		refreshIHM();
 	}
 	public static void cmdAdd() {
 		WindowManager.highlightAll(map, schedule);
@@ -75,12 +70,7 @@ public class Controller {
 	public static void cmdAdd2(Delivery element) {
 		Command c = new CommandAdd(element);
 		cmdList.addCommand(c);
-		try {
-			refreshIHM();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		refreshIHM();
 	}
 	
 	public static void cmdModify(Delivery element, Date startTime, Date endTime, int duration) {
@@ -91,21 +81,11 @@ public class Controller {
 	
 	public static void undo() {
 		cmdList.undo();
-		try {
-			refreshIHM();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		refreshIHM();
 	}
 	public static void redo() {
 		cmdList.redo();
-		try {
-			refreshIHM();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		refreshIHM();
 	}
 		
 	public static void refreshIHM() {

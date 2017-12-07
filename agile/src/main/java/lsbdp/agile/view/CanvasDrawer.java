@@ -71,7 +71,9 @@ public class CanvasDrawer {
 		GraphicsContext gc = canvas.getGraphicsContext2D();		
 		Set<Long> keys     = map.keySet();
 		Iterator iterator  = keys.iterator();
-		
+
+		gc.setFill(new Color(0.957, 0.957, 0.957, 1));
+		gc.fillRect(0, 0, canvasWidth, canvasWidth);
 		overlay.setId("overlay");
 		while(iterator.hasNext() ) {
 			Long key = (Long) iterator.next();
@@ -120,6 +122,7 @@ public class CanvasDrawer {
 		drawEndofDayArc(overlay, endOfLastDelivery);
 
 		overlay.getChildren().add(WidgetBuilder.createFakeHole());
+		overlay.getChildren().add(WidgetBuilder.createLegend(overlay));
 	}
 	
 	/**
