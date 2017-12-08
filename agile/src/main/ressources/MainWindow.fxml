@@ -25,14 +25,14 @@
                           <MenuItem mnemonicParsing="false" onAction="#LoadMapActionHandler" text="Load Map" />
                               <MenuItem mnemonicParsing="false" onAction="#LoadDeliveriesActionHandler" text="Load Deliveries" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#saveDeliveries" text="Save Deliveries" />
+                              <MenuItem mnemonicParsing="false" onAction="#saveDeliveries" text="Save Deliveries (Ctrl + S)" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Edit">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#UndoAction" text="Undo (Ctrl + Z)" />
                               <MenuItem mnemonicParsing="false" onAction="#RedoAction" text="Redo (Ctrl + R)" />
-                              <MenuItem mnemonicParsing="false" onAction="#switchViewHandler" text="Switch View" />
+                              <MenuItem mnemonicParsing="false" onAction="#switchViewHandler" text="Switch View (Ctrl + T)" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Deliveries">
@@ -44,7 +44,7 @@
                       </Menu>
                         <Menu mnemonicParsing="false" text="Roadmap">
                           <items>
-                            <MenuItem mnemonicParsing="false" onAction="#generateRoadmapActionHandler" text="Generate Roadmap" />
+                            <MenuItem mnemonicParsing="false" onAction="#generateRoadmapActionHandler" text="Generate Roadmap (Ctrl + G)" />
                           </items>
                         </Menu>
                     </menus>
