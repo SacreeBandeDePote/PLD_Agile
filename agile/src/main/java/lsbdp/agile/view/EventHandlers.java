@@ -73,7 +73,8 @@ public class EventHandlers {
 					new FileChooser.ExtensionFilter("XML File", "*.xml")
 					);
 			File f = MainWindow.openFileChooserRoadmap(fileChooser);
-			Controller.saveDeliveries(f);
+			if (f != null)
+				Controller.saveDeliveries(f);
 		} else {
 			MainWindow.openMessagePopup("Please load a delivery file");
 		}	
@@ -88,7 +89,8 @@ public class EventHandlers {
 					new FileChooser.ExtensionFilter("txt File", "*.txt")
 					);
 			File f = MainWindow.openFileChooserRoadmap(fileChooser);
-			Controller.generateRoadmapActionHandler(f);
+			if (f != null)
+				Controller.generateRoadmapActionHandler(f);
 		} else {
 			MainWindow.openMessagePopup("Please load a delivery file");
 		}	
@@ -128,9 +130,11 @@ public class EventHandlers {
 						new FileChooser.ExtensionFilter("XML File", "*.xml")
 						);
 				File f = MainWindow.openFileChooserDeliveries(fileChooser);
-				Controller.loadDeliveryRequest(f);
-				WindowManager.deliveriesLoaded = true;
-			}else {
+				if (f != null) {
+					Controller.loadDeliveryRequest(f);
+					WindowManager.deliveriesLoaded = true;
+				}
+			} else {
 				MainWindow.openMessagePopup("A delivery file is already loaded, please reload a map");
 			}
 		} else {
@@ -178,9 +182,11 @@ public class EventHandlers {
 				new FileChooser.ExtensionFilter("XML File", "*.xml")
 				);
 		File f = MainWindow.openFileChooser(fileChooser);
-		Controller.loadMap(f);
-		WindowManager.mapLoaded = true;
-		WindowManager.deliveriesLoaded = false;
+		if (f != null) {
+			Controller.loadMap(f);
+			WindowManager.mapLoaded = true;
+			WindowManager.deliveriesLoaded = false;
+		}
 	}
 
 	@FXML
