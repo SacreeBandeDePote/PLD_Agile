@@ -1,25 +1,18 @@
 package lsbdp.agile.view;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
@@ -30,7 +23,6 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.Intersection;
 
@@ -43,7 +35,9 @@ public class WidgetBuilder {
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 
-		Label label = new Label("Livraison #"+count);	
+		String timespanStart = delivery.getTimespanStart().getHours() + ":" + delivery.getTimespanStart().getMinutes();
+		String timespanEnd = delivery.getTimespanEnd().getHours() + ":" + delivery.getTimespanEnd().getMinutes();
+		Label label = new Label("Livraison #"+count + ", from " + timespanStart + " to " + timespanEnd);	
 
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 
@@ -78,11 +72,12 @@ public class WidgetBuilder {
 		arc.setStartAngle(start);
 		arc.setLength(duration);
 		arc.setType(ArcType.ROUND);
-		arc.setFill(Color.LIGHTGREEN);
+		arc.setFill(new Color(0, 0.8, 0, 1));
 
 		arc.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+
 				EventHandlers.highlightArc(arc);
 			}
 		});
@@ -201,18 +196,20 @@ public class WidgetBuilder {
 		return arc;
 	}
 
-	public static Arc createArcFreeTime(double start, double duration) {
+	public static Arc createArcFreeTime(double angle, double duration, Date start, Date end) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
 
+		Tooltip tooltip = new Tooltip("Click to add a delivery");
+		
 		Arc arc = new Arc();
-
+		Tooltip.install(arc, tooltip);
 		arc.setCenterX(centerX);
 		arc.setCenterY(centerY);
 		arc.setRadiusX(250f);
 		arc.setRadiusY(250f);
-		arc.setStartAngle(start);
+		arc.setStartAngle(angle);
 		arc.setLength(duration);
 		arc.setType(ArcType.ROUND);
 		arc.setFill(Color.LIGHTBLUE);
@@ -221,6 +218,8 @@ public class WidgetBuilder {
 
 			@Override
 			public void handle(MouseEvent arg0) {
+
+				WindowManager.getScene().setCursor(Cursor.HAND);
 				EventHandlers.highlightArc(arc);
 			}
 
@@ -229,6 +228,7 @@ public class WidgetBuilder {
 
 			@Override
 			public void handle(MouseEvent arg0) {
+				WindowManager.getScene().setCursor(Cursor.DEFAULT);
 				EventHandlers.unhighlightArc(arc);
 			}
 
@@ -237,7 +237,7 @@ public class WidgetBuilder {
 		arc.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				MainWindow.openAddPopUp();
+				MainWindow.openAddPopUp(start, end);
 			}
 		});
 		return arc;
@@ -343,10 +343,14 @@ public class WidgetBuilder {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
+		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
-		Label idLabel = new Label("Delivery on intersection " + 12457);
+
+		Label idLabel = new Label("Delivery on intersection " + delivery.getLocation().getId());
 		Label durationLabel = new Label("Duration : " + delivery.getDuration());
-		VBox vbox = new VBox(idLabel, durationLabel);
+		Label timeStartWindowLabel = new Label("Start of time window : " + sdf.format(delivery.getTimespanStart()));
+		Label timeEndWindowLabel = new Label("End of time window : " + sdf.format(delivery.getTimespanEnd()));
+		VBox vbox = new VBox(idLabel, durationLabel, timeStartWindowLabel, timeEndWindowLabel);
 		vbox.setId("InformationBox");
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPrefHeight(50);
@@ -370,7 +374,7 @@ public class WidgetBuilder {
 		Tooltip tooltip = new Tooltip("Delivery on Intersection number : " + delivery.getLocation().getId()
 				+ "\nDuration : " + delivery.getDuration());
 		tooltip.setAutoHide(false);
-		tooltip.install(circle, tooltip);
+		Tooltip.install(circle, tooltip);
 		circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {

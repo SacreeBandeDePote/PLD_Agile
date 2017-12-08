@@ -11,6 +11,7 @@ import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Delivery;
 import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.StreetMap;
+import lsbdp.agile.view.MainWindow;
 import lsbdp.agile.view.WindowManager;
 
 public class Controller {
@@ -19,45 +20,54 @@ public class Controller {
 	private static TSP algo;
 	private static DeliverySchedule schedule;
 	private static DeliveriesRequest deliveries;
-	
+
 	public Controller() {
 		Controller.schedule = new DeliverySchedule();
 		Controller.cmdList = new CommandList();
 		Controller.algo = new NNHTimeTSP();
 	}
-	
+
 	//Gérer Map
 	public static void loadMap(File xml) throws ParseException {
 		map = SerializerXML.deserializeMapXML(xml);
-		WindowManager.drawMap(map);
+		if(map != null) {
+			WindowManager.drawMap(map);
+		}else {
+			MainWindow.openMessagePopup("Invalid map file");
+		}
+
 	}
 	public static void saveDeliveries(File xml) {
 		SerializerXML.serializeDeliveryXML(schedule, xml);
 	}
-	
+
 	public static void drawMap(){
 		WindowManager.drawMap(map);
 	}
 	public static StreetMap getMap() {
 		return map;
 	}
-	
+
 	//Gérer Schedule
 	public static DeliverySchedule loadDeliveryRequest(File xml) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(xml, map);
-		algo.findSolution(schedule, map, deliveries);
-		refreshIHM();
+		if(deliveries.getDeliveryList().size() == 0) {
+			MainWindow.openMessagePopup("Invalid delivery file");
+		}else {
+			algo.findSolution(schedule, map, deliveries);
+			refreshIHM();
+		}
 		return schedule;
 	}
-	
+
 	public static DeliverySchedule getSchedule() {
 		return schedule;
 	}
-	
+
 	public static void generateRoadmapActionHandler(File xml) throws IOException {
 		SerializerXML.generateRoadMap(xml, schedule);
 	}
-	
+
 	//Interaction avec Commandes
 	public static void cmdDelete(Delivery element) {
 		Command c = new CommandDelete(element);
@@ -72,13 +82,13 @@ public class Controller {
 		cmdList.addCommand(c);
 		refreshIHM();
 	}
-	
+
 	public static void cmdModify(Delivery element, Date startTime, Date endTime, int duration) {
 		Command c = new CommandModify(element, startTime, endTime, duration);
 		cmdList.addCommand(c);
 		refreshIHM();
 	}
-	
+
 	public static void undo() {
 		cmdList.undo();
 		refreshIHM();
@@ -87,7 +97,7 @@ public class Controller {
 		cmdList.redo();
 		refreshIHM();
 	}
-		
+
 	public static void refreshIHM() {
 		WindowManager.loadListView(schedule);
 		WindowManager.colorDeliverySchedule(schedule);
@@ -97,5 +107,5 @@ public class Controller {
 	public static void openErrorPopUp(String msg) {
 		WindowManager.openErrorPopUp(msg);		
 	}
-	
+
 }

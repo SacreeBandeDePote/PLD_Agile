@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -110,7 +111,13 @@ public class EventHandlers {
 	private void switchViewHandler(ActionEvent event) {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
 		Node back = (Node) stackPane.getChildren().get(0);
-		System.out.println(back.getClass());
+		back.toFront();
+	}
+	
+	
+	public static void switchViewHandler() {
+		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
+		Node back = (Node) stackPane.getChildren().get(0);
 		back.toFront();
 	}
 	
@@ -232,7 +239,6 @@ public class EventHandlers {
 	
 	public static void highlightArc(Arc arc) {
 		Timeline timeline = new Timeline();
-
 		timeline.getKeyFrames().addAll(
 				new KeyFrame(Duration.ZERO, new KeyValue(arc.radiusXProperty(), arc.getRadiusX())),
 				new KeyFrame(new Duration(500), new KeyValue(arc.radiusXProperty(), 275)),

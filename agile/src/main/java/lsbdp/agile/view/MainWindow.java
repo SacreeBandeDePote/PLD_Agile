@@ -3,6 +3,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -13,10 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lsbdp.agile.data.SerializerXML;
-import lsbdp.agile.model.DeliveriesRequest;
 import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.StreetMap;
 
 public class MainWindow extends Application {
 
@@ -70,8 +68,8 @@ public class MainWindow extends Application {
 		pop.show(stage);
 	}
 	
-	public static void openAddPopUp() {
-		Popup pop = PopupWindowManager.createAddPopup();
+	public static void openAddPopUp(Date start, Date end) {
+		Popup pop = PopupWindowManager.createAddPopup(start, end);
 		pop.show(stage);
 	}
 	

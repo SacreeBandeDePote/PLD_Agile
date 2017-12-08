@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -15,11 +14,9 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -70,7 +67,7 @@ public class CanvasDrawer {
  		Double canvasWidth = canvas.getWidth();
 		GraphicsContext gc = canvas.getGraphicsContext2D();		
 		Set<Long> keys     = map.keySet();
-		Iterator iterator  = keys.iterator();
+		Iterator<Long> iterator  = keys.iterator();
 
 		gc.setFill(new Color(0.957, 0.957, 0.957, 1));
 		gc.fillRect(0, 0, canvasWidth, canvasWidth);
@@ -190,7 +187,7 @@ public class CanvasDrawer {
 	}
 	
 	
-	public void drawStreetOverlay(Pane overlay, Intersection start, Intersection end, Color color) {
+	public double drawStreetOverlay(Pane overlay, Street street, Intersection start, Intersection end, Color color, Timeline timeline, Duration duration, Circle travelerCircle) {
 		Double startX      = normalizeX((double)start.getX(), canvas.getWidth());
 		Double startY      = normalizeY((double)start.getY(), canvas.getHeight());
 		Double endX        = normalizeX((double)end.getX(), canvas.getWidth());
@@ -200,23 +197,18 @@ public class CanvasDrawer {
 	    line.setStrokeWidth(2);
 	    line.setStroke(color);
 	    
-	    Circle travelerCircle = new Circle(2d); 
-	    travelerCircle.setFill(Color.GREEN);
+	    double time = street.getLength();
 	    
-	    Timeline timeline = new Timeline();
+	    Duration next = duration.add(new Duration(time));
 
 		timeline.getKeyFrames().addAll(
-				new KeyFrame(Duration.ZERO, new KeyValue(travelerCircle.centerXProperty(), startX)),
-				new KeyFrame(new Duration(500), new KeyValue(travelerCircle.centerXProperty(), endX)),
-				new KeyFrame(Duration.ZERO, new KeyValue(travelerCircle.centerYProperty(), startY)),
-				new KeyFrame(new Duration(500), new KeyValue(travelerCircle.centerYProperty(), endY))
+				new KeyFrame(duration, new KeyValue(travelerCircle.centerXProperty(), startX)),
+				new KeyFrame(next, new KeyValue(travelerCircle.centerXProperty(), endX)),
+				new KeyFrame(duration, new KeyValue(travelerCircle.centerYProperty(), startY)),
+				new KeyFrame(next, new KeyValue(travelerCircle.centerYProperty(), endY))
 				);
-		timeline.setAutoReverse(false);
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
-	    
 	    overlay.getChildren().add(line);
-	    overlay.getChildren().add(travelerCircle);
+	    return time;
 	}
 	
 	public static void drawEndofDayArc(Pane overlay, Date endOfLastDelivery) {
@@ -228,7 +220,7 @@ public class CanvasDrawer {
 			duration = TimeUnit.MILLISECONDS.toSeconds((long) duration);
 			duration = duration/(10*60*60);
 			duration *= -360;
-			Arc arc = WidgetBuilder.createArcFreeTime(angle, duration);
+			Arc arc = WidgetBuilder.createArcFreeTime(angle, duration, endOfLastDelivery, maxDate);
 			overlay.getChildren().add(arc);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -257,7 +249,7 @@ public class CanvasDrawer {
 			duration = duration/(10*60*60);
 			duration *= -360;
 			if(duration != 0) {
-				Arc arc = WidgetBuilder.createArcFreeTime(angle, duration);
+				Arc arc = WidgetBuilder.createArcFreeTime(angle, duration, startingTime, freeTimeEnd);
 				overlay.getChildren().add(arc);
 			}
 		} catch (ParseException e) {

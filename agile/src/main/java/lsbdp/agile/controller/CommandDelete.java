@@ -2,7 +2,6 @@ package lsbdp.agile.controller;
 
 import javafx.util.Pair;
 import lsbdp.agile.model.Delivery;
-import lsbdp.agile.model.DeliverySchedule;
 import lsbdp.agile.model.Route;
 
 public class CommandDelete implements Command {

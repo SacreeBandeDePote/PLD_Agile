@@ -4,7 +4,6 @@ import javafx.util.Pair;
 import lsbdp.agile.model.*;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public abstract class TemplateTSP implements TSP {
 
