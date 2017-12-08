@@ -120,15 +120,19 @@ public class EventHandlers {
 
 	@FXML
 	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
-		if(WindowManager.mapLoaded) {
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Choose your deliveries file");
-			fileChooser.getExtensionFilters().addAll(
-					new FileChooser.ExtensionFilter("XML File", "*.xml")
-					);
-			File f = MainWindow.openFileChooserDeliveries(fileChooser);
-			Controller.loadDeliveryRequest(f);
-			WindowManager.deliveriesLoaded = true;
+		if(WindowManager.mapLoaded ) {
+			if(!WindowManager.deliveriesLoaded) {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Choose your deliveries file");
+				fileChooser.getExtensionFilters().addAll(
+						new FileChooser.ExtensionFilter("XML File", "*.xml")
+						);
+				File f = MainWindow.openFileChooserDeliveries(fileChooser);
+				Controller.loadDeliveryRequest(f);
+				WindowManager.deliveriesLoaded = true;
+			}else {
+				MainWindow.openMessagePopup("A delivery file is already loaded, please reload a map");
+			}
 		} else {
 			MainWindow.openMessagePopup("Please load a map");
 		}
@@ -145,14 +149,14 @@ public class EventHandlers {
 		}
 
 	}
-	
-	
+
+
 	public static void switchViewHandler() {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
 		Node back = (Node) stackPane.getChildren().get(0);
 		back.toFront();
 	}
-	
+
 	@FXML
 	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		FileChooser fileChooser = new FileChooser();
@@ -163,6 +167,7 @@ public class EventHandlers {
 		File f = MainWindow.openFileChooser(fileChooser);
 		Controller.loadMap(f);
 		WindowManager.mapLoaded = true;
+		WindowManager.deliveriesLoaded = false;
 	}
 
 	@FXML
@@ -259,7 +264,7 @@ public class EventHandlers {
 			}
 		}
 	}
-	
+
 	public static void showArcInformations(Pane overlay, Delivery delivery) {
 		VBox vbox = WidgetBuilder.createVBoxDelvieryInformation(overlay, delivery);
 		overlay.getChildren().add(vbox);
@@ -268,7 +273,7 @@ public class EventHandlers {
 	public static void hideArcInformations(Pane overlay) {
 		overlay.getChildren().remove(overlay.getChildren().size()-1);
 	}
-	
+
 	public static void highlightArc(Arc arc) {
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames().addAll(
@@ -326,7 +331,7 @@ public class EventHandlers {
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
 	}
-	
+
 
 	public static void temporaryIntersectionClicked(Intersection intersection) {
 		MainWindow.openAddPopUp(intersection);
@@ -351,10 +356,10 @@ public class EventHandlers {
 	public static void zoom(Group g, ScrollEvent e) {
 		double zoomIntensity = 0.01;
 		double scrollDelta = e.getDeltaY();
-		
+
 		double newScaleX = g.getScaleX() + zoomIntensity*scrollDelta;
 		double newScaleY = g.getScaleY() + zoomIntensity*scrollDelta;
-		
+
 		g.setScaleX(newScaleX);
 		g.setScaleY(newScaleY);
 	}
@@ -391,7 +396,7 @@ public class EventHandlers {
 			e.printStackTrace();
 		}
 		Controller.cmdModify(delivery, startDate, endDate, d);
-		
+
 	}
 
 
