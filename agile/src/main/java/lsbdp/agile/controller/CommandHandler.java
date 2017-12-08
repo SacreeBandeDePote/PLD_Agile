@@ -185,7 +185,7 @@ public class CommandHandler {
 	private static boolean checkOffsetTime(DeliverySchedule schedule, Delivery current, long newTime) {
 
 		if (current == null) {
-			if (newTime < 18 * 60 * 60 * 1000){
+			if (newTime < 18 * 60 * 60 * 1000){ // < 18h
 				schedule.setEndingTime(new Date(newTime));
 				return true;
 			}

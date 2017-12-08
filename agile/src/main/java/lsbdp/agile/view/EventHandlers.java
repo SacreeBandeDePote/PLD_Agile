@@ -363,13 +363,27 @@ public class EventHandlers {
 		Date end = null;
 		try {
 			start = sdf.parse(startingTime);
-			end = sdf.parse(endTime);
 		} catch (ParseException e) {
 			start = null;
+		}
+		try {
+			end = sdf.parse(endTime);
+		} catch (ParseException e) {
 			end = null;
 		}
-		Delivery d = new Delivery(tmpDuration, start, end, intersection, null);
-		Controller.cmdAdd2(d);
+
+		if (start == null && end != null || start != null && end == null)
+			WindowManager.openErrorPopUp("Please, specify none time or all times");
+		else if (start != null && end != null) {
+			if(start.after(end))
+				WindowManager.openErrorPopUp("End time is before start time");
+			if(start.after(new Date(18 * 60 * 60 * 1000)))
+				WindowManager.openErrorPopUp("Our services end at 6pm");
+		}
+		else {
+			Delivery d = new Delivery(tmpDuration, start, end, intersection, null);
+			Controller.cmdAdd2(d);
+		}
 	}
 
 	public static void zoom(Group g, ScrollEvent e) {
