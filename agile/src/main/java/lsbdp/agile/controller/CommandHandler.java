@@ -38,8 +38,13 @@ public class CommandHandler {
 			Route newRoute = Dijkstra.performDijkstra(map, element.getKey().getStartingPoint(),
 					endDelivery.getLocation());
 			schedule.set(index + 1, new Pair<>(newRoute, endDelivery));
-			// Enleve la delivery
+		} if (index == schedule.size() - 2) {
+			Route endRoute = schedule.get(index + 1).getKey();
+			Route newRoute = Dijkstra.performDijkstra(map, element.getKey().getStartingPoint(),
+					endRoute.getEnd());
+			schedule.set(index + 1, new Pair<>(newRoute, null));
 		}
+		// Enleve la delivery
 		schedule.remove(index);
 		return index;
 	}
@@ -53,6 +58,15 @@ public class CommandHandler {
 			Delivery endDelivery = schedule.get(index + 1).getValue();
 			Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation(), endDelivery.getLocation());
 			schedule.set(index + 1, new Pair<>(newRoute, endDelivery));
+		} if (index == schedule.size() - 2 && index != 0) {
+			Delivery startDelivery = schedule.get(index).getValue();
+			Route endRoute = schedule.get(index + 1).getKey();
+			Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation(), endRoute.getEnd());
+			schedule.set(index + 1, new Pair<>(newRoute, null));
+		} if (index == 0) {
+			Delivery startDelivery = schedule.get(index).getValue();
+			Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation(), element.getKey().getStartingPoint());
+			schedule.set(index + 1, new Pair<>(newRoute, null));
 		}
 	}
 
