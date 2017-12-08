@@ -71,7 +71,7 @@ public class WindowManager{
 					EventHandlers.switchViewHandler();
 				}
 				if(ctrlS.match(arg0)) {
-					EventHandlers.quitAdditionHandler();
+					EventHandlers.saveDeliveries();
 				}
 				if(ctrlG.match(arg0)) {
 					try {

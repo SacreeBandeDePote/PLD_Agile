@@ -80,6 +80,20 @@ public class EventHandlers {
 		}
 	}
 
+	public static void saveDeliveries() {
+		if(WindowManager.deliveriesLoaded) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Save your deliveries");
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("XML File", "*.xml")
+					);
+			File f = MainWindow.openFileChooserRoadmap(fileChooser);
+			Controller.saveDeliveries(f);
+		} else {
+			MainWindow.openMessagePopup("Please load a delivery file");
+		}	
+	}
+	
 	@FXML
 	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException, IOException {
 		if (WindowManager.deliveriesLoaded) {
