@@ -47,7 +47,7 @@ If you are inside the `agile` directory:
 1. First, load a map (small, medium or big). You can find maps in `agile/Data/fichiersXML/` using `file -> Load Map`
 [Load map](http://imgur.com/Dbo2kVfl.png)
 
-2. Load a delivery request. You can find delivery in `agile/Data/fichiersXML/` using `file -> Load Deliveries`
+2. Load a delivery request. You can find delivery request file in `agile/Data/fichiersXML/` using `file -> Load Deliveries`
 
 ### key shortcuts
 
