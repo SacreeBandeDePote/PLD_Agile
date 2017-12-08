@@ -160,6 +160,8 @@ public class CommandHandler {
 						|| ((timeOfArrival + d.getDuration() * 1000) > d.getTimespanEnd().getTime())) {
 					if (next != null)
 						crtDate.setTime(next.getDeliveryTime().getTime() + next.getDuration() * 1000);
+					else
+						return schedule.size() - 1;
 					continue;
 				}
 			}

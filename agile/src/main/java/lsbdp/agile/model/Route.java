@@ -64,9 +64,9 @@ public class Route {
 			}else if(streets.indexOf(street)==streets.size()-1){
 				if(street.getName().compareTo(previousStreet)==0) {
 					length+= street.getLength();
-					s+= "Prendre la route " + street.getName() + " sur " + ((int)(length/10)*10) + "m et vous êtes arrivé.\r\n";
+					s+= "Prendre " + street.getName() + " sur " + ((int)(length/10)*10) + "m et vous êtes arrivé.\r\n";
 				}else {
-					s+= "Prendre la route " + previousStreet + " sur " + ((int)(length/10)*10) + "m puis ";		
+					s+= "Prendre " + previousStreet + " sur " + ((int)(length/10)*10) + "m puis ";		
 					double angleSin;
 					Intersection firstIntersection;
 					int index = streets.indexOf(street);
@@ -78,7 +78,7 @@ public class Route {
 					else if(angleSin<0) s+= "tournez Ã gauche sur " + street.getName() + "\r\n";
 					else s+= "tournez Ã droite sur " + street.getName() + "\r\n";
 					
-					s+= "Prendre la route " + street.getName() + " sur " + ((int)(street.getLength()/10)*10) + "m et vous êtes arrivé.\r\n";
+					s+= "Prendre " + street.getName() + " sur " + ((int)(street.getLength()/10)*10) + "m et vous êtes arrivé.\r\n";
 				}
 				s+="FIN DU TRAJET";
 			}else {

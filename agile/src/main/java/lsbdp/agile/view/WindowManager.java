@@ -22,6 +22,8 @@ import javafx.util.Pair;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.*;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,11 +49,14 @@ public class WindowManager{
 		sPane.setStyle("-fx-background-color: derive(#ececec,26.4%)");
 
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
-		sp.getDividers().get(0).setPosition(0.85);
+		sp.getDividers().get(0).setPosition(0.80);
 		new Controller();
 		KeyCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
 		KeyCombination ctrlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_ANY);
 		KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_ANY);
+		KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
+		KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_ANY);
+
 
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -64,6 +69,16 @@ public class WindowManager{
 				}
 				if(ctrlT.match(arg0)) {
 					EventHandlers.switchViewHandler();
+				}
+				if(ctrlS.match(arg0)) {
+					EventHandlers.quitAdditionHandler();
+				}
+				if(ctrlG.match(arg0)) {
+					try {
+						EventHandlers.generateRoadmapActionHandler();
+					} catch (InterruptedException | ParseException | IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 
@@ -154,20 +169,6 @@ public class WindowManager{
 		listview.getItems().clear();
 		listview.setItems(ol);
 		listview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-		// Si on a besoin de calculer une route entre deux intersections  JUST IN CASE
-		/*listview.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv) -> {
-			selectedDeliveries.clear();
-			for (Label l : listview.getSelectionModel().getSelectedItems()) {
-				selectedDeliveries.add(dr.getDeliveryByIntersectionId(Long.parseLong(l.getId())));
-			}
-			if(selectedDeliveries.size() == 2) {
-				computeButton.setDisable(false);
-			} else {
-				computeButton.setDisable(true);
-			}
-		}
-		); */
 	}
 
 	public static void highlightAll(StreetMap map, DeliverySchedule schedule) {
