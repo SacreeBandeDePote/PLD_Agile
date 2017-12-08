@@ -22,6 +22,8 @@ import javafx.util.Pair;
 import lsbdp.agile.controller.Controller;
 import lsbdp.agile.model.*;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +54,9 @@ public class WindowManager{
 		KeyCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
 		KeyCombination ctrlY = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_ANY);
 		KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_ANY);
+		KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
+		KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_ANY);
+
 
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -64,6 +69,16 @@ public class WindowManager{
 				}
 				if(ctrlT.match(arg0)) {
 					EventHandlers.switchViewHandler();
+				}
+				if(ctrlS.match(arg0)) {
+					EventHandlers.quitAdditionHandler();
+				}
+				if(ctrlG.match(arg0)) {
+					try {
+						EventHandlers.generateRoadmapActionHandler();
+					} catch (InterruptedException | ParseException | IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 

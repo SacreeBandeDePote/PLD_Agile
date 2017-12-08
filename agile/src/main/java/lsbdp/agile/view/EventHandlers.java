@@ -39,8 +39,21 @@ public class EventHandlers {
 
 	@FXML
 	private void quitAdditionHandler(ActionEvent event) {
-		Controller.refreshIHM();
+		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
+			Controller.refreshIHM();
+		} else {
+			MainWindow.openMessagePopup("Please load a map and a delivery file");
+		}
 	}
+	
+	public static void quitAdditionHandler() {
+		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
+			Controller.refreshIHM();
+		} else {
+			MainWindow.openMessagePopup("Please load a map and a delivery file");
+		}
+	}
+
 
 	@FXML
 	private void addDelivery(ActionEvent event) {
@@ -80,6 +93,20 @@ public class EventHandlers {
 			MainWindow.openMessagePopup("Please load a delivery file");
 		}	
 	}
+	
+	public static void generateRoadmapActionHandler() throws InterruptedException, ParseException, IOException {
+		if(WindowManager.deliveriesLoaded) {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Save your roadMap");
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("txt File", "*.txt")
+					);
+			File f = MainWindow.openFileChooserRoadmap(fileChooser);
+			Controller.generateRoadmapActionHandler(f);
+		} else {
+			MainWindow.openMessagePopup("Please load a delivery file");
+		}
+	}
 
 	@FXML
 	private void UndoAction(ActionEvent event) {
@@ -109,9 +136,14 @@ public class EventHandlers {
 
 	@FXML
 	private void switchViewHandler(ActionEvent event) {
-		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
-		Node back = (Node) stackPane.getChildren().get(0);
-		back.toFront();
+		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
+			StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
+			Node back = (Node) stackPane.getChildren().get(0);
+			back.toFront();
+		} else {
+			MainWindow.openMessagePopup("Please load a map and a delivery file");
+		}
+
 	}
 	
 	

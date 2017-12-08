@@ -35,6 +35,9 @@ public class DeliverySchedule extends ArrayList<Pair<Route, Delivery>>{
 			int pairIndex = this.indexOf(pair);
 			if(pairIndex == 0) {
 				s += "---------  Itinéraire Entrepôt -> Livraison 1  ---------\r\n";
+			} else if (pairIndex == this.size()-1) {
+				s += "---------  Itinéraire Livraison " + pairIndex  + " -> Entrepôt  ---------\r\n";
+
 			} else {
 				s += "---------  Itinéraire Livraison " + pairIndex  + " -> Livraison " + (pairIndex+1) + "  ---------\r\n";
 			}
