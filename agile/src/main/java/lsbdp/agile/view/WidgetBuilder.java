@@ -72,7 +72,7 @@ public class WidgetBuilder {
 		arc.setStartAngle(start);
 		arc.setLength(duration);
 		arc.setType(ArcType.ROUND);
-		arc.setFill(Color.LIGHTGREEN);
+		arc.setFill(new Color(0, 0.8, 0, 1));
 
 		arc.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override

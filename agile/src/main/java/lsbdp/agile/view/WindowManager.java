@@ -99,7 +99,8 @@ public class WindowManager{
 
 
 	    Circle travelerCircle = new Circle(5d); 
-	    travelerCircle.setFill(Color.GREEN);
+	    travelerCircle.setFill(new Color(0, 0.8, 0, 1));
+	    travelerCircle.setMouseTransparent(true);
 	    
 		Timeline timeline = new Timeline();
 		Duration duration = Duration.ZERO;
