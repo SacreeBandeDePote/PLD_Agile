@@ -35,7 +35,9 @@ public class WidgetBuilder {
 
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 
-		Label label = new Label("Livraison #"+count);	
+		String timespanStart = delivery.getTimespanStart().getHours() + ":" + delivery.getTimespanStart().getMinutes();
+		String timespanEnd = delivery.getTimespanEnd().getHours() + ":" + delivery.getTimespanEnd().getMinutes();
+		Label label = new Label("Livraison #"+count + ", from " + timespanStart + " to " + timespanEnd);	
 
 		label.setId("Delivery-"+String.valueOf(delivery.getLocation().getId()));
 
@@ -323,7 +325,7 @@ public class WidgetBuilder {
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
 
-		Label idLabel = new Label("Delivery on intersection " + 12457);
+		Label idLabel = new Label("Delivery on intersection " + delivery.getLocation().getId());
 		Label durationLabel = new Label("Duration : " + delivery.getDuration());
 		Label timeStartWindowLabel = new Label("Start of time window : " + sdf.format(delivery.getTimespanStart()));
 		Label timeEndWindowLabel = new Label("End of time window : " + sdf.format(delivery.getTimespanEnd()));
