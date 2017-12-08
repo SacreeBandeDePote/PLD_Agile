@@ -31,7 +31,7 @@
                       <Menu mnemonicParsing="false" text="Edit">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#UndoAction" text="Undo (Ctrl + Z)" />
-                              <MenuItem mnemonicParsing="false" onAction="#RedoAction" text="Redo (Ctrl + R)" />
+                              <MenuItem mnemonicParsing="false" onAction="#RedoAction" text="Redo (Ctrl + Y)" />
                               <MenuItem mnemonicParsing="false" onAction="#switchViewHandler" text="Switch View (Ctrl + T)" />
                               <MenuItem mnemonicParsing="false" onAction="#resetView" text="Reset View" />
                         </items>
