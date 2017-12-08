@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -74,6 +75,7 @@ public class WidgetBuilder {
 		arc.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+
 				EventHandlers.highlightArc(arc);
 			}
 		});
@@ -197,8 +199,10 @@ public class WidgetBuilder {
 		double centerX = hbox.getWidth()/2;
 		double centerY = hbox.getHeight()/2;
 
+		Tooltip tooltip = new Tooltip("Click to add a delivery");
+		
 		Arc arc = new Arc();
-
+		Tooltip.install(arc, tooltip);
 		arc.setCenterX(centerX);
 		arc.setCenterY(centerY);
 		arc.setRadiusX(250f);
@@ -212,6 +216,8 @@ public class WidgetBuilder {
 
 			@Override
 			public void handle(MouseEvent arg0) {
+
+				WindowManager.getScene().setCursor(Cursor.HAND);
 				EventHandlers.highlightArc(arc);
 			}
 
@@ -220,6 +226,7 @@ public class WidgetBuilder {
 
 			@Override
 			public void handle(MouseEvent arg0) {
+				WindowManager.getScene().setCursor(Cursor.DEFAULT);
 				EventHandlers.unhighlightArc(arc);
 			}
 

@@ -187,7 +187,7 @@ public class CanvasDrawer {
 	}
 	
 	
-	public void drawStreetOverlay(Pane overlay, Intersection start, Intersection end, Color color) {
+	public double drawStreetOverlay(Pane overlay, Street street, Intersection start, Intersection end, Color color, Timeline timeline, Duration duration, Circle travelerCircle) {
 		Double startX      = normalizeX((double)start.getX(), canvas.getWidth());
 		Double startY      = normalizeY((double)start.getY(), canvas.getHeight());
 		Double endX        = normalizeX((double)end.getX(), canvas.getWidth());
@@ -197,23 +197,18 @@ public class CanvasDrawer {
 	    line.setStrokeWidth(2);
 	    line.setStroke(color);
 	    
-	    Circle travelerCircle = new Circle(2d); 
-	    travelerCircle.setFill(Color.GREEN);
+	    double time = street.getLength();
 	    
-	    Timeline timeline = new Timeline();
+	    Duration next = duration.add(new Duration(time));
 
 		timeline.getKeyFrames().addAll(
-				new KeyFrame(Duration.ZERO, new KeyValue(travelerCircle.centerXProperty(), startX)),
-				new KeyFrame(new Duration(500), new KeyValue(travelerCircle.centerXProperty(), endX)),
-				new KeyFrame(Duration.ZERO, new KeyValue(travelerCircle.centerYProperty(), startY)),
-				new KeyFrame(new Duration(500), new KeyValue(travelerCircle.centerYProperty(), endY))
+				new KeyFrame(duration, new KeyValue(travelerCircle.centerXProperty(), startX)),
+				new KeyFrame(next, new KeyValue(travelerCircle.centerXProperty(), endX)),
+				new KeyFrame(duration, new KeyValue(travelerCircle.centerYProperty(), startY)),
+				new KeyFrame(next, new KeyValue(travelerCircle.centerYProperty(), endY))
 				);
-		timeline.setAutoReverse(false);
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
-	    
 	    overlay.getChildren().add(line);
-	    overlay.getChildren().add(travelerCircle);
+	    return time;
 	}
 	
 	public static void drawEndofDayArc(Pane overlay, Date endOfLastDelivery) {
