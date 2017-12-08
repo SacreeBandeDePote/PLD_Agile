@@ -93,15 +93,19 @@ public class EventHandlers {
 
 	@FXML
 	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
-		if(WindowManager.mapLoaded) {
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Choose your deliveries file");
-			fileChooser.getExtensionFilters().addAll(
-					new FileChooser.ExtensionFilter("XML File", "*.xml")
-					);
-			File f = MainWindow.openFileChooserDeliveries(fileChooser);
-			Controller.loadDeliveryRequest(f);
-			WindowManager.deliveriesLoaded = true;
+		if(WindowManager.mapLoaded ) {
+				if(!WindowManager.deliveriesLoaded) {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Choose your deliveries file");
+				fileChooser.getExtensionFilters().addAll(
+						new FileChooser.ExtensionFilter("XML File", "*.xml")
+						);
+				File f = MainWindow.openFileChooserDeliveries(fileChooser);
+				Controller.loadDeliveryRequest(f);
+				WindowManager.deliveriesLoaded = true;
+			}else {
+				MainWindow.openMessagePopup("A delivery file is already loaded, please reload a map");
+			}
 		} else {
 			MainWindow.openMessagePopup("Please load a map");
 		}
@@ -131,6 +135,7 @@ public class EventHandlers {
 		File f = MainWindow.openFileChooser(fileChooser);
 		Controller.loadMap(f);
 		WindowManager.mapLoaded = true;
+		WindowManager.deliveriesLoaded = false;
 	}
 
 	@FXML

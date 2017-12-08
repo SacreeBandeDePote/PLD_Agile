@@ -326,7 +326,7 @@ public class WidgetBuilder {
 
 
 		Label idLabel = new Label("Delivery on intersection " + delivery.getLocation().getId());
-		Label durationLabel = new Label("Duration : " + delivery.getDuration());
+		Label durationLabel = new Label("Duration : " + delivery.getDuration()/60 + " min");
 		Label timeStartWindowLabel = new Label("Start of time window : " + sdf.format(delivery.getTimespanStart()));
 		Label timeEndWindowLabel = new Label("End of time window : " + sdf.format(delivery.getTimespanEnd()));
 		VBox vbox = new VBox(idLabel, durationLabel, timeStartWindowLabel, timeEndWindowLabel);
