@@ -64,7 +64,7 @@ public class Route {
 			}else if(streets.indexOf(street)==streets.size()-1){
 				if(street.getName().compareTo(previousStreet)==0) {
 					length+= street.getLength();
-					s+= "Prendre " + street.getName() + " sur " + ((int)(length/10)*10) + "m et vous êtes arrivé.\r\n";
+					s+= "Prendre " + street.getName() + " sur " + ((int)(length/10)*10) + "m et vous Ãªtes arrivÃ©.\r\n";
 				}else {
 					s+= "Prendre " + previousStreet + " sur " + ((int)(length/10)*10) + "m puis ";		
 					double angleSin;
@@ -75,10 +75,10 @@ public class Route {
 					angleSin = CalculeSin(firstIntersection, streets.get(index-1).getEnd(), street.getEnd());
 
 					if(Math.abs(angleSin)< 0.2) s+= "continuez sur " + street.getName() + "\r\n";
-					else if(angleSin<0) s+= "tournez Ã gauche sur " + street.getName() + "\r\n";
-					else s+= "tournez Ã droite sur " + street.getName() + "\r\n";
+					else if(angleSin<0) s+= "tournez Ã  gauche sur " + street.getName() + "\r\n";
+					else s+= "tournez Ã  droite sur " + street.getName() + "\r\n";
 					
-					s+= "Prendre " + street.getName() + " sur " + ((int)(street.getLength()/10)*10) + "m et vous êtes arrivé.\r\n";
+					s+= "Prendre " + street.getName() + " sur " + ((int)(street.getLength()/10)*10) + "m et vous Ãªtes arrivÃ©.\r\n";
 				}
 				s+="FIN DU TRAJET";
 			}else {
@@ -97,8 +97,8 @@ public class Route {
 					angleSin = CalculeSin(firstIntersection, streets.get(index-1).getEnd(), street.getEnd());
 
 					if(Math.abs(angleSin)< 0.2) s+= "continuez sur " + street.getName() + "\r\n";
-					else if(angleSin<0) s+= "tournez Ã gauche sur " + street.getName() + "\r\n";
-					else s+= "tournez Ã droite sur " + street.getName() + "\r\n";
+					else if(angleSin<0) s+= "tournez Ã  gauche sur " + street.getName() + "\r\n";
+					else s+= "tournez Ã  droite sur " + street.getName() + "\r\n";
 				}
 			}
 		}
@@ -110,7 +110,7 @@ public class Route {
 	}
 	
 	public static double CalculeSin(Intersection first, Intersection second, Intersection third) {
-		//Calcule sens d'arrivée
+		//Calcule sens d'arrivÃ©e
 		int deltaFromX = second.getX() - first.getX();
 		int deltaFromY = second.getY() - first.getY();
 		int deltaToX = third.getX() - second.getX();

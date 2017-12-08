@@ -2,6 +2,7 @@ package lsbdp.agile.data;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -90,7 +91,7 @@ public class SerializerXML {
 		StreetMap streetMap = new StreetMap();
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document xml = builder.parse(fileXML);
+			Document xml = builder.parse(new FileInputStream(fileXML));
 			Element root = xml.getDocumentElement();
 			streetMap = readIntersection(root);
 			readTroncon(root, streetMap);

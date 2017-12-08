@@ -39,7 +39,7 @@ public class TestSerializer {
 		deliveryFile = new File("./Data/fichiersXML/DLpetit5.xml");
 		deliveryFileExpected = new File("./Data/fichiersXML/tests/testDLexpected.xml");
 		deliveryFileTest = new File("./Data/fichiersXML/tests/test.xml");
-		roadMapFileExpected = new File("./Data/fichiersXML/tests/testRoadMapexpected.txt");
+		roadMapFileExpected = new File("./Data/fichiersXML/tests/testRoadMapExpected.txt");
 		roadMapFileTest = new File("./Data/fichiersXML/tests/test.txt");
 		
 		deliveryFileTest.deleteOnExit();
@@ -81,6 +81,6 @@ public class TestSerializer {
 	public void testGenerateRoadMap() throws IOException{
 		SerializerXML.generateRoadMap(roadMapFileTest, deliverySchedule);
 		assertTrue(roadMapFileTest.exists());
-		//assertTrue("The files differ!", FileUtils.contentEquals(roadMapFileTest, deliveryFileExpected));
+		//assertTrue("The files differ!", FileUtils.contentEquals(roadMapFileTest, roadMapFileExpected));
 	}
 }
