@@ -74,7 +74,7 @@ public class Route {
 					else firstIntersection = streets.get(index-2).getEnd();
 					angleSin = CalculeSin(firstIntersection, streets.get(index-1).getEnd(), street.getEnd());
 
-					if(Math.abs(angleSin)< 0.2) s+= "continuez sur " + street.getName() + "\r\n";
+					if(Math.abs(angleSin)< Math.sin(Math.PI/12)) s+= "continuez sur " + street.getName() + "\r\n";
 					else if(angleSin<0) s+= "tournez à gauche sur " + street.getName() + "\r\n";
 					else s+= "tournez à droite sur " + street.getName() + "\r\n";
 					
@@ -96,7 +96,7 @@ public class Route {
 					else firstIntersection = streets.get(index-2).getEnd();
 					angleSin = CalculeSin(firstIntersection, streets.get(index-1).getEnd(), street.getEnd());
 
-					if(Math.abs(angleSin)< 0.2) s+= "continuez sur " + street.getName() + "\r\n";
+					if(Math.abs(angleSin)< Math.sin(Math.PI/12)) s+= "continuez sur " + street.getName() + "\r\n";
 					else if(angleSin<0) s+= "tournez à gauche sur " + street.getName() + "\r\n";
 					else s+= "tournez à droite sur " + street.getName() + "\r\n";
 				}
