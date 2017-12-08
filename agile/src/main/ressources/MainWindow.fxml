@@ -32,7 +32,8 @@
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#UndoAction" text="Undo (Ctrl + Z)" />
                               <MenuItem mnemonicParsing="false" onAction="#RedoAction" text="Redo (Ctrl + R)" />
-                              <MenuItem mnemonicParsing="false" onAction="#switchViewHandler" text="Switch View (Ctrl + T)" />
+                              <MenuItem mnemonicParsing="false" onAction="#switchViewHandler" text="Switch View" />
+                              <MenuItem mnemonicParsing="false" onAction="#resetView" text="Reset View" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Deliveries">

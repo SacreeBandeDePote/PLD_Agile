@@ -1,6 +1,7 @@
 package lsbdp.agile.view;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,7 +30,7 @@ public class PopupWindowManager {
 		TextField durationField = new TextField();
 		durationField.setText("in seconds");
 
-		HBox durationBox =  new HBox(durationLabel, durationField);
+		HBox durationBox = new HBox(durationLabel, durationField);
 		durationBox.setAlignment(Pos.CENTER_LEFT);
 
 		Label startLabel = new Label("Starting time : ");
@@ -49,14 +50,14 @@ public class PopupWindowManager {
 		Label mandatoryLabel = new Label("Items with * are mandatory");
 
 		Button validButton = new Button("Confirm");
-		validButton.setOnAction(new EventHandler<ActionEvent>(){
+		validButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				if(!isInteger(durationField.getText())) {
+				if (!isInteger(durationField.getText())) {
 					MainWindow.openMessagePopup("Please enter a correct duration");
-				}
-				else {
-					EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
+				} else {
+					EventHandlers.addDelivery(intersection, durationField.getText(), startField.getText(),
+							endField.getText());
 				}
 				pop.hide();
 			}
@@ -77,20 +78,18 @@ public class PopupWindowManager {
 		VBox vbox = new VBox(l, durationBox, startBox, endBox, mandatoryLabel, buttonBox);
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
-		vbox.setStyle("-fx-background-color : FFFFFF;"
-				+ "-fx-background-radius : 5;"
-				+ "-fx-border-color : C0C0C0;"
-				+ "-fx-border-width : 3;"
-				+ "-fx-border-radius : 5");
+		vbox.setStyle("-fx-background-color : FFFFFF;" + "-fx-background-radius : 5;" + "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;" + "-fx-border-radius : 5");
 
 		pop.getContent().add(vbox);
 
 		return pop;
 	}
+
 	public static VBox createVBoxDelvieryInformation(Pane overlay, Delivery delivery) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
-		double centerX = hbox.getWidth()/2;
-		double centerY = hbox.getHeight()/2;
+		double centerX = hbox.getWidth() / 2;
+		double centerY = hbox.getHeight() / 2;
 
 		Label idLabel = new Label("Delivery on intersection " + 12457);
 		Label durationLabel = new Label("Duration : " + delivery.getDuration());
@@ -99,15 +98,12 @@ public class PopupWindowManager {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPrefHeight(50);
 		vbox.setPrefWidth(300);
-		vbox.setLayoutX(centerX-150);
-		vbox.setLayoutY(centerY-100);
-		vbox.setStyle("-fx-background-color : F0F0F0;"
-				+ "-fx-border-radius : 15;"
-				+ "-fx-border-color : silver;"
+		vbox.setLayoutX(centerX - 150);
+		vbox.setLayoutY(centerY - 100);
+		vbox.setStyle("-fx-background-color : F0F0F0;" + "-fx-border-radius : 15;" + "-fx-border-color : silver;"
 				+ "-fx-background-radius : 15;");
 		return vbox;
 	}
-
 
 	public static Popup createModifyPopup(Delivery delivery, String duration, String start, String end) {
 		Popup pop = new Popup();
@@ -117,13 +113,12 @@ public class PopupWindowManager {
 		TextField durationField = new TextField();
 		durationField.setText(duration);
 
-		HBox durationBox =  new HBox(durationLabel, durationField);
+		HBox durationBox = new HBox(durationLabel, durationField);
 		durationBox.setAlignment(Pos.CENTER_LEFT);
 
 		Label startLabel = new Label("Starting time : ");
 		TextField startField = new TextField();
 		startField.setText(start);
-
 
 		HBox startBox = new HBox(startLabel, startField);
 		startBox.setAlignment(Pos.CENTER_LEFT);
@@ -138,14 +133,18 @@ public class PopupWindowManager {
 		Label mandatoryLabel = new Label("Items with * are mandatory");
 
 		Button validButton = new Button("Confirm");
-		validButton.setOnAction(new EventHandler<ActionEvent>(){
+		validButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				if(!isInteger(durationField.getText())) {
+				if (!isInteger(durationField.getText())) {
 					MainWindow.openMessagePopup("Please enter a correct duration");
-				}
-				else {
-					EventHandlers.modifyDelivery(delivery,durationField.getText(),startField.getText(),endField.getText());
+				} else {
+					try {
+						EventHandlers.modifyDelivery(delivery, durationField.getText(), startField.getText(),
+								endField.getText());
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 				}
 				pop.hide();
 			}
@@ -167,11 +166,8 @@ public class PopupWindowManager {
 
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
-		vbox.setStyle("-fx-background-color : FFFFFF;"
-				+ "-fx-background-radius : 5;"
-				+ "-fx-border-color : C0C0C0;"
-				+ "-fx-border-width : 3;"
-				+ "-fx-border-radius : 5");
+		vbox.setStyle("-fx-background-color : FFFFFF;" + "-fx-background-radius : 5;" + "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;" + "-fx-border-radius : 5");
 
 		pop.getContent().add(vbox);
 
@@ -193,13 +189,12 @@ public class PopupWindowManager {
 		TextField durationField = new TextField();
 		durationField.setText("in seconds");
 
-		HBox durationBox =  new HBox(durationLabel, durationField);
+		HBox durationBox = new HBox(durationLabel, durationField);
 		durationBox.setAlignment(Pos.CENTER_LEFT);
 
 		Label startLabel = new Label("Starting time : ");
 		TextField startField = new TextField();
 		startField.setText(sdf.format(start));
-
 
 		HBox startBox = new HBox(startLabel, startField);
 		startBox.setAlignment(Pos.CENTER_LEFT);
@@ -214,18 +209,19 @@ public class PopupWindowManager {
 		Label mandatoryLabel = new Label("Items with * are mandatory");
 
 		Button validButton = new Button("Confirm");
-		validButton.setOnAction(new EventHandler<ActionEvent>(){
+		validButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				if(isInteger(durationField.getText())) {
+				if (isInteger(durationField.getText())) {
 					long id = Long.parseLong(intersectionField.getText());
 					Intersection intersection = Controller.getMap().get(id);
-					if(intersection != null) {
-						EventHandlers.addDelivery(intersection,durationField.getText(),startField.getText(),endField.getText());
+					if (intersection != null) {
+						EventHandlers.addDelivery(intersection, durationField.getText(), startField.getText(),
+								endField.getText());
 					} else {
-						MainWindow.openMessagePopup("Incorrect Intersection");	
+						MainWindow.openMessagePopup("Incorrect Intersection");
 					}
-				}else {
+				} else {
 					MainWindow.openMessagePopup("Please enter a correct duration");
 				}
 				pop.hide();
@@ -248,11 +244,8 @@ public class PopupWindowManager {
 
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
-		vbox.setStyle("-fx-background-color : FFFFFF;"
-				+ "-fx-background-radius : 5;"
-				+ "-fx-border-color : C0C0C0;"
-				+ "-fx-border-width : 3;"
-				+ "-fx-border-radius : 5");
+		vbox.setStyle("-fx-background-color : FFFFFF;" + "-fx-background-radius : 5;" + "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;" + "-fx-border-radius : 5");
 
 		pop.getContent().add(vbox);
 
@@ -293,18 +286,15 @@ public class PopupWindowManager {
 			@Override
 			public void handle(ActionEvent arg0) {
 				pop.hide();
-			}		
+			}
 		});
 
 		VBox vbox = new VBox(mess, returnButton);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
-		vbox.setStyle("-fx-background-color : FFFFFF;"
-				+ "-fx-background-radius : 5;"
-				+ "-fx-border-color : C0C0C0;"
-				+ "-fx-border-width : 3;"
-				+ "-fx-border-radius : 5");
+		vbox.setStyle("-fx-background-color : FFFFFF;" + "-fx-background-radius : 5;" + "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;" + "-fx-border-radius : 5");
 
 		pop.getContent().add(vbox);
 
@@ -320,11 +310,8 @@ public class PopupWindowManager {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setSpacing(5);
 		vbox.setPadding(new Insets(10));
-		vbox.setStyle("-fx-background-color : FFFFFF;"
-				+ "-fx-background-radius : 5;"
-				+ "-fx-border-color : C0C0C0;"
-				+ "-fx-border-width : 3;"
-				+ "-fx-border-radius : 5");
+		vbox.setStyle("-fx-background-color : FFFFFF;" + "-fx-background-radius : 5;" + "-fx-border-color : C0C0C0;"
+				+ "-fx-border-width : 3;" + "-fx-border-radius : 5");
 
 		pop.getContent().add(vbox);
 		return pop;
