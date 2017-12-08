@@ -149,8 +149,21 @@ public class EventHandlers {
 		}
 
 	}
+	
+	@FXML
+	private void resetView(ActionEvent event) {
+		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
+		Group drawGroup = null;
+		for (Node node : stackPane.getChildren()) {
+			if (node.getClass() == Group.class)  drawGroup = (Group) node;
+		}
+		drawGroup.setTranslateX(0d);
+		drawGroup.setTranslateY(0d);
+		drawGroup.setScaleX(1d);
+		drawGroup.setScaleY(1d);
 
-
+	}
+	
 	public static void switchViewHandler() {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
 		Node back = (Node) stackPane.getChildren().get(0);
@@ -360,8 +373,13 @@ public class EventHandlers {
 		double newScaleX = g.getScaleX() + zoomIntensity*scrollDelta;
 		double newScaleY = g.getScaleY() + zoomIntensity*scrollDelta;
 
-		g.setScaleX(newScaleX);
-		g.setScaleY(newScaleY);
+		if (newScaleX <= 1 && newScaleY <= 1) {
+			newScaleX = 1d;
+			newScaleY = 1d;
+		}
+			g.setScaleX(newScaleX);
+			g.setScaleY(newScaleY);
+		
 	}
 
 	public static void openModifyPopUp(Delivery delivery) {
@@ -384,17 +402,14 @@ public class EventHandlers {
 		MainWindow.openModifyPopUp(pop);
 	}
 
-	public static void modifyDelivery(Delivery delivery, String duration, String start, String end) {
+	public static void modifyDelivery(Delivery delivery, String duration, String start, String end) throws ParseException {
 		int d = Integer.parseInt(duration);
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		Date startDate = null;
 		Date endDate = null;
-		try {
 			if (start.compareTo("HH:mm:ss") != 0) startDate = sdf.parse(start);
 			if (end.compareTo("HH:mm:ss") != 0) endDate = sdf.parse(end);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		
 		Controller.cmdModify(delivery, startDate, endDate, d);
 
 	}

@@ -88,7 +88,6 @@ public class CanvasDrawer {
 		gc.strokeLine(canvasWidth, canvasWidth, 0, canvasWidth);
 		
 		Group drawGroup = WidgetBuilder.createDrawGroup(canvas,overlay);
-
 		sPane.getChildren().clear();
 
 		HBox hbox = new HBox();
