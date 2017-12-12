@@ -39,18 +39,19 @@ import lsbdp.agile.model.Street;
 import lsbdp.agile.model.StreetMap;
 
 /**
- * Classe permettant de deserialiser un fichier XML(une map ou un fichier de livraisons) en objet JAVA
+ * Class which permits to deserialize a XML file (a map or a delivery file) in a JAVA object
  * @author Vincent
  *
  */
 public class SerializerXML {
 
+	//Permits to assign an id 
 	static ArrayList<Long> idIdentifier;
 
 	/**
-	 * Methode permettant de serialiser des objets Java en un document XML dans le but de faire une sauvegarde
-	 * @param deliveriesRequest
-	 * @param file
+	 * Method which permits to serialize Java objects to a XML file in order to make a backup 
+	 * @param deliveriesSchedule the schedule of deliveries to serialize
+	 * @param file the root for the new serialized file
 	 */
 	public static void serializeDeliveryXML(DeliverySchedule deliveriesSchedule, File file) {
 		SimpleDateFormat formater = new SimpleDateFormat("H:m:s");
@@ -82,9 +83,9 @@ public class SerializerXML {
 	}
 
 	/**
-	 * Methode permettant de deserialiser une map a partir d'un fichier XML
-	 * @param fileXML
-	 * @return
+	 * Method which permits to deserialize a map from a XML file
+	 * @param fileXML the XML file which contains the deliveries
+	 * @return a streetMap the map loaded from the XML file
 	 */
 	public static StreetMap deserializeMapXML(File fileXML) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -105,9 +106,9 @@ public class SerializerXML {
 		return streetMap;
 	}
 	/**
-	 * Methode permettant de lire et de creer toutes les intersections a partir d'un fichier XML
-	 * @param root
-	 * @return
+	 * Method which permits to read and create all the intersections from a XML file
+	 * @param root the XML file which contains the deliveries
+	 * @return a streetMap 
 	 */
 	public static StreetMap readIntersection (Element root) {
 		NodeList racineNoeuds = root.getChildNodes();
@@ -147,9 +148,9 @@ public class SerializerXML {
 	}
 
 	/**
-	 * Methode permettant de lire et de creer toutes les rues a partir d'un fichier XML
-	 * @param root
-	 * @param streetMap
+	 * Method which permits to read and create all the roads from a XML file
+	 * @param root the XML file which contains the deliveries
+	 * @param streetMap the map of the application
 	 */
 	public static void readTroncon (Element root, StreetMap streetMap) {
 		NodeList racineNoeuds = root.getChildNodes();
@@ -173,10 +174,10 @@ public class SerializerXML {
 	}
 
 	/**
-	 * Methode permettant de lire un fichier de livraisons et de creer un parcours de livraisons a partir d'un fichier XML
-	 * @param fileXML
-	 * @param streetMap
-	 * @return
+	 * Method which permits to read a deliveries file and to create a delivery path from a XML file
+	 * @param fileXML the XML file which contains the deliveries
+	 * @param streetMap the map of the application
+	 * @return a request of deliveries
 	 */
 	public static DeliveriesRequest deserializeDeliveryXML(File fileXML, StreetMap streetMap) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -199,10 +200,10 @@ public class SerializerXML {
 	}
 
 	/**
-	 * Methode permettant de lire un entrepot et une heure de depart de livraison a partir d'un fichier XML
-	 * @param root
-	 * @param streetMap
-	 * @return
+	 * Method which permits to read a warehouse and a time delivery departure from a XML file
+	 * @param root the root to the XML file to read
+	 * @param streetMap the map of the application
+	 * @return a pair composed of an intersection which is a warehouse and a starting time 
 	 */
 	public static Pair <Intersection, Date> readWarehouse (Element root, StreetMap streetMap) {
 		DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
@@ -229,10 +230,10 @@ public class SerializerXML {
 	} 
 
 	/**
-	 * Methode permettant de lire et de creer un lieu de livraison a partir d'un fichier XML
-	 * @param root
-	 * @param streetMap
-	 * @return
+	 * Method which permits to read and create a place of delivery from a XML file
+	 * @param root the XML file which contains the deliveries
+	 * @param streetMap the map which contains the intersections and the road
+	 * @return a list of deliveries
 	 */
 	public static ArrayList<Delivery> readDelivery(Element root, StreetMap streetMap){
 		ArrayList<Delivery> deliveryList = new ArrayList<Delivery>();
@@ -265,13 +266,11 @@ public class SerializerXML {
 	}
 
 	/**
-	 * Methode permettant de generer une feuille de route
-	 * @param f
-	 * @param d
-	 * @throws IOException 
-	 * @throws FileNotFoundException
+	 * Method which permits to generate a roadmap
+	 * @param f the file which while contain the roadmap
+	 * @param d the delivery schedule which permits to generate the roadmap
 	 */
-	public static void generateRoadMap(File f, DeliverySchedule d) throws IOException {
+	public static void generateRoadMap(File f, DeliverySchedule d) {
 		try {
 			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF8"));
 			String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -280,10 +279,12 @@ public class SerializerXML {
 			entete += "|\r\n";
 			entete += "| Date/Heure de génération: " + timeStamp + "\r\n";
 			entete += "-------------------------------------------------\r\n\r\n";
-			out.append(entete + d.toString());
+			out.append(entete + d.toString());			
 			out.flush();
 			out.close();
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
