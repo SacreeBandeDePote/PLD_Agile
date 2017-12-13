@@ -56,12 +56,20 @@ public class CanvasDrawer {
 		this.minY   = minY;
 	}
 	
+	/**
+	 * Draws the map int the Canvas
+	 * 
+	 * @param map
+	 * @param scene
+	 * 
+	 * @see drawIntersection
+	 * @see drawStreet
+	 */
 	public void drawMap(StreetMap map, Scene scene) {
 
 		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
 		Double dimension      = Double.min(sPane.getHeight(), sPane.getWidth());
 		canvas             = new Canvas(dimension-30, dimension-30);
-		canvas.setOpacity(1d);
 		Pane overlay       = new Pane();
 		
  		Double canvasWidth = canvas.getWidth();
@@ -98,6 +106,20 @@ public class CanvasDrawer {
 		sPane.getChildren().add(drawGroup);
 	}
 
+	/**
+	 * Creates and fill the circular view for the delivery time
+	 * 
+	 * @param overlay
+	 * 	The Pane in which to put the arcs 
+	 * @param schedule
+	 * 	The DeliverySchedule to get the Delivery List
+	 * @param scene
+	 * 	The Scene of the application
+	 * 
+	 * @see drawDeliveryArc
+	 * @see drawTravelArc
+	 * @see drawFreeTimeArc
+	 */
 	public static void fillTimeDoughnut(Pane overlay, DeliverySchedule schedule, Scene scene) {
 		Date endOfLastDelivery = null;
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -122,6 +144,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
+	 * Draw the circle for an intersection with a specified Color and radius in the CanvasDrawer
 	 * 
 	 * @param intersection
 	 * @param color
@@ -139,6 +162,16 @@ public class CanvasDrawer {
 		gc.strokeOval(x-delta, y-delta, radius, radius);
 	}
 	
+	/**
+	 * For a Delivery draws a Circle in the overlay Pane
+	 * 
+	 * @param overlay
+	 * @param delivery
+	 * @param color
+	 * @param radius
+	 * 
+	 * @see createDeliveryCircle
+	 */
 	public void drawDelivery(Pane overlay, Delivery delivery, Color color, Double radius) {
 		Intersection intersection = delivery.getLocation();
 		Double x                  = normalizeX((double)intersection.getX(), canvas.getWidth());
@@ -149,6 +182,16 @@ public class CanvasDrawer {
         overlay.getChildren().add(circle);
 	}
 	
+	/**
+	 * Draws a Circle in the overlay Pane for the wharehouse
+	 * 
+	 * @param overlay
+	 * @param warehouse
+	 * @param color
+	 * @param radius
+	 * 
+	 * @see createWharehouseCircle
+	 */
 	public void drawWarehouse(Pane overlay, Intersection warehouse, Color color, Double radius) {
 		Double x                  = normalizeX((double)warehouse.getX(), canvas.getWidth());
 		Double y                  = normalizeY((double)warehouse.getY(), canvas.getHeight());
@@ -158,6 +201,16 @@ public class CanvasDrawer {
         overlay.getChildren().add(circle);
 	}
 	
+	/**
+	 * Draws the cickable circle created to add a Delivery
+	 * 
+	 * @param overlay
+	 * @param intersection
+	 * @param color
+	 * @param radius
+	 * 
+	 * @see createTemporaryIntersectionCircle
+	 */
 	public void drawTemporaryIntersection(Pane overlay, Intersection intersection, Color color, Double radius) {
 		Double x                  = normalizeX((double)intersection.getX(), canvas.getWidth());
 		Double y                  = normalizeY((double)intersection.getY(), canvas.getHeight());
@@ -168,6 +221,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
+	 * Draws the line between two intersections on the Canvas
 	 * 
 	 * @param start
 	 * @param end
