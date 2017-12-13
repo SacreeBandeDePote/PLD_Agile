@@ -1,14 +1,10 @@
 package lsbdp.agile.controller;
 
-import java.util.Date;
-
 import javafx.util.Pair;
 import lsbdp.agile.algorithm.Dijkstra;
-import lsbdp.agile.model.Delivery;
-import lsbdp.agile.model.DeliverySchedule;
-import lsbdp.agile.model.Intersection;
-import lsbdp.agile.model.Route;
-import lsbdp.agile.model.StreetMap;
+import lsbdp.agile.model.*;
+
+import java.util.Date;
 
 public class CommandHandler {
 
@@ -38,7 +34,8 @@ public class CommandHandler {
 			Route newRoute = Dijkstra.performDijkstra(map, element.getKey().getStartingPoint(),
 					endDelivery.getLocation());
 			schedule.set(index + 1, new Pair<>(newRoute, endDelivery));
-		} if (index == schedule.size() - 2) {
+		}
+		if (index == schedule.size() - 2) {
 			Route endRoute = schedule.get(index + 1).getKey();
 			Route newRoute = Dijkstra.performDijkstra(map, element.getKey().getStartingPoint(),
 					endRoute.getEnd());
@@ -58,12 +55,14 @@ public class CommandHandler {
 			Delivery endDelivery = schedule.get(index + 1).getValue();
 			Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation(), endDelivery.getLocation());
 			schedule.set(index + 1, new Pair<>(newRoute, endDelivery));
-		} if (index == schedule.size() - 2 && index != 0) {
+		}
+		if (index == schedule.size() - 2 && index != 0) {
 			Delivery startDelivery = schedule.get(index).getValue();
 			Route endRoute = schedule.get(index + 1).getKey();
 			Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation(), endRoute.getEnd());
 			schedule.set(index + 1, new Pair<>(newRoute, null));
-		} if (index == 0) {
+		}
+		if (index == 0) {
 			Delivery startDelivery = schedule.get(index).getValue();
 			Route newRoute = Dijkstra.performDijkstra(map, startDelivery.getLocation(), element.getKey().getStartingPoint());
 			schedule.set(index + 1, new Pair<>(newRoute, null));
@@ -85,37 +84,37 @@ public class CommandHandler {
 			schedule.set(index, new Pair<>(nextRoute, nextDelivery));
 			Date arrival = new Date(((long) route.getTotalTime()) * 60000 +
 					((prevDelivery != null)
-					? (prevDelivery.getDeliveryTime().getTime() + prevDelivery.getDuration() * 1000) : schedule.getStartingTime().getTime()));
+							? (prevDelivery.getDeliveryTime().getTime() + prevDelivery.getDuration() * 1000) : schedule.getStartingTime().getTime()));
 			d.setDeliveryTime(arrival);
 
 			Date timeMin = d.getTimespanStart();
 			Date timeMax = d.getTimespanEnd();
-			Date delTimeRounded = new Date( arrival.getTime());
-			long decaMinute =(delTimeRounded.getTime())/(1000*60*10);
+			Date delTimeRounded = new Date(arrival.getTime());
+			long decaMinute = (delTimeRounded.getTime()) / (1000 * 60 * 10);
 			decaMinute = Math.round(decaMinute);
-			long millisec = decaMinute*(1000*60*10);
+			long millisec = decaMinute * (1000 * 60 * 10);
 			delTimeRounded.setTime(millisec);
 
-			Date timeStart = new Date(delTimeRounded.getTime() - 30*60000); // -30min
-			Date timeEnd = new Date(delTimeRounded.getTime() + 30*60000); // +30min
+			Date timeStart = new Date(delTimeRounded.getTime() - 30 * 60000); // -30min
+			Date timeEnd = new Date(delTimeRounded.getTime() + 30 * 60000); // +30min
 			d.setTimespanStart(timeStart);
 			d.setTimespanEnd(timeEnd);
-			if(timeMin != null){
-				if(timeStart.compareTo(timeMin) <0){
+			if (timeMin != null) {
+				if (timeStart.compareTo(timeMin) < 0) {
 					d.setTimespanStart(timeMin);
-					Date newTime = new Date(timeMin.getTime() + 60*60000);
+					Date newTime = new Date(timeMin.getTime() + 60 * 60000);
 					d.setTimespanEnd(newTime); // on garde un créneau d'1h
-			 	}
+				}
 
-				if(timeEnd.compareTo(timeMax) >0){
+				if (timeEnd.compareTo(timeMax) > 0) {
 					d.setTimespanEnd(timeMax);
-					Date newTime = new Date(timeMax.getTime() - 60*60000);
+					Date newTime = new Date(timeMax.getTime() - 60 * 60000);
 					d.setTimespanStart(newTime); // on garde un créneau d'1h
-			 	}
-			 }
-		 	if(timeStart.compareTo(schedule.getStartingTime()) <0){
+				}
+			}
+			if (timeStart.compareTo(schedule.getStartingTime()) < 0) {
 				d.setTimespanStart(schedule.getStartingTime());
-				Date newTime = new Date(schedule.getStartingTime().getTime() + 60*60000);
+				Date newTime = new Date(schedule.getStartingTime().getTime() + 60 * 60000);
 				d.setTimespanEnd(newTime); // on garde un créneau d'1h
 			}
 
@@ -127,7 +126,7 @@ public class CommandHandler {
 
 	// Handler CommandModify
 	public static int modifyDelivery(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> oldDelivery,
-			Delivery newDelivery, Date sT, Date eT, int duration) {
+									 Delivery newDelivery, Date sT, Date eT, int duration) {
 		int index = deleteDelivery(map, schedule, oldDelivery);
 		lastDeletedIndex = index;
 		newDelivery = new Delivery(duration, sT, eT, oldDelivery.getValue().getLocation(), null);
@@ -140,11 +139,17 @@ public class CommandHandler {
 	}
 
 	public static void undoModify(StreetMap map, DeliverySchedule schedule, Delivery newDelivery,
-			Pair<Route, Delivery> oldDelivery, int index) {
+								  Pair<Route, Delivery> oldDelivery, int index) {
 		deleteDelivery(map, schedule, findByDelivery(schedule, newDelivery));
 		undoDelete(map, schedule, oldDelivery, index);
 	}
 
+	/**
+	 * @param map
+	 * @param schedule the present route
+	 * @param d        the new delivery to add
+	 * @return the index where we put the new delivery or -1 if not possible
+	 */
 	private static int indexAdd(StreetMap map, DeliverySchedule schedule, Delivery d) {
 		Date crtDate = (Date) schedule.getStartingTime().clone();
 
@@ -182,10 +187,18 @@ public class CommandHandler {
 		return -1;
 	}
 
+	/**
+	 * This recursive method check in cascade if we can move the time of arrival of the deliveries without exiting
+	 * the time window given to the client
+	 *
+	 * @param schedule the present route
+	 * @param current  the delivery on witch we check if its possible to move the time of arrival
+	 * @param newTime  the new time where we arrive to the current delivery
+	 * @return true if it is possible to move the the time of arrival of the deliveries
+	 */
 	private static boolean checkOffsetTime(DeliverySchedule schedule, Delivery current, long newTime) {
-
 		if (current == null) {
-			if (newTime < 18 * 60 * 60 * 1000){ // < 18h
+			if (newTime < 18 * 60 * 60 * 1000) { // < 18h
 				schedule.setEndingTime(new Date(newTime));
 				return true;
 			}
@@ -205,8 +218,7 @@ public class CommandHandler {
 				return true;
 			}
 			return false;
-		}
-		else
+		} else
 			return false;
 	}
 

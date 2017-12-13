@@ -3,6 +3,10 @@ package lsbdp.agile.algorithm;
 import java.util.Iterator;
 import java.util.List;
 
+
+/**
+ * Simple iterator tha give the elements in the reverse order it got them
+ */
 public class SeqIterator implements Iterator<Integer> {
 	private Integer[] neighbors;
 	private int nbNeighbors;
@@ -10,7 +14,7 @@ public class SeqIterator implements Iterator<Integer> {
 	public SeqIterator(List<Integer> nonView) {
 		neighbors = new Integer[nonView.size()];
 		nbNeighbors = 0;
-		for(Integer s : nonView) {
+		for (Integer s : nonView) {
 			neighbors[nbNeighbors++] = s;
 		}
 	}

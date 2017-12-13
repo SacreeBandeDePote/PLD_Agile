@@ -44,7 +44,7 @@ public class TestTSP {
 
 	@Test
 	public void testNaiveLessCostTSP() {
-		TSP test = new NaiveLessCostTSP();
+		TSP test = new NaiveNearItTSP();
 		DeliverySchedule s = new DeliverySchedule();
 
 		long start = System.currentTimeMillis();
@@ -62,7 +62,7 @@ public class TestTSP {
 
 	@Test
 	public void testNNHLessCostTSP() {
-		TSP test = new NNHLessCostTSP();
+		TSP test = new NNHNearItTSP();
 		DeliverySchedule s = new DeliverySchedule();
 
 		long start = System.currentTimeMillis();
@@ -80,7 +80,7 @@ public class TestTSP {
 
 	@Test
 	public void testNNHTimeLessCostTSP() {
-		TSP test = new NNHTimeLessCostTSP();
+		TSP test = new NNHTimeNearItTSP();
 		DeliverySchedule s = new DeliverySchedule();
 
 		long start = System.currentTimeMillis();

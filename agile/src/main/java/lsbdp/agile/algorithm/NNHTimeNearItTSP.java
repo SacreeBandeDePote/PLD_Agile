@@ -5,9 +5,12 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class NNHLessCostTSP extends NNHTSP {
+/**
+ * Same as NNHTimeTSP but with NearestIterator
+ */
+public class NNHTimeNearItTSP extends NNHTimeTSP {
 	@Override
 	protected Iterator<Integer> iterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost, float[] duration, Pair<Float, Float>[] timeWindows) {
-		return new LessCostIterator(crtNode, nonView, timeCost);
+		return new NearestIterator(crtNode, nonView, timeCost);
 	}
 }

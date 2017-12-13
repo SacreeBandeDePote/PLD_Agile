@@ -1,12 +1,24 @@
 package lsbdp.agile.algorithm;
 
-import lsbdp.agile.model.*;
+import lsbdp.agile.model.Delivery;
+import lsbdp.agile.model.Intersection;
+import lsbdp.agile.model.Route;
+import lsbdp.agile.model.StreetMap;
 
 import java.util.*;
 
+/**
+ * Class that perform all the computation with the Dijkstra algorithm
+ */
 public class Dijkstra {
 	private static final long UNDEFINED = -1l;
 
+	/**
+	 * @param map
+	 * @param start
+	 * @param end
+	 * @return The succession of street to take to go from start to end in the shortest path
+	 */
 	public static Route performDijkstra(StreetMap map, Intersection start, Intersection end) {
 		Route route = new Route(start);
 
@@ -52,6 +64,12 @@ public class Dijkstra {
 		return route;
 	}
 
+	/**
+	 * @param map
+	 * @param warehouse
+	 * @param deliveries
+	 * @return The complete graph between all the deliveries and the warehouse. The warehouse is at le last index
+	 */
 	public static Route[][] createTSPGraph(StreetMap map, Intersection warehouse, List<Delivery> deliveries) {
 		Route[][] graphTSP = new Route[deliveries.size() + 1][deliveries.size() + 1];
 
@@ -73,6 +91,9 @@ public class Dijkstra {
 
 }
 
+/**
+ * Comparator to order the intersections in the PriorityQueue by their distance from the starting point
+ */
 class RouteComparator implements Comparator<Intersection> {
 
 	private Map<Long, Float> distances;
@@ -81,6 +102,7 @@ class RouteComparator implements Comparator<Intersection> {
 		this.distances = distances;
 	}
 
+	@Override
 	public int compare(Intersection o1, Intersection o2) {
 		return (int) (distances.get(o1.getId()) - distances.get(o2.getId())); //increasing order
 	}
