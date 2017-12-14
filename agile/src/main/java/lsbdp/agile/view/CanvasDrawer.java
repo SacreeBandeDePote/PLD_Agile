@@ -276,6 +276,14 @@ public class CanvasDrawer {
 	    return time;
 	}
 	
+	/**
+	 * Draw the arc that display the free time at the end of the shift
+	 * 
+	 * @param overlay
+	 * @param endOfLastDelivery
+	 * 
+	 * @see createArcFreeTime
+	 */
 	public static void drawEndofDayArc(Pane overlay, Date endOfLastDelivery) {
 		try {
 			DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -292,6 +300,15 @@ public class CanvasDrawer {
 		}
 	}
 
+	/**
+	 * Draws the arc that display the traveling time 
+	 * 
+	 * @param overlay
+	 * @param delivery
+	 * @param route
+	 * 
+	 * @see createArcTravel
+	 */
 	public static void drawTravelArc(Pane overlay, Delivery delivery, Route route) {
 		try {
 			double angle = normalize(delivery.getDeliveryTime());
@@ -304,6 +321,16 @@ public class CanvasDrawer {
 		}
 	}
 
+	/**
+	 * Draws the arc that display the free time 
+	 * 
+	 * @param overlay
+	 * @param startingTime
+	 * @param delivery
+	 * @param route
+	 * 
+	 * @see createArcFreeTime
+	 */
 	public static void drawFreeTimeArc(Pane overlay, Date startingTime, Delivery delivery, Route route) {
 		Date deliveryTime = delivery.getDeliveryTime();
 		Date freeTimeEnd = getDateBeforeDuration(deliveryTime, route.getRouteDuration());
@@ -322,6 +349,15 @@ public class CanvasDrawer {
 		}
 	}
 	
+	
+	/**
+	 * Draws the arc that display the delivery time 
+	 * 
+	 * @param overlay
+	 * @param delivery
+	 * 
+	 * @see createArcDelivery
+	 */
 	public static void drawDeliveryArc(Pane overlay, Delivery delivery) {
 		try {
 			double angle = normalize(delivery.getDeliveryTime());
@@ -334,6 +370,13 @@ public class CanvasDrawer {
 		}
 	}
 	
+	/**
+	 * Normalize a given time between the begining and the end of a day shift
+	 * 
+	 * @param time
+	 * @return
+	 * @throws ParseException
+	 */
 	public static double normalize(Date time) throws ParseException {
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		Date minDate = sdf.parse("8:0:0");
@@ -350,6 +393,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
+	 * Normalize a given longitude between the max and min of the map
 	 * 
 	 * @param x
 	 * @param width
@@ -362,6 +406,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
+	 * Normalize a given lattitude between the max and min of the map
 	 * 
 	 * @param y
 	 * @param height
@@ -373,6 +418,13 @@ public class CanvasDrawer {
 		return newY;
 	}
 	
+	/**
+	 * Return the Date object corresponding to the starting time plus the duration
+	 * 
+	 * @param start
+	 * @param duration
+	 * @return
+	 */
 	public static Date getDateAfterDuration( Date start, double duration) {
 		Date end = null;
 		duration = TimeUnit.SECONDS.toMillis((long) duration);
@@ -381,6 +433,13 @@ public class CanvasDrawer {
 		return end;
 	}
 
+	/**
+	 * Return the Date object corresponding to the starting time minus the duration
+	 * 
+	 * @param start
+	 * @param duration
+	 * @return
+	 */
 	public static Date getDateBeforeDuration( Date start, double duration) {
 		Date end = null;
 		duration = TimeUnit.SECONDS.toMillis((long) duration);
