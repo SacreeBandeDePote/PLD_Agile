@@ -239,7 +239,19 @@ public class CanvasDrawer {
 		gc.strokeLine(startX, startY, endX, endY);
 	}
 	
-	
+	/**
+	 * Draws the line representing a street in the overlay Pane also generates the animation for the travelling circle
+	 * 
+	 * @param overlay
+	 * @param street
+	 * @param start
+	 * @param end
+	 * @param color
+	 * @param timeline
+	 * @param duration
+	 * @param travelerCircle
+	 * @return
+	 */
 	public double drawStreetOverlay(Pane overlay, Street street, Intersection start, Intersection end, Color color, Timeline timeline, Duration duration, Circle travelerCircle) {
 		Double startX      = normalizeX((double)start.getX(), canvas.getWidth());
 		Double startY      = normalizeY((double)start.getY(), canvas.getHeight());
