@@ -5,6 +5,10 @@ import lsbdp.agile.model.*;
 
 import java.util.List;
 
+/**
+ * DEPRECATED !!
+ * a Stupid implementation of the TSP witch will give a solution in the order of the creation of the graph
+ */
 public class StupidTSP implements TSP {
 
 	@Override

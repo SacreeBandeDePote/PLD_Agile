@@ -5,10 +5,13 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-public class LessCostIterator implements Iterator<Integer> {
+/**
+ * Iterator that give the nearest node first
+ */
+public class NearestIterator implements Iterator<Integer> {
 	private PriorityQueue<Integer> neighbors;
 
-	public LessCostIterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost) {
+	public NearestIterator(int crtNode, ArrayList<Integer> nonView, float[][] timeCost) {
 		neighbors = new PriorityQueue<>(nonView.size(), new Comparator<Integer>() {
 			@Override
 			public int compare(Integer integer, Integer t1) {

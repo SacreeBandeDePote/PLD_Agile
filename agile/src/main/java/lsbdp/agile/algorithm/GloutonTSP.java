@@ -6,6 +6,10 @@ import lsbdp.agile.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DEPRECATED !!
+ * A Glutton implementation of the TSP witch will always go the the nearest point possible
+ */
 public class GloutonTSP implements TSP {
 
 	@Override
