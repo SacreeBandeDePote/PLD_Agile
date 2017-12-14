@@ -22,6 +22,14 @@ import lsbdp.agile.model.Intersection;
 
 public class PopupWindowManager {
 
+	/**
+	 * Create the popup window that allows the user to add a delivery for a given intersection
+	 * 
+	 * @param intersection
+	 * @return
+	 * 
+	 * @see openMessagePopup
+	 */
 	public static Popup createAddPopup(Intersection intersection) {
 		Popup pop = new Popup();
 		Label l = new Label("Create Delivery on intersection " + intersection.getId());
@@ -86,25 +94,15 @@ public class PopupWindowManager {
 		return pop;
 	}
 
-	public static VBox createVBoxDelvieryInformation(Pane overlay, Delivery delivery) {
-		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
-		double centerX = hbox.getWidth() / 2;
-		double centerY = hbox.getHeight() / 2;
-
-		Label idLabel = new Label("Delivery on intersection " + 12457);
-		Label durationLabel = new Label("Duration : " + delivery.getDuration());
-		VBox vbox = new VBox(idLabel, durationLabel);
-		vbox.setId("InformationBox");
-		vbox.setAlignment(Pos.CENTER);
-		vbox.setPrefHeight(50);
-		vbox.setPrefWidth(300);
-		vbox.setLayoutX(centerX - 150);
-		vbox.setLayoutY(centerY - 100);
-		vbox.setStyle("-fx-background-color : F0F0F0;" + "-fx-border-radius : 15;" + "-fx-border-color : silver;"
-				+ "-fx-background-radius : 15;");
-		return vbox;
-	}
-
+	/**
+	 * Create the popup window that allows the user to modify a delivery
+	 * 
+	 * @param delivery
+	 * @param duration
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public static Popup createModifyPopup(Delivery delivery, String duration, String start, String end) {
 		Popup pop = new Popup();
 		Label l = new Label("Modify Delivery on intersection " + delivery.getLocation().getId());
@@ -174,6 +172,13 @@ public class PopupWindowManager {
 		return pop;
 	}
 
+	/**
+	 * Create the popup window that allows the user to add a delivery without a intersection
+	 * 
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public static Popup createAddPopup(Date start, Date end) {
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		Popup pop = new Popup();
@@ -252,6 +257,12 @@ public class PopupWindowManager {
 		return pop;
 	}
 
+	/**
+	 * Checks if a String is an integer
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static boolean isInteger(String str) {
 		if (str == null) {
 			return false;
