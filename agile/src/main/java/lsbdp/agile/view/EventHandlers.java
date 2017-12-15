@@ -421,6 +421,11 @@ public class EventHandlers {
 		overlay.getChildren().remove(overlay.getChildren().size() - 1);
 	}
 
+	/**
+	 * Highlight an arc by animating it
+	 * 
+	 * @param arc
+	 */
 	public static void highlightArc(Arc arc) {
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames().addAll(
@@ -433,6 +438,11 @@ public class EventHandlers {
 		timeline.play();
 	}
 
+	/**
+	 * Unighlight an arc by animating it
+	 * 
+	 * @param arc
+	 */
 	public static void unhighlightArc(Arc arc) {
 		Timeline timeline = new Timeline();
 
@@ -446,12 +456,20 @@ public class EventHandlers {
 		timeline.play();
 	}
 
+	/**
+	 * Unhighlight the wharehouse entry list
+	 */
 	public static void unhighlightWarehouseListView() {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		listview.getSelectionModel().clearSelection();
 	}
 
+	/**
+	 * Highlight the temporary intersection dot
+	 * 
+	 * @param intersection
+	 */
 	public static void highlightTemporaryIntersection(Intersection intersection) {
 
 		Scene scene = WindowManager.getScene();
@@ -466,6 +484,11 @@ public class EventHandlers {
 		circle.setStrokeWidth(6d);
 	}
 
+	/**
+	 * Unhighlight the temporary intersection dot
+	 * 
+	 * @param intersection
+	 */
 	public static void unhighlightTemporaryIntersection(Intersection intersection) {
 
 		Scene scene = WindowManager.getScene();
@@ -475,15 +498,34 @@ public class EventHandlers {
 		circle.setStrokeWidth(2d);
 	}
 
+	/**
+	 * Event handler that allows to delete a delivery
+	 * 
+	 * @param delivery
+	 */
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
 	}
 
-
+	/**
+	 * Event Handler for the click on a temporary intersection
+	 * 
+	 * @param intersection
+	 * 
+	 * @see openAddPopUp
+	 */
 	public static void temporaryIntersectionClicked(Intersection intersection) {
 		MainWindow.openAddPopUp(intersection);
 	}
 
+	/**
+	 * Event handler that checks the input in the add popup field and add the delivery
+	 * 
+	 * @param intersection
+	 * @param duration
+	 * @param startingTime
+	 * @param endTime
+	 */
 	public static void addDelivery(Intersection intersection, String duration, String startingTime, String endTime) {
 		boolean error = false;
 		int tmpDuration = Integer.parseInt(duration);
@@ -528,6 +570,12 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Event handler for the scroll on the map and zooms
+	 * 
+	 * @param g
+	 * @param e
+	 */
 	public static void zoom(Group g, ScrollEvent e) {
 		double zoomIntensity = 0.01;
 		double scrollDelta = e.getDeltaY();
@@ -544,6 +592,13 @@ public class EventHandlers {
 
 	}
 
+	/**
+	 * Event Handler that allows to open the window to modify a delivery
+	 * 
+	 * @param delivery
+	 * 
+	 * @see openModifyPopup
+	 */
 	public static void openModifyPopUp(Delivery delivery) {
 		String duration = Integer.toString(delivery.getDuration());
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -564,6 +619,15 @@ public class EventHandlers {
 		MainWindow.openModifyPopUp(pop);
 	}
 
+	/**
+	 * Event handler that checks and send the data to modify a Delivery
+	 * 
+	 * @param delivery
+	 * @param duration
+	 * @param start
+	 * @param end
+	 * @throws ParseException
+	 */
 	public static void modifyDelivery(Delivery delivery, String duration, String start, String end) throws ParseException {
 		int d = Integer.parseInt(duration);
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
