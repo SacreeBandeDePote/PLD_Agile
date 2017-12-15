@@ -40,6 +40,11 @@ public class WindowManager{
 
 	private static ArrayList<Delivery> selectedDeliveries;
 
+/**
+ * Initialize the scene and the keyCombinations
+ * 
+ * @param scene
+ */
 	public static void initializer (Scene scene) {
 		WindowManager.scene = scene;
 		
@@ -94,6 +99,11 @@ public class WindowManager{
 		hboxTimeDgnt.getChildren().add(overlay);
 	}
 	
+/**
+ * Color every intersection and routes on the DeliverySchedule and the warehouse too.
+ * 
+ * @param ds
+ */
 	public static void colorDeliverySchedule (DeliverySchedule ds) {
 		Pane overlay = (Pane) scene.lookup("#overlay");
 		
