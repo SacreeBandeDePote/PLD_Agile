@@ -347,7 +347,11 @@ public class EventHandlers {
 		circle.setStrokeWidth(1d);
 	}
 
-	
+	/**
+	 * For a given Delivery highlight the entry in the list view
+	 * 
+	 * @param delivery
+	 */
 	public static void highlightDeliveryListView(Delivery delivery) {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
@@ -364,12 +368,20 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Highlight the wharehouse entry list
+	 */
 	public static void highlightWarehouseListView() {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		listview.getSelectionModel().select(0);
 	}
 
+	/**
+	 * For a given Delivery unhighlight the entry in the list view
+	 * 
+	 * @param delivery
+	 */
 	public static void unhighlightDeliveryListView(Delivery delivery) {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
@@ -387,11 +399,24 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Display the information of the corresponding delivery in the time doughnut
+	 * 
+	 * @param overlay
+	 * @param delivery
+	 * 
+	 * @see createVBoxDeliveryInformation
+	 */
 	public static void showArcInformations(Pane overlay, Delivery delivery) {
 		VBox vbox = WidgetBuilder.createVBoxDelvieryInformation(overlay, delivery);
 		overlay.getChildren().add(vbox);
 	}
 
+	/**
+	 * Hide the information in the time doughnut
+	 * 
+	 * @param overlay
+	 */
 	public static void hideArcInformations(Pane overlay) {
 		overlay.getChildren().remove(overlay.getChildren().size() - 1);
 	}
