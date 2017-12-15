@@ -20,7 +20,7 @@ public class MainWindow extends Application {
 
 	private static Stage stage;
 	private static Scene mainScene;
-	
+
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		Parent mainNode = FXMLLoader.load(getClass().getResource("/MainWindow.fxml"));

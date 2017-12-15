@@ -287,6 +287,13 @@ public class PopupWindowManager {
 		return true;
 	}
 
+/**
+ * Create a popup with a string message.
+ * 
+ * @param message
+ * 
+ * @return
+ */
 	public static Popup createMessagePopup(String message) {
 		Popup pop = new Popup();
 		Label mess = new Label(message);
@@ -309,22 +316,6 @@ public class PopupWindowManager {
 
 		pop.getContent().add(vbox);
 
-		return pop;
-	}
-
-	public static Popup createWaitingPopup() {
-		Popup pop = new Popup();
-		Label mess = new Label("Please wait");
-		mess.setPadding(new Insets(15));
-
-		VBox vbox = new VBox(mess);
-		vbox.setAlignment(Pos.CENTER);
-		vbox.setSpacing(5);
-		vbox.setPadding(new Insets(10));
-		vbox.setStyle("-fx-background-color : FFFFFF;" + "-fx-background-radius : 5;" + "-fx-border-color : C0C0C0;"
-				+ "-fx-border-width : 3;" + "-fx-border-radius : 5");
-
-		pop.getContent().add(vbox);
 		return pop;
 	}
 }

@@ -183,7 +183,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
-	 * Draws a Circle in the overlay Pane for the wharehouse
+	 * Draws a Circle in the overlay Pane for the warehouse
 	 * 
 	 * @param overlay
 	 * @param warehouse
@@ -202,7 +202,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
-	 * Draws the cickable circle created to add a Delivery
+	 * Draws the clickable circle created to add a Delivery
 	 * 
 	 * @param overlay
 	 * @param intersection
@@ -240,7 +240,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
-	 * Draws the line representing a street in the overlay Pane also generates the animation for the travelling circle
+	 * Draws the line representing a street in the overlay Pane also generates the animation for the traveling circle
 	 * 
 	 * @param overlay
 	 * @param street
@@ -371,7 +371,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
-	 * Normalize a given time between the begining and the end of a day shift
+	 * Normalize a given time between the beginning and the end of a day shift
 	 * 
 	 * @param time
 	 * @return
@@ -406,7 +406,7 @@ public class CanvasDrawer {
 	}
 	
 	/**
-	 * Normalize a given lattitude between the max and min of the map
+	 * Normalize a given latitude between the max and min of the map
 	 * 
 	 * @param y
 	 * @param height

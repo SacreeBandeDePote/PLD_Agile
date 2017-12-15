@@ -115,7 +115,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * Create the VBox containing the legend of the time doughnut
+	 * Create the JavaFx VBox containing the legend of the time doughnut
 	 * 
 	 * @param overlay
 	 * @return
@@ -156,7 +156,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * Create the VBox containing the wharehouse entry of the listview
+	 * Create the JavaFx VBox containing the wharehouse entry of the listview
 	 * 
 	 * @param warehouse
 	 * @return
@@ -193,7 +193,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 *	Creates the arc corresponding to a Delivery 
+	 *	Creates the JavaFx Arc corresponding to a Delivery 
 	 *
 	 * @param overlay
 	 * @param delivery
@@ -248,7 +248,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * Creates the Arc corresponding to a free time window
+	 * Creates the JavaFx Arc corresponding to a free time window
 	 * 
 	 * @param angle
 	 * @param duration
@@ -307,7 +307,7 @@ public class WidgetBuilder {
 
 
 	/**
-	 * Creates the list view delete button for a delivery
+	 * Creates the JavaFx Listview delete Button correponding to a delivery
 	 * 
 	 * @param delivery
 	 * @return
@@ -333,7 +333,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * create the modify button for a delivery
+	 * create the JavaFx modify button corresponding to a delivery
 	 * 
 	 * @param delivery
 	 * @return
@@ -362,7 +362,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * create a HBox for the entry of the listview
+	 * create a JavaFx HBox for the entry of the listview
 	 * 
 	 * @param delivery
 	 * @param count
@@ -406,7 +406,7 @@ public class WidgetBuilder {
 
 
 	/**
-	 * Creates the VBOX containing the informations of the selected Delivery
+	 * Creates the JavaFx VBox containing informations of the selected Delivery
 	 * 
 	 * @param overlay
 	 * @param delivery
@@ -438,7 +438,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * Creates the circle in the overlay for a delivery
+	 * Creates the JavaFx Circle in the overlay corresponding to a delivery
 	 * 
 	 * @param delivery
 	 * @param color
@@ -476,7 +476,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * Creates the circle for an intersection which allows to add a delivery
+	 * Creates the JavaFx Circle corresponding to an intersection which allows to add a delivery
 	 * 
 	 * @param intersection
 	 * @param color
@@ -519,7 +519,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * creates the circle corresponding to the warehouse in the overlay
+	 * creates the JavaFx Circle corresponding to the warehouse in the overlay
 	 * 
 	 * @param warehouse
 	 * @param color
@@ -559,7 +559,7 @@ public class WidgetBuilder {
 	}
 
 	/**
-	 * creates the Group containing the map and the overlay
+	 * creates the JavaFx Group containing the map and the overlay
 	 * 
 	 * @param canvas
 	 * @param overlay

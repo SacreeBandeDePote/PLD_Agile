@@ -246,7 +246,7 @@ public class EventHandlers {
 	}
 
 	/**
-	 * Event handler that allows to switch between the map and the time dougnnut 
+	 * Event handler that allows to switch between the map and the time doughnut 
 	 */
 	public static void switchViewHandler() {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
@@ -297,7 +297,7 @@ public class EventHandlers {
 	}
 
 	/**
-	 * Event handler that highlights the wharehouse dot
+	 * Event handler that highlights the warehouse dot
 	 * 
 	 * @param warehouse
 	 */
@@ -318,7 +318,7 @@ public class EventHandlers {
 	}
 
 	/**
-	 * Event handler that return an intersection dot to it's original state
+	 * Event handler that return an intersection dot to its original state
 	 * 
 	 * @param intersection
 	 */
@@ -333,7 +333,7 @@ public class EventHandlers {
 	}
 
 	/**
-	 * Event handler that return a wharehouse dot to it's original state
+	 * Event handler that return a warehouse dot to its original state
 	 * 
 	 * @param warehouse
 	 */
@@ -369,7 +369,7 @@ public class EventHandlers {
 	}
 
 	/**
-	 * Highlight the wharehouse entry list
+	 * Highlight the warehouse entry list
 	 */
 	public static void highlightWarehouseListView() {
 		Scene scene = WindowManager.getScene();
@@ -457,7 +457,7 @@ public class EventHandlers {
 	}
 
 	/**
-	 * Unhighlight the wharehouse entry list
+	 * Unhighlight the warehouse entry list
 	 */
 	public static void unhighlightWarehouseListView() {
 		Scene scene = WindowManager.getScene();
