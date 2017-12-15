@@ -33,6 +33,13 @@ public class WidgetBuilder {
 	private static double anchorX = 0;
 	private static double anchorY = 0;
 
+	/**
+	 * Creates the Label for the Delivery entry in the listView
+	 * 
+	 * @param delivery
+	 * @param count
+	 * @return
+	 */
 	public static Label createDeliveryLabel(Delivery delivery, int count) {
 
 		String timespanStart = delivery.getTimespanStart().getHours() + ":" + delivery.getTimespanStart().getMinutes();
@@ -44,6 +51,11 @@ public class WidgetBuilder {
 		return label;
 	}
 
+	/**
+	 * Create the circle in the center of the time dougnnut
+	 * 
+	 * @return
+	 */
 	public static Circle createFakeHole() {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -58,6 +70,16 @@ public class WidgetBuilder {
 		return circle;
 	}
 
+	/**
+	 * Create the arc corresponding to a Travel, also set the event handlers
+	 * 
+	 * @param start
+	 * @param duration
+	 * @return
+	 * 
+	 * @see highlightArc
+	 * @see unhighlightArc
+	 */
 	public static Arc createArcTravel(double start, double duration) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -92,6 +114,12 @@ public class WidgetBuilder {
 		return arc;
 	}
 
+	/**
+	 * Create the VBox containing the legend of the time doughnut
+	 * 
+	 * @param overlay
+	 * @return
+	 */
 	public static VBox createLegend(Pane overlay) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -127,6 +155,15 @@ public class WidgetBuilder {
 		return vbox;
 	}
 
+	/**
+	 * Create the VBox containing the wharehouse entry of the listview
+	 * 
+	 * @param warehouse
+	 * @return
+	 * 
+	 * @see highlightWarehouse
+	 * @see unhighlightWarehouse
+	 */
 	public static HBox createListViewHBoxWarehouse(Intersection warehouse) {
 		HBox hbox = new HBox();
 		hbox.setSpacing(5);
@@ -155,6 +192,20 @@ public class WidgetBuilder {
 		return hbox;
 	}
 
+	/**
+	 *	Creates the arc corresponding to a Delivery 
+	 *
+	 * @param overlay
+	 * @param delivery
+	 * @param start
+	 * @param duration
+	 * @return
+	 * 
+	 * @see highlightDeliveryListView
+	 * @see showArcInformations
+	 * @see highlightArc
+	 * @see hideArcInformations
+	 */
 	public static Arc createArcDelivery(Pane overlay, Delivery delivery, double start, double duration) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -196,6 +247,17 @@ public class WidgetBuilder {
 		return arc;
 	}
 
+	/**
+	 * Creates the Arc corresponding to a free time window
+	 * 
+	 * @param angle
+	 * @param duration
+	 * @param start
+	 * @param end
+	 * @return
+	 * 
+	 * @see openAddPopUp
+	 */
 	public static Arc createArcFreeTime(double angle, double duration, Date start, Date end) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -244,7 +306,14 @@ public class WidgetBuilder {
 	}
 
 
-
+	/**
+	 * Creates the list view delete button for a delivery
+	 * 
+	 * @param delivery
+	 * @return
+	 * 
+	 * @see deleteDelivery
+	 */
 	public static Button createListViewDeleteButton(Delivery delivery) {
 		Button btn = new Button();
 		btn.setText("X");
@@ -263,6 +332,14 @@ public class WidgetBuilder {
 		return btn;
 	}
 
+	/**
+	 * create the modify button for a delivery
+	 * 
+	 * @param delivery
+	 * @return
+	 * 
+	 * @see openModifyPopUp
+	 */
 	private static Button createListViewModifyButton(Delivery delivery) {
 		ImageView iv = new ImageView(new Image(WidgetBuilder.class.getResourceAsStream("/gearIcon.png")));
 		iv.setFitWidth(15);
@@ -284,6 +361,16 @@ public class WidgetBuilder {
 		return btn;
 	}
 
+	/**
+	 * create a HBox for the entry of the listview
+	 * 
+	 * @param delivery
+	 * @param count
+	 * @return
+	 * 
+	 * @see highlightIntersection
+	 * @see unhighlightIntersection
+	 */
 	public static HBox createListViewHBox(Delivery delivery, int count) {
 		HBox hbox = new HBox();
 		hbox.setSpacing(5);
@@ -318,6 +405,13 @@ public class WidgetBuilder {
 	}
 
 
+	/**
+	 * Creates the VBOX containing the informations of the selected Delivery
+	 * 
+	 * @param overlay
+	 * @param delivery
+	 * @return
+	 */
 	public static VBox createVBoxDelvieryInformation(Pane overlay, Delivery delivery) {
 		HBox hbox = (HBox) WindowManager.getScene().lookup("#timeDoughnutHBox");
 		double centerX = hbox.getWidth()/2;
@@ -343,6 +437,14 @@ public class WidgetBuilder {
 		return vbox;
 	}
 
+	/**
+	 * Creates the circle in the overlay for a delivery
+	 * 
+	 * @param delivery
+	 * @param color
+	 * @param radius
+	 * @return
+	 */
 	public static Circle createDeliveryCircle(Delivery delivery, Color color,Double radius) {
 		Circle circle = new Circle(radius);
 
@@ -373,6 +475,18 @@ public class WidgetBuilder {
 		return circle;
 	}
 
+	/**
+	 * Creates the circle for an intersection which allows to add a delivery
+	 * 
+	 * @param intersection
+	 * @param color
+	 * @param radius
+	 * @return
+	 * 
+	 * @see highlightTemporaryIntersection
+	 * @see unhighlightTemporaryIntersection
+	 * @see temporaryIntersectionClicked
+	 */
 	public static Circle createTemporaryIntersectionCircle(Intersection intersection, Color color, Double radius) {
 		Circle circle = new Circle(radius);
 
@@ -404,6 +518,19 @@ public class WidgetBuilder {
 		return circle;
 	}
 
+	/**
+	 * creates the circle corresponding to the warehouse in the overlay
+	 * 
+	 * @param warehouse
+	 * @param color
+	 * @param radius
+	 * @return
+	 * 
+	 * @see highlightWarehouseListView
+	 * @see highlightWarehouse
+	 * @see unhighlightWarehouseListView
+	 * @see unhighlightWarehouse
+	 */
 	public static Circle createWarehouseCircle(Intersection warehouse, Color color,Double radius) {
 		Circle circle = new Circle(radius);
 
@@ -431,6 +558,15 @@ public class WidgetBuilder {
 		return circle;
 	}
 
+	/**
+	 * creates the Group containing the map and the overlay
+	 * 
+	 * @param canvas
+	 * @param overlay
+	 * @return
+	 * 
+	 * @see zoom
+	 */
 	public static Group createDrawGroup(Canvas canvas, Pane overlay) {
 		Group g = new Group(canvas, overlay);
 		g.setOnScroll(new EventHandler<ScrollEvent>() {

@@ -37,6 +37,11 @@ import java.util.Date;
 
 public class EventHandlers {
 
+	/**
+	 * FXML event handler that allows to reverse the intersection selection process
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void quitAdditionHandler(ActionEvent event) {
 		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
@@ -46,6 +51,10 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Event handler that allows to reverse the intersection selection process
+	 * 
+	 */
 	public static void quitAdditionHandler() {
 		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
 			Controller.refreshIHM();
@@ -54,7 +63,11 @@ public class EventHandlers {
 		}
 	}
 
-
+/**
+ * FXML event handler that allows to add a delivery
+ * 
+ * @param event
+ */
 	@FXML
 	private void addDelivery(ActionEvent event) {
 		if (WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
@@ -64,6 +77,11 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * FXML event handler that allows to save a delivery
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void saveDeliveries(ActionEvent event) {
 		if (WindowManager.deliveriesLoaded) {
@@ -80,6 +98,9 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Event handler that allows to save a delivery (keyboard shortcut)
+	 */
 	public static void saveDeliveries() {
 		if(WindowManager.deliveriesLoaded) {
 			FileChooser fileChooser = new FileChooser();
@@ -94,6 +115,14 @@ public class EventHandlers {
 		}	
 	}
 	
+	/**
+	 * FXML event handler that allows to generate the roadmap
+	 *  
+	 * @param event
+	 * @throws InterruptedException
+	 * @throws ParseException
+	 * @throws IOException
+	 */
 	@FXML
 	private void generateRoadmapActionHandler(ActionEvent event) throws InterruptedException, ParseException, IOException {
 		if (WindowManager.deliveriesLoaded) {
@@ -110,6 +139,13 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Event handler that allows to generate the roadmap (keyboard shortcut)
+	 * 
+	 * @throws InterruptedException
+	 * @throws ParseException
+	 * @throws IOException
+	 */
 	public static void generateRoadmapActionHandler() throws InterruptedException, ParseException, IOException {
 		if(WindowManager.deliveriesLoaded) {
 			FileChooser fileChooser = new FileChooser();
@@ -124,16 +160,33 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * FXML event handler for the Undo
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void UndoAction(ActionEvent event) {
 		Controller.undo();
 	}
 
+	/**
+	 * FXML event handler for the redo
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void RedoAction(ActionEvent event) {
 		Controller.redo();
 	}
 
+	/**
+	 * FXML event handler that allows to load to load a delivery list
+	 * 
+	 * @param event
+	 * @throws InterruptedException
+	 * @throws ParseException
+	 */
 	@FXML
 	private void LoadDeliveriesActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		if(WindowManager.mapLoaded ) {
@@ -156,6 +209,11 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * FXML event handler that allows to switch between the map and the time dougnnut 
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void switchViewHandler(ActionEvent event) {
 		if(WindowManager.mapLoaded && WindowManager.deliveriesLoaded) {
@@ -168,6 +226,11 @@ public class EventHandlers {
 
 	}
 	
+	/**
+	 * FXML event handler that allows to reset the map to it's original position
+	 * 
+	 * @param event
+	 */
 	@FXML
 	private void resetView(ActionEvent event) {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
@@ -182,12 +245,22 @@ public class EventHandlers {
 
 	}
 
+	/**
+	 * Event handler that allows to switch between the map and the time dougnnut 
+	 */
 	public static void switchViewHandler() {
 		StackPane stackPane = (StackPane) WindowManager.getScene().lookup("#mainStackPane");
 		Node back = (Node) stackPane.getChildren().get(0);
 		back.toFront();
 	}
 	
+	/**
+	 * FXML event handler that allows to load a map
+	 * 
+	 * @param event
+	 * @throws InterruptedException
+	 * @throws ParseException
+	 */
 	@FXML
 	private void LoadMapActionHandler(ActionEvent event) throws InterruptedException, ParseException {
 		FileChooser fileChooser = new FileChooser();
@@ -203,11 +276,11 @@ public class EventHandlers {
 		}
 	}
 
-	@FXML
-	private void calculateSchedule(ActionEvent event) {
-		// DeliverySchedule schedule = Controller.findDeliverySchedule();
-	}
-
+	/**
+	 * Event handler that highlights an intersection on the map by increasing it's size
+	 * 
+	 * @param intersection
+	 */
 	public static void highlightIntersection(Intersection intersection) {
 
 		Scene scene = WindowManager.getScene();
@@ -223,6 +296,11 @@ public class EventHandlers {
 		circle.setStrokeWidth(8d);
 	}
 
+	/**
+	 * Event handler that highlights the wharehouse dot
+	 * 
+	 * @param warehouse
+	 */
 	public static void highlightWarehouse(Intersection warehouse) {
 
 		Scene scene = WindowManager.getScene();
@@ -239,6 +317,11 @@ public class EventHandlers {
 		circle.setStrokeWidth(8d);
 	}
 
+	/**
+	 * Event handler that return an intersection dot to it's original state
+	 * 
+	 * @param intersection
+	 */
 	public static void unhighlightIntersection(Intersection intersection) {
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#Circle" + intersection.getId());
@@ -249,6 +332,11 @@ public class EventHandlers {
 		circle.setStrokeWidth(1d);
 	}
 
+	/**
+	 * Event handler that return a wharehouse dot to it's original state
+	 * 
+	 * @param warehouse
+	 */
 	public static void unhighlightWarehouse(Intersection warehouse) {
 		Scene scene = WindowManager.getScene();
 		Circle circle = (Circle) scene.lookup("#CircleWarehouse" + warehouse.getId());
@@ -259,6 +347,11 @@ public class EventHandlers {
 		circle.setStrokeWidth(1d);
 	}
 
+	/**
+	 * For a given Delivery highlight the entry in the list view
+	 * 
+	 * @param delivery
+	 */
 	public static void highlightDeliveryListView(Delivery delivery) {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
@@ -275,12 +368,20 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Highlight the wharehouse entry list
+	 */
 	public static void highlightWarehouseListView() {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		listview.getSelectionModel().select(0);
 	}
 
+	/**
+	 * For a given Delivery unhighlight the entry in the list view
+	 * 
+	 * @param delivery
+	 */
 	public static void unhighlightDeliveryListView(Delivery delivery) {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
@@ -298,15 +399,33 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Display the information of the corresponding delivery in the time doughnut
+	 * 
+	 * @param overlay
+	 * @param delivery
+	 * 
+	 * @see createVBoxDeliveryInformation
+	 */
 	public static void showArcInformations(Pane overlay, Delivery delivery) {
 		VBox vbox = WidgetBuilder.createVBoxDelvieryInformation(overlay, delivery);
 		overlay.getChildren().add(vbox);
 	}
 
+	/**
+	 * Hide the information in the time doughnut
+	 * 
+	 * @param overlay
+	 */
 	public static void hideArcInformations(Pane overlay) {
 		overlay.getChildren().remove(overlay.getChildren().size() - 1);
 	}
 
+	/**
+	 * Highlight an arc by animating it
+	 * 
+	 * @param arc
+	 */
 	public static void highlightArc(Arc arc) {
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames().addAll(
@@ -319,6 +438,11 @@ public class EventHandlers {
 		timeline.play();
 	}
 
+	/**
+	 * Unighlight an arc by animating it
+	 * 
+	 * @param arc
+	 */
 	public static void unhighlightArc(Arc arc) {
 		Timeline timeline = new Timeline();
 
@@ -332,12 +456,20 @@ public class EventHandlers {
 		timeline.play();
 	}
 
+	/**
+	 * Unhighlight the wharehouse entry list
+	 */
 	public static void unhighlightWarehouseListView() {
 		Scene scene = WindowManager.getScene();
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 		listview.getSelectionModel().clearSelection();
 	}
 
+	/**
+	 * Highlight the temporary intersection dot
+	 * 
+	 * @param intersection
+	 */
 	public static void highlightTemporaryIntersection(Intersection intersection) {
 
 		Scene scene = WindowManager.getScene();
@@ -352,6 +484,11 @@ public class EventHandlers {
 		circle.setStrokeWidth(6d);
 	}
 
+	/**
+	 * Unhighlight the temporary intersection dot
+	 * 
+	 * @param intersection
+	 */
 	public static void unhighlightTemporaryIntersection(Intersection intersection) {
 
 		Scene scene = WindowManager.getScene();
@@ -361,15 +498,34 @@ public class EventHandlers {
 		circle.setStrokeWidth(2d);
 	}
 
+	/**
+	 * Event handler that allows to delete a delivery
+	 * 
+	 * @param delivery
+	 */
 	public static void deleteDelivery(Delivery delivery) {
 		Controller.cmdDelete(delivery);
 	}
 
-
+	/**
+	 * Event Handler for the click on a temporary intersection
+	 * 
+	 * @param intersection
+	 * 
+	 * @see openAddPopUp
+	 */
 	public static void temporaryIntersectionClicked(Intersection intersection) {
 		MainWindow.openAddPopUp(intersection);
 	}
 
+	/**
+	 * Event handler that checks the input in the add popup field and add the delivery
+	 * 
+	 * @param intersection
+	 * @param duration
+	 * @param startingTime
+	 * @param endTime
+	 */
 	public static void addDelivery(Intersection intersection, String duration, String startingTime, String endTime) {
 		boolean error = false;
 		int tmpDuration = Integer.parseInt(duration);
@@ -414,6 +570,12 @@ public class EventHandlers {
 		}
 	}
 
+	/**
+	 * Event handler for the scroll on the map and zooms
+	 * 
+	 * @param g
+	 * @param e
+	 */
 	public static void zoom(Group g, ScrollEvent e) {
 		double zoomIntensity = 0.01;
 		double scrollDelta = e.getDeltaY();
@@ -430,6 +592,13 @@ public class EventHandlers {
 
 	}
 
+	/**
+	 * Event Handler that allows to open the window to modify a delivery
+	 * 
+	 * @param delivery
+	 * 
+	 * @see openModifyPopup
+	 */
 	public static void openModifyPopUp(Delivery delivery) {
 		String duration = Integer.toString(delivery.getDuration());
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -450,6 +619,15 @@ public class EventHandlers {
 		MainWindow.openModifyPopUp(pop);
 	}
 
+	/**
+	 * Event handler that checks and send the data to modify a Delivery
+	 * 
+	 * @param delivery
+	 * @param duration
+	 * @param start
+	 * @param end
+	 * @throws ParseException
+	 */
 	public static void modifyDelivery(Delivery delivery, String duration, String start, String end) throws ParseException {
 		int d = Integer.parseInt(duration);
 		DateFormat sdf = new SimpleDateFormat("HH:mm:ss");

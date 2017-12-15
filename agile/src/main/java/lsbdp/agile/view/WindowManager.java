@@ -45,7 +45,6 @@ public class WindowManager{
 		
 		StackPane sPane = (StackPane) scene.lookup("#mainStackPane");
 
-
 		sPane.setStyle("-fx-background-color: derive(#ececec,26.4%)");
 
 		SplitPane sp = (SplitPane) scene.lookup("#mainSplitPane");
@@ -105,23 +104,35 @@ public class WindowManager{
 				colorRoute(p.getKey(), p.getValue());
 		}
 	}
-
+/**
+ * Color the street that are in the route in the overlay Pane and 
+ * the Intersection of the corresponding Delivery
+ * 
+ * @param route
+ * 	The route to color
+ * @param delivery
+ * 	The delivery where the route is going
+ * 
+ * @see drawStreetOverlay
+ * @see drawDelivery
+ */
 	public static void colorRoute(Route route, Delivery delivery) {
 		Pane overlay = (Pane) scene.lookup("#overlay");
 		Intersection startingPoint = route.getStartingPoint();
 		List<Street> streets       = route.getStreets();
 
-
-
+		//Animated Circle that goes along the route
 	    Circle travelerCircle = new Circle(5d); 
 	    travelerCircle.setFill(new Color(0, 0.8, 0, 1));
 	    travelerCircle.setMouseTransparent(true);
 	    
+	    //The animation of the moving circle
 		Timeline timeline = new Timeline();
 		Duration duration = Duration.ZERO;
 		
 		for( Street street : streets) {
 			if(delivery != null) {
+				//If this is the last route delivery will be null
 				canvasDrawer.drawDelivery(overlay, delivery, Color.RED, 5d);
 			}
 
@@ -137,20 +148,14 @@ public class WindowManager{
 	    
 	}
 
-	public static void colorDeliveryRequest(DeliveriesRequest r) {
-		Pane overlay             = (Pane) scene.lookup("#overlay");
-		ArrayList<Delivery> list = new ArrayList<Delivery>();
-		list                     = r.getDeliveryList();
-
-		overlay.getChildren().clear();
-		for(Delivery d : list) {
-			canvasDrawer.drawDelivery(overlay, d, Color.RED, 5d);
-		}
-		Intersection wh = r.getWarehouse();
-		canvasDrawer.drawWarehouse(overlay, wh, Color.GREEN, 5d);	
-	}
-
-
+/**
+ * Load the schedule informations in the list view
+ * 
+ * @param ds
+ * 	The delivery schedule to load into the list
+ * 
+ * @see createListViewHBox
+ */
 	public static void loadListView(DeliverySchedule ds) {
 		ListView<HBox> listview = (ListView<HBox>) scene.lookup("#listView");
 
@@ -171,6 +176,16 @@ public class WindowManager{
 		listview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 	}
 
+	/**
+	 * Create clickable circle for each intersection that does not already contains a delivery
+	 * 
+	 * @param map
+	 * 	The StreetMap to get all the intersection
+	 * @param schedule
+	 * 	The DeliverySchedule to get the Delivery 
+	 * 
+	 * @see drawTemporaryIntersection
+	 */
 	public static void highlightAll(StreetMap map, DeliverySchedule schedule) {
 		Pane overlay = (Pane) scene.lookup("#overlay");
 		Set<Long> keys     = map.keySet();
@@ -186,6 +201,16 @@ public class WindowManager{
 		}
 	}
 
+	
+	/**
+	 * Draws the given map in a FXCanvas, if the is the first load of a map creates the CanvasDrawer
+	 * 
+	 * @param map
+	 * 	The map to draw
+	 * 
+	 * @see drawMap
+	 * @see CanvasDrawer
+	 */
 	public static void drawMap(StreetMap map) {
 		if(canvasDrawer == null) {
 			canvasDrawer = new CanvasDrawer(map.getMaxX(), map.getMinX(), map.getMaxY(), map.getMinY(), scene);	
@@ -193,6 +218,11 @@ public class WindowManager{
 		canvasDrawer.drawMap(map, scene);
 	}
 
+	/**
+	 * 
+	 * @return
+	 * 	Returns the Scene of the application window
+	 */
 	public static Scene getScene() {
 		return scene;
 	}
