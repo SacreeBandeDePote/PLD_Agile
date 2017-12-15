@@ -27,7 +27,11 @@ public class Controller {
 		Controller.algo = new NNHTimeTSP();
 	}
 
-	//Gérer Map
+	/**
+	 * Loads a map from a file and draws it
+	 * 
+	 * @param XML			the file to load
+	 */
 	public static void loadMap(File xml) throws ParseException {
 		map = SerializerXML.deserializeMapXML(xml);
 		if(map != null) {
@@ -37,6 +41,12 @@ public class Controller {
 		}
 
 	}
+	
+	/**
+	 * Saves the route in a file
+	 * 
+	 * @param XML			the file to save to
+	 */
 	public static void saveDeliveries(File xml) {
 		SerializerXML.serializeDeliveryXML(schedule, xml);
 	}
@@ -48,7 +58,12 @@ public class Controller {
 		return map;
 	}
 
-	//Gérer Schedule
+	/**
+	 * Loads a route from a file
+	 * 
+	 * @param XML			the file to load
+	 * @return the route
+	 */
 	public static DeliverySchedule loadDeliveryRequest(File xml) throws ParseException {
 		deliveries = SerializerXML.deserializeDeliveryXML(xml, map);
 		if(deliveries.getDeliveryList().size() == 0) {
@@ -60,6 +75,11 @@ public class Controller {
 		return schedule;
 	}
 
+	/**
+	 * Gets the current route
+	 * 
+	 * @return the current route
+	 */
 	public static DeliverySchedule getSchedule() {
 		return schedule;
 	}
@@ -68,21 +88,39 @@ public class Controller {
 		SerializerXML.generateRoadMap(xml, schedule);
 	}
 
-	//Interaction avec Commandes
+	/**
+	 * Deletes a delivery from the route
+	 * 
+	 * @param element			the delivery to delete
+	 */
 	public static void cmdDelete(Delivery element) {
 		Command c = new CommandDelete(element);
 		cmdList.addCommand(c);
 		refreshIHM();
 	}
+	
 	public static void cmdAdd() {
 		WindowManager.highlightAll(map, schedule);
 	}
+	/**
+	 * Adds a delivery to the route
+	 * 
+	 * @param element			the delivery to add
+	 */
 	public static void cmdAdd2(Delivery element) {
 		Command c = new CommandAdd(element);
 		cmdList.addCommand(c);
 		refreshIHM();
 	}
 
+	/**
+	 * Modifies a delivery
+	 * 
+	 * @param element			the delivery to modify
+	 * @param startTime			starting time of the modified delivery
+	 * @param endTime			ending time of the modified delivery
+	 * @param duration			duration of the modified delivery
+	 */
 	public static void cmdModify(Delivery element, Date startTime, Date endTime, int duration) {
 		Command c = new CommandModify(element, startTime, endTime, duration);
 		cmdList.addCommand(c);

@@ -10,6 +10,13 @@ public class CommandHandler {
 
 	public static int lastDeletedIndex;
 
+	/**
+	 * Finds a pair when only knowing its delivery
+	 * 
+	 * @param schedule		the present route
+	 * @param d				the delivery to find in the schedule
+	 * @return the pair defining the requested delivery
+	 */
 	public static Pair<Route, Delivery> findByDelivery(DeliverySchedule schedule, Delivery d) {
 		for (Pair<Route, Delivery> p : schedule) {
 			if (p.getValue() == d)
@@ -23,7 +30,14 @@ public class CommandHandler {
 		return true;
 	}
 
-	// Handler CommandDelete
+	/**
+	 * Deletes a delivery
+	 * 
+	 * @param map			the map being used
+	 * @param schedule		the present route
+	 * @param element		the delivery to delete
+	 * @return the index where the deleted delivery was placed
+	 */
 	public static int deleteDelivery(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> element) {
 		// Sauvegarde l'index de la delivery
 		int index = schedule.indexOf(element);
@@ -45,7 +59,15 @@ public class CommandHandler {
 		schedule.remove(index);
 		return index;
 	}
-
+	
+	/**
+	 * Puts back a deleted delivery
+	 * 
+	 * @param map			the map being used
+	 * @param schedule		the present route
+	 * @param element		the deleted delivery to put back
+	 * @param index			the index where the deleted delivery was placed
+	 */
 	public static void undoDelete(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> element, int index) {
 		// Remet l'element de base
 		schedule.add(index, element);
@@ -69,7 +91,14 @@ public class CommandHandler {
 		}
 	}
 
-	// Handler CommandAdd
+	/**
+	 * Tests if it is possible to add a delivery and does so if possible
+	 * 
+	 * @param map			the map being used
+	 * @param schedule		the present route
+	 * @param d				the delivery to add
+	 * @return true if succeeded in adding the delivery, false otherwise
+	 */
 	public static boolean addDelivery(StreetMap map, DeliverySchedule schedule, Delivery d) {
 		int index = indexAdd(map, schedule, d);
 		if (index >= 0) {
@@ -124,7 +153,18 @@ public class CommandHandler {
 		return false;
 	}
 
-	// Handler CommandModify
+	/**
+	 * Modifies the selected delivery by replacing it with a new one
+	 * 
+	 * @param map			the map being used
+	 * @param schedule		the present route
+	 * @param oldDelivery	the delivery that is going to be modified
+	 * @param newDelivery	the new delivery
+	 * @param sT				the starting time of the new delivery
+	 * @param eT				the ending time of the new delivery
+	 * @param duration		the duration of the new delivery
+	 * @return the index where the old delivery was placed
+	 */
 	public static int modifyDelivery(StreetMap map, DeliverySchedule schedule, Pair<Route, Delivery> oldDelivery,
 									 Delivery newDelivery, Date sT, Date eT, int duration) {
 		int index = deleteDelivery(map, schedule, oldDelivery);
